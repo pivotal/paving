@@ -7,3 +7,8 @@ variable "availability_zones" {
   description = "Requires exactly two availability zones that must belong to the provided region."
   type        = list
 }
+
+variable "ops_manager_allowed_ips" {
+  default     = ["0.0.0.0/0"]
+  description = "IPs allowed to communicate with Ops Manager."
+}
