@@ -1,5 +1,5 @@
 resource "aws_iam_access_key" "ops-manager-access-key" {
-  user    = aws_iam_user.ops-manager.name
+  user = aws_iam_user.ops-manager.name
 }
 
 resource "aws_iam_user" "ops-manager" {
