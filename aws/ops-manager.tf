@@ -3,7 +3,8 @@ resource "aws_iam_access_key" "ops-manager-access-key" {
 }
 
 resource "aws_iam_user" "ops-manager" {
-  name = "${var.environment_name}-ops-manager"
+  force_destroy = true
+  name          = "${var.environment_name}-ops-manager"
 }
 
 resource "aws_iam_user_policy" "ops-manager" {
