@@ -77,6 +77,20 @@ data "aws_iam_policy_document" "ops-manager" {
   }
 
   statement {
+    sid       = "OpsMgrInfoAboutCurrentInstanceProfile"
+    effect    = "Allow"
+    actions   = ["iam:GetInstanceProfile"]
+    resources = [aws_iam_instance_profile.ops-manager.arn]
+  }
+
+  statement {
+    sid       = "OpsMgrCreateInstanceWithCurrentInstanceProfile"
+    effect    = "Allow"
+    actions   = ["iam:PassRole"]
+    resources = [aws_iam_role.ops-manager.arn]
+  }
+
+  statement {
     sid     = "OpsMgrS3Permissions"
     effect  = "Allow"
     actions = ["s3:*"]
