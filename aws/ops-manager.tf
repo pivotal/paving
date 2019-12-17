@@ -21,3 +21,7 @@ data "template_file" "ops-manager" {
     environment_name = var.environment_name
   }
 }
+
+resource "aws_eip" "ops_manager_ip" {
+  vpc = true
+}

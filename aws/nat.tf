@@ -1,4 +1,10 @@
+resource "aws_internet_gateway" "gw" {
+  vpc_id = aws_vpc.vpc.id
+}
+
 resource "aws_eip" "nat" {
+  count = length(var.availability_zones)
+
   vpc = true
 
   tags = {
@@ -6,13 +12,11 @@ resource "aws_eip" "nat" {
   }
 }
 
-resource "aws_internet_gateway" "gw" {
-  vpc_id = aws_vpc.vpc.id
-}
-
 resource "aws_nat_gateway" "nat" {
-  allocation_id = aws_eip.nat.id
-  subnet_id     = aws_subnet.public-subnet[0].id
+  count = length(var.availability_zones)
+
+  allocation_id = element(aws_eip.nat.*.id, count.index)
+  subnet_id     = element(aws_subnet.public-subnet.*.id, count.index)
 
   tags = {
     "Name" = "${var.environment_name}-nat-gateway"
