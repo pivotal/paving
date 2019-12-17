@@ -27,6 +27,17 @@ locals {
     tcp_target_groups     = aws_lb_target_group.tcp[*].name
     ssh_target_groups     = aws_lb_target_group.ssh.name
     pks_api_target_groups = [aws_lb_target_group.pks-api-9021.name, aws_lb_target_group.pks-api-8443.name]
+
+    public_subnet_ids       = aws_subnet.public-subnet[*].id
+    public_subnet_cidrs     = aws_subnet.public-subnet[*].cidr_block
+    management_subnet_ids   = aws_subnet.management-subnet[*].id
+    management_subnet_cidrs = aws_subnet.management-subnet[*].cidr_block
+    pas_subnet_ids          = aws_subnet.pas-subnet[*].id
+    pas_subnet_cidrs        = aws_subnet.pas-subnet[*].cidr_block
+    services_subnet_ids     = aws_subnet.services-subnet[*].id
+    services_subnet_cidrs   = aws_subnet.services-subnet[*].cidr_block
+    pks_subnet_ids          = aws_subnet.pks-subnet[*].id
+    pks_subnet_cidrs        = aws_subnet.pks-subnet[*].cidr_block
   }
 }
 
