@@ -1,13 +1,3 @@
-resource "aws_vpc" "vpc" {
-  cidr_block           = "10.0.0.0/16"
-  instance_tenancy     = "default"
-  enable_dns_hostnames = true
-
-  tags = {
-    Name = "${var.environment_name}-vpc"
-  }
-}
-
 locals {
   public_subnet_cidrs     = ["10.0.0.0/24", "10.0.1.0/24"]
   management_subnet_cidrs = ["10.0.16.0/28", "10.0.16.16/28"]
