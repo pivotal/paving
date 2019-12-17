@@ -2,9 +2,20 @@ data "aws_route53_zone" "hosted-zone" {
   name = var.hosted_zone
 }
 
-resource "aws_route53_record" "wildcard-sys" {
+resource "aws_route53_record" "ops-manager" {
+  name = "opsmanager.${var.environment_name}.${var.dns_suffix}"
+
   zone_id = data.aws_route53_zone.hosted-zone.zone_id
-  name    = "*.sys.${var.environment_name}.${var.dns_suffix}"
+  type    = "A"
+  ttl     = 300
+
+  records = [aws_eip.ops-manager.public_ip]
+}
+
+resource "aws_route53_record" "wildcard-sys" {
+  name = "*.sys.${var.environment_name}.${var.dns_suffix}"
+
+  zone_id = data.aws_route53_zone.hosted-zone.zone_id
   type    = "A"
 
   alias {
@@ -15,8 +26,9 @@ resource "aws_route53_record" "wildcard-sys" {
 }
 
 resource "aws_route53_record" "wildcard-apps" {
+  name = "*.apps.${var.environment_name}.${var.dns_suffix}"
+
   zone_id = data.aws_route53_zone.hosted-zone.zone_id
-  name    = "*.apps.${var.environment_name}.${var.dns_suffix}"
   type    = "A"
 
   alias {
@@ -27,8 +39,9 @@ resource "aws_route53_record" "wildcard-apps" {
 }
 
 resource "aws_route53_record" "ssh" {
+  name = "ssh.sys.${var.environment_name}.${var.dns_suffix}"
+
   zone_id = data.aws_route53_zone.hosted-zone.zone_id
-  name    = "ssh.sys.${var.environment_name}.${var.dns_suffix}"
   type    = "A"
 
   alias {
@@ -39,8 +52,9 @@ resource "aws_route53_record" "ssh" {
 }
 
 resource "aws_route53_record" "tcp" {
+  name = "tcp.${var.environment_name}.${var.dns_suffix}"
+
   zone_id = data.aws_route53_zone.hosted-zone.zone_id
-  name    = "tcp.${var.environment_name}.${var.dns_suffix}"
   type    = "A"
 
   alias {
@@ -51,8 +65,9 @@ resource "aws_route53_record" "tcp" {
 }
 
 resource "aws_route53_record" "pks-api" {
+  name = "api.pks.${var.environment_name}.${var.dns_suffix}"
+
   zone_id = data.aws_route53_zone.hosted-zone.zone_id
-  name    = "api.pks.${var.environment_name}.${var.dns_suffix}"
   type    = "A"
 
   alias {

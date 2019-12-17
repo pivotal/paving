@@ -1,4 +1,4 @@
-resource "aws_iam_access_key" "ops-manager-access-key" {
+resource "aws_iam_access_key" "ops-manager" {
   user = aws_iam_user.ops-manager.name
 }
 
@@ -22,6 +22,6 @@ data "template_file" "ops-manager" {
   }
 }
 
-resource "aws_eip" "ops_manager_ip" {
+resource "aws_eip" "ops-manager" {
   vpc = true
 }
