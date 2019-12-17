@@ -1,3 +1,13 @@
+resource "aws_key_pair" "ops-manager" {
+  key_name   = "${var.environment_name}-ops-manager-key"
+  public_key = tls_private_key.ops-manager.public_key_openssh
+}
+
+resource "tls_private_key" "ops-manager" {
+  algorithm = "RSA"
+  rsa_bits  = "4096"
+}
+
 resource "aws_iam_access_key" "ops-manager" {
   user = aws_iam_user.ops-manager.name
 }
