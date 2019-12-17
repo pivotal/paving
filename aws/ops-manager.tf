@@ -1,3 +1,11 @@
+resource "aws_eip" "ops-manager" {
+  vpc = true
+
+  tags = {
+    "Name" = "${var.environment_name}-ops-manager-eip"
+  }
+}
+
 resource "aws_key_pair" "ops-manager" {
   key_name   = "${var.environment_name}-ops-manager-key"
   public_key = tls_private_key.ops-manager.public_key_openssh
@@ -55,24 +63,64 @@ resource "aws_iam_user" "ops-manager" {
 }
 
 resource "aws_iam_user_policy" "ops-manager" {
-  name = "${var.environment_name}-ops-manager-policy"
-  user = aws_iam_user.ops-manager.name
-
-  policy = data.template_file.ops-manager.rendered
+  name   = "${var.environment_name}-ops-manager-policy"
+  user   = aws_iam_user.ops-manager.name
+  policy = data.aws_iam_policy_document.ops-manager.json
 }
 
-data "template_file" "ops-manager" {
-  template = file("ops-manager-iam-policy.json")
-
-  vars = {
-    environment_name = var.environment_name
+data "aws_iam_policy_document" "ops-manager" {
+  statement {
+    sid       = "OpsMgrIAMPermissions"
+    effect    = "Deny"
+    actions   = ["iam:*"]
+    resources = ["*"]
   }
-}
 
-resource "aws_eip" "ops-manager" {
-  vpc = true
+  statement {
+    sid     = "OpsMgrS3Permissions"
+    effect  = "Allow"
+    actions = ["s3:*"]
+    resources = [
+      "arn:aws:s3:::${var.environment_name}-ops-manager-bucket",
+      "arn:aws:s3:::${var.environment_name}-ops-manager-bucket/*"
+    ]
+  }
 
-  tags = {
-    "Name" = "${var.environment_name}-ops-manager-eip"
+  statement {
+    sid    = "OpsMgrEC2Permissions"
+    effect = "Allow"
+    actions = [
+      "ec2:DescribeKeypairs",
+      "ec2:DescribeVpcs",
+      "ec2:DescribeSecurityGroups",
+      "ec2:DescribeAvailabilityZones",
+      "ec2:DescribeAccountAttributes",
+      "ec2:DescribeImages",
+      "ec2:DescribeSubnets",
+      "ec2:RunInstances",
+      "ec2:DescribeInstances",
+      "ec2:TerminateInstances",
+      "ec2:RebootInstances",
+      "elasticloadbalancing:DescribeLoadBalancers",
+      "elasticloadbalancing:DescribeTargetGroups",
+      "elasticloadbalancing:DescribeTargetHealth",
+      "elasticloadbalancing:RegisterTargets",
+      "elasticloadbalancing:RegisterInstancesWithLoadBalancer",
+      "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
+      "ec2:DescribeAddresses",
+      "ec2:DisassociateAddress",
+      "ec2:AssociateAddress",
+      "ec2:CreateTags",
+      "ec2:DescribeVolumes",
+      "ec2:CreateVolume",
+      "ec2:AttachVolume",
+      "ec2:DeleteVolume",
+      "ec2:DetachVolume",
+      "ec2:CreateSnapshot",
+      "ec2:DeleteSnapshot",
+      "ec2:DescribeSnapshots",
+      "ec2:DescribeRegions"
+    ]
+    resources = ["*"]
   }
 }
