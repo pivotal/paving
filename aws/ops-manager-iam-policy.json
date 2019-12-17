@@ -28,6 +28,8 @@
         "elasticloadbalancing:DescribeTargetGroups",
         "elasticloadbalancing:DescribeTargetHealth",
         "elasticloadbalancing:RegisterTargets",
+        "elasticloadbalancing:RegisterInstancesWithLoadBalancer",
+        "elasticloadbalancing:DeregisterInstancesFromLoadBalancer",
         "ec2:DescribeAddresses",
         "ec2:DisassociateAddress",
         "ec2:AssociateAddress",
