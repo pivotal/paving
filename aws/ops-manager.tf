@@ -34,4 +34,8 @@ data "template_file" "ops-manager" {
 
 resource "aws_eip" "ops-manager" {
   vpc = true
+
+  tags = {
+    "Name" = "${var.environment_name}-ops-manager-eip"
+  }
 }
