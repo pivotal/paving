@@ -1,4 +1,3 @@
 # Paving
 
-Terraform templates for paving Pivotal Platform on AWS, GCP, Azure, and (maybe)
-vSphere.
+Terraform templates for paving Pivotal Platform on AWS, vSphere, Azure, and (maybe) GCP.
