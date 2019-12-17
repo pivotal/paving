@@ -214,3 +214,35 @@ resource "aws_security_group" "pks_internal_sg" {
     to_port     = 0
   }
 }
+
+// Allow access to PKS API
+resource "aws_security_group" "pks-api-lb" {
+  name        = "${var.environment_name}-pks-api-lb-sg"
+  description = "PKS API LB Security Group"
+  vpc_id      = aws_vpc.vpc.id
+
+  ingress {
+    cidr_blocks = ["0.0.0.0/0"]
+    protocol    = "tcp"
+    from_port   = 9021
+    to_port     = 9021
+  }
+
+  ingress {
+    cidr_blocks = ["0.0.0.0/0"]
+    protocol    = "tcp"
+    from_port   = 8443
+    to_port     = 8443
+  }
+
+  egress {
+    cidr_blocks = ["0.0.0.0/0"]
+    protocol    = "-1"
+    from_port   = 0
+    to_port     = 0
+  }
+
+  tags = {
+    "Name" = "${var.environment_name}-pks-api-lb-sg"
+  }
+}
