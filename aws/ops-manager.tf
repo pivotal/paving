@@ -12,6 +12,43 @@ resource "aws_iam_access_key" "ops-manager" {
   user = aws_iam_user.ops-manager.name
 }
 
+resource "aws_iam_role" "ops-manager" {
+  name = "${var.environment_name}-ops-manager-role"
+
+  lifecycle {
+    create_before_destroy = true
+  }
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": [
+          "ec2.amazonaws.com"
+        ]
+      },
+      "Action": [
+        "sts:AssumeRole"
+      ]
+    }
+  ]
+}
+EOF
+
+}
+
+resource "aws_iam_instance_profile" "ops-manager" {
+  name = "${var.environment_name}-ops-manager"
+  role = aws_iam_role.ops-manager.name
+
+  lifecycle {
+    ignore_changes = [name]
+  }
+}
+
 resource "aws_iam_user" "ops-manager" {
   force_destroy = true
   name          = "${var.environment_name}-ops-manager"
