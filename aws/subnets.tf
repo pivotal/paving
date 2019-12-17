@@ -4,6 +4,7 @@ locals {
   pas_subnet_cidrs        = ["10.0.4.0/24", "10.0.5.0/24"]
   services_subnet_cidrs   = ["10.0.8.0/24", "10.0.9.0/24"]
   rds_subnet_cidrs        = ["10.0.12.0/24", "10.0.13.0/24"]
+  pks_subnet_cidrs        = ["10.0.14.0/24", "10.0.15.0/24"]
 }
 
 resource "aws_subnet" "public-subnet" {
@@ -63,5 +64,17 @@ resource "aws_subnet" "rds-subnet" {
 
   tags = {
     Name = "${var.environment_name}-rds-subnet-${count.index}"
+  }
+}
+
+resource "aws_subnet" "pks-subnet" {
+  count = length(local.pks_subnet_cidrs)
+
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = element(local.pks_subnet_cidrs, count.index)
+  availability_zone = element(var.availability_zones, count.index)
+
+  tags = {
+    Name = "${var.environment_name}-pks-subnet-${count.index}"
   }
 }

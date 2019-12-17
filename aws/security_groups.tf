@@ -179,3 +179,38 @@ resource "aws_security_group" "mysql" {
     "Name" = "${var.environment_name}-mysql-sg"
   }
 }
+
+// Allow open access between internal VMs for a PKS deployment
+resource "aws_security_group" "pks_internal_sg" {
+  name        = "pks_internal_sg"
+  description = "PKS Internal Security Group"
+  vpc_id      = aws_vpc.vpc.id
+
+  ingress {
+    cidr_blocks = concat(local.pks_subnet_cidrs, local.services_subnet_cidrs)
+    protocol    = "icmp"
+    from_port   = 0
+    to_port     = 0
+  }
+
+  ingress {
+    cidr_blocks = concat(local.pks_subnet_cidrs, local.services_subnet_cidrs)
+    protocol    = "tcp"
+    from_port   = 0
+    to_port     = 0
+  }
+
+  ingress {
+    cidr_blocks = concat(local.pks_subnet_cidrs, local.services_subnet_cidrs)
+    protocol    = "udp"
+    from_port   = 0
+    to_port     = 0
+  }
+
+  egress {
+    cidr_blocks = ["0.0.0.0/0"]
+    protocol    = "-1"
+    from_port   = 0
+    to_port     = 0
+  }
+}
