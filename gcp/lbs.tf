@@ -38,12 +38,11 @@ resource "google_compute_target_http_proxy" "http-lb" {
   url_map = google_compute_url_map.https-lb.self_link
 }
 
-# TODO: Uncomment when we have certs working
-# resource "google_compute_target_https_proxy" "https-lb" {
-#   name             = "${var.environment_name}-https-lb"
-#   url_map          = google_compute_url_map.https-lb.self_link
-#   ssl_certificates = [google_compute_ssl_certificate.certificate.self_link]
-# }
+resource "google_compute_target_https_proxy" "https-lb" {
+  name             = "${var.environment_name}-https-lb"
+  url_map          = google_compute_url_map.https-lb.self_link
+  ssl_certificates = [google_compute_ssl_certificate.certificate.self_link]
+}
 
 resource "google_compute_global_forwarding_rule" "cf_http" {
   name       = "${var.environment_name}-http-lb"
@@ -52,12 +51,12 @@ resource "google_compute_global_forwarding_rule" "cf_http" {
   port_range = "80"
 }
 
-# resource "google_compute_global_forwarding_rule" "https-lb" {
-#   name       = "${var.environment_name}-https-lb"
-#   ip_address = google_compute_global_address.lb.address
-#   target     = google_compute_target_https_proxy.https-lb.self_link
-#   port_range = "443"
-# }
+resource "google_compute_global_forwarding_rule" "https-lb" {
+  name       = "${var.environment_name}-https-lb"
+  ip_address = google_compute_global_address.lb.address
+  target     = google_compute_target_https_proxy.https-lb.self_link
+  port_range = "443"
+}
 
 resource "google_compute_http_health_check" "lb" {
   name                = "${var.environment_name}-health-check"

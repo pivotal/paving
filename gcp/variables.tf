@@ -9,5 +9,8 @@ variable "availability_zones" {
 }
 
 variable "ssl_certificate" {
-  default = ""
+  description = "The contents of an SSL certificate to be used by the LB."
+}
+variable "ssl_private_key" {
+  description = "The contents of an SSL private key to be used by the LB."
 }
