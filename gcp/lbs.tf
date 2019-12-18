@@ -1,3 +1,4 @@
+# GoRouter Load Balancer
 resource "google_compute_backend_service" "http-lb" {
   name        = "${var.environment_name}-http-lb"
   port_name   = "http"
@@ -23,7 +24,7 @@ resource "google_compute_instance_group" "http-lb" {
   count = length(var.availability_zones)
 }
 
-resource "google_compute_global_address" "lb" {
+resource "google_compute_global_address" "http-lb" {
   name = "${var.environment_name}-http-lb"
 }
 
@@ -46,14 +47,14 @@ resource "google_compute_target_https_proxy" "https-lb" {
 
 resource "google_compute_global_forwarding_rule" "cf_http" {
   name       = "${var.environment_name}-http-lb"
-  ip_address = google_compute_global_address.lb.address
+  ip_address = google_compute_global_address.http-lb.address
   target     = google_compute_target_http_proxy.http-lb.self_link
   port_range = "80"
 }
 
 resource "google_compute_global_forwarding_rule" "https-lb" {
   name       = "${var.environment_name}-https-lb"
-  ip_address = google_compute_global_address.lb.address
+  ip_address = google_compute_global_address.http-lb.address
   target     = google_compute_target_https_proxy.https-lb.self_link
   port_range = "443"
 }
@@ -67,29 +68,3 @@ resource "google_compute_http_health_check" "lb" {
   healthy_threshold   = 6
   unhealthy_threshold = 3
 }
-
-# resource "google_compute_firewall" "health-check" {
-#   name    = "${var.environment_name}-health-check"
-#   network = gcp_compute_network.network.self_link
-
-#   allow {
-#     protocol = "tcp"
-#     ports    = [google_compute_http_health_check.lb.port]
-#   }
-
-#   source_ranges = ["130.211.0.0/22", "35.191.0.0/16"]
-
-#   target_tags = ["${compact(local.target_tags)}"]
-# }
-
-# resource "google_compute_firewall" "lb" {
-#   name    = "${var.env_name}-${var.name}-firewall"
-#   network = "${var.network}"
-
-#   allow {
-#     protocol = "tcp"
-#     ports    = "${var.ports}"
-#   }
-
-#   target_tags = ["${compact(local.target_tags)}"]
-# }
