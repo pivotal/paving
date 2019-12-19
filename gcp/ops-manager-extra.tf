@@ -6,7 +6,7 @@ resource "google_compute_image" "ops-manager" {
   }
 
   raw_disk {
-    source = "https://storage.googleapis.com/ops-manager-us/pcf-gcp-2.0-build.264.tar.gz"
+    source = "https://storage.googleapis.com/ops-manager-us/pcf-gcp-2.8.0-build.187.tar.gz"
   }
 }
 
