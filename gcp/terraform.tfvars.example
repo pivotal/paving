@@ -9,6 +9,8 @@ SERVICE_ACCOUNT_KEY
 region = "YOUR-GCP-REGION"
 availability_zones = ["YOUR-GCP-ZONE-1", "YOUR-GCP-ZONE-2"]
 
+hosted_zone = "YOUR-HOSTED-ZONE"
+dns_zone_name = "YOUR-DNS-ZONE-NAME"
 
 ssl_certificate = <<SSL_CERTIFICATE
 "YOUR-LB-SSL-PRIVATE-KEY"
