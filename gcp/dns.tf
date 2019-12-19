@@ -73,7 +73,7 @@ resource "google_dns_record_set" "tcp" {
 }
 
 resource "google_dns_record_set" "ops-manager" {
-  name = "opsman.${data.google_dns_managed_zone.hosted-zone.dns_name}"
+  name = "opsmanager.${data.google_dns_managed_zone.hosted-zone.dns_name}"
   type = "A"
   ttl  = 300
 
