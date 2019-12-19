@@ -21,7 +21,14 @@ locals {
     tcp_dns           = aws_route53_record.tcp.name
     pks_api_dns       = aws_route53_record.pks-api.name
 
-    platform_security_group = aws_security_group.platform.id
+    platform_security_group     = aws_security_group.platform.id
+    nat_security_group          = aws_security_group.nat.id
+    ssh_lb_security_group       = aws_security_group.ssh-lb.id
+    tcp_lb_security_group       = aws_security_group.tcp-lb.id
+    web_lb_security_group       = aws_security_group.web-lb.id
+    mysql_security_group        = aws_security_group.mysql.id
+    pks_internal_security_group = aws_security_group.pks-internal.id
+    pks_api_lb_security_group   = aws_security_group.pks-api-lb.id
 
     pas_buildpacks_bucket = aws_s3_bucket.buildpacks-bucket.bucket
     pas_droplets_bucket   = aws_s3_bucket.droplets-bucket.bucket

@@ -181,8 +181,8 @@ resource "aws_security_group" "mysql" {
 }
 
 // Allow open access between internal VMs for a PKS deployment
-resource "aws_security_group" "pks_internal_sg" {
-  name        = "pks_internal_sg"
+resource "aws_security_group" "pks-internal-sg" {
+  name        = "${var.environment_name}-pks-internal"
   description = "PKS Internal Security Group"
   vpc_id      = aws_vpc.vpc.id
 
