@@ -21,6 +21,8 @@ locals {
     tcp_dns           = aws_route53_record.tcp.name
     pks_api_dns       = aws_route53_record.pks-api.name
 
+    platform_security_group = aws_security_group.platform.id
+
     pas_buildpacks_bucket = aws_s3_bucket.buildpacks-bucket.bucket
     pas_droplets_bucket   = aws_s3_bucket.droplets-bucket.bucket
     pas_packages_bucket   = aws_s3_bucket.packages-bucket.bucket
