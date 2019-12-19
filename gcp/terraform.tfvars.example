@@ -1,0 +1,20 @@
+environment_name = "YOUR-ENVIRONMENT-NAME"
+
+project = "YOUR-GCP-PROJECT"
+
+service_account_key = <<SERVICE_ACCOUNT_KEY
+"YOUR-SERVICE-ACCOUNT-KEY"
+SERVICE_ACCOUNT_KEY
+
+region = "YOUR-GCP-REGION"
+availability_zones = ["YOUR-GCP-ZONE-1", "YOUR-GCP-ZONE-2"]
+
+
+ssl_certificate = <<SSL_CERTIFICATE
+"YOUR-LB-SSL-PRIVATE-KEY"
+SSL_CERTIFICATE
+
+ssl_private_key = <<SSL_PRIVATE_KEY
+"YOUR-LB-SSL-PRIVATE-KEY"
+SSL_PRIVATE_KEY
+
