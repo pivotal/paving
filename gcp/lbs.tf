@@ -154,3 +154,8 @@ resource "google_compute_firewall" "http-lb" {
 
   target_tags = ["${var.environment_name}-http-lb"]
 }
+
+# PKS API Load Balancer
+resource "google_compute_address" "pks-api-lb" {
+  name = "${var.environment_name}-pks-api-lb"
+}
