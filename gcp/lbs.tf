@@ -28,7 +28,7 @@ resource "google_compute_forwarding_rule" "ws-lb-443" {
 resource "google_compute_target_pool" "ws-lb" {
   name = "${var.environment_name}-ws-lb"
 
-  health_checks = [google_compute_http_health_check.ws-lb.name]
+  health_checks = [google_compute_http_health_check.ws-lb.self_link]
 }
 
 resource "google_compute_http_health_check" "ws-lb" {
@@ -88,7 +88,7 @@ resource "google_compute_backend_service" "http-lb" {
     group = google_compute_instance_group.http-lb[1].self_link
   }
 
-  health_checks = [google_compute_http_health_check.http-lb.name]
+  health_checks = [google_compute_http_health_check.http-lb.self_link]
 }
 
 resource "google_compute_instance_group" "http-lb" {
