@@ -1,14 +1,21 @@
 # Paving
 
-This repository contains terraform templates for paving the necessary
-infrastructure to deploy the Pivotal Platform to a single foundation. You can
-deploy Pivotal Application Service (PAS) and Pivotal Container Service (PKS) to
-the same foundation. The templates **do not** create an Ops Manager VM but **do**
-create the necessary infrastructure for the VM (security groups, keys, etc).
-The templates supoprt paving on AWS, vSphere, Azure, and GCP.
+This repository contains Terraform templates for paving the necessary
+infrastructure to deploy the Pivotal Platform to a single foundation.
+The templates support AWS, vSphere, Azure, and GCP.
 
-These templates demonstrate a modest production deployment in two AZs on
-each IaaS. They contain extremely minimal interdependence or cleverness,
+### Notes
+
+- These templates support deploying Pivotal Application Service (PAS)
+and Pivotal Container Service (PKS) to the same foundation.
+
+- The templates **do not** create an Ops Manager VM but **do**
+create the necessary infrastructure for the VM (security groups, keys, etc).
+
+- These templates demonstrate a modest production deployment in two AZs on
+each IaaS.
+
+- These templates contain extremely minimal interdependence or cleverness,
 to facilitate incorporating these templates into your own automation easily.
 
 ## Requirements
