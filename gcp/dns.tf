@@ -29,7 +29,7 @@ resource "google_dns_record_set" "wildcard-ws" {
 
   managed_zone = var.hosted_zone
 
-  rrdatas = [google_compute_global_address.ws-lb.address]
+  rrdatas = [google_compute_address.ws-lb.address]
 }
 
 resource "google_dns_record_set" "doppler-sys" {
@@ -39,7 +39,7 @@ resource "google_dns_record_set" "doppler-sys" {
 
   managed_zone = var.hosted_zone
 
-  rrdatas = [google_compute_global_address.ws-lb.address]
+  rrdatas = [google_compute_address.ws-lb.address]
 }
 
 resource "google_dns_record_set" "loggregator-sys" {
@@ -49,7 +49,7 @@ resource "google_dns_record_set" "loggregator-sys" {
 
   managed_zone = var.hosted_zone
 
-  rrdatas = [google_compute_global_address.ws-lb.address]
+  rrdatas = [google_compute_address.ws-lb.address]
 }
 
 resource "google_dns_record_set" "app-ssh" {
@@ -59,7 +59,7 @@ resource "google_dns_record_set" "app-ssh" {
 
   managed_zone = var.hosted_zone
 
-  rrdatas = [google_compute_global_address.ssh-lb.address]
+  rrdatas = [google_compute_address.ssh-lb.address]
 }
 
 resource "google_dns_record_set" "tcp" {
@@ -69,7 +69,7 @@ resource "google_dns_record_set" "tcp" {
 
   managed_zone = var.hosted_zone
 
-  rrdatas = [google_compute_global_address.tcp-lb.address]
+  rrdatas = [google_compute_address.tcp-lb.address]
 }
 
 resource "google_dns_record_set" "ops-manager" {
