@@ -29,6 +29,12 @@ to facilitate incorporating these templates into your own automation easily.
 In each IaaS directory, there is a `terraform.tfvars.example` you can copy
 and modify with your configuration choices and credentials.
 
+### init
+
+```
+terraform init
+```
+
 ### plan
 
 ```
