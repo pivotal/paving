@@ -7,23 +7,46 @@ the same foundation. The templates **do not** create an Ops Manager VM but **do*
 create the necessary infrastructure for the VM (security groups, keys, etc).
 The templates supoprt paving on AWS, vSphere, Azure, and GCP.
 
+These templates demonstrate a modest production deployment in two AZs on
+each IaaS. They contain extremely minimal interdependence or cleverness,
+to facilitate incorporating these templates into your own automation easily.
+
 ## Requirements
 
 - Terraform v0.12+
 
 ## Usage
 
-## Conventions
+### configuration
 
-These templates demonstrate a modest production deployment in two AZs on
-each IaaS. They contain extremely minimal interdependence or cleverness,
-to facilitate incorporating these templates into your own automation easily.
+In each IaaS directory, there is a `terraform.tfvars.example` you can copy
+and modify with your configuration choices and credentials.
 
-## Outputs
+### plan
+
+```
+terraform plan -var-file terraform.tfvars
+```
+
+### apply
+
+```
+terraform apply -var-file terraform.tfvars
+```
+
+### outputs
 
 ```
 terraform output stable_config
 ```
+
+### destroy
+
+```
+terraform destroy -var-file terraform.tfvars
+```
+
+
 
 ## Versioning
 
