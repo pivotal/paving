@@ -6,7 +6,7 @@ locals {
 
     network_name = google_compute_network.network.name
 
-    dns = data.google_dns_managed_zone.hosted-zone.name_servers
+    dns_name_servers = data.google_dns_managed_zone.hosted-zone.name_servers
 
     infrastructure_subnet_name    = google_compute_subnetwork.infrastructure.name
     infrastructure_subnet_cidr    = google_compute_subnetwork.infrastructure.ip_cidr_range
