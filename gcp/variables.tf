@@ -2,6 +2,7 @@ variable "project" {}
 variable "environment_name" {}
 variable "region" {}
 variable "service_account_key" {}
+variable "hosted_zone" {}
 
 variable "availability_zones" {
   description = "Requires exactly two availability zones that must belong to the provided region."
