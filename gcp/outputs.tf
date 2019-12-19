@@ -5,6 +5,11 @@ locals {
 
     network_id = google_compute_network.network.name
 
+    ops_manager_service_account_key = google_service_account_key.ops-manager.private_key
+    ops_manager_public_ip           = google_compute_address.ops-manager.address
+    ops_manager_ssh_public_key      = tls_private_key.ops-manager.public_key_openssh
+    ops_manager_ssh_private_key     = tls_private_key.ops-manager.private_key_pem
+
     wildcard_sys_dns    = google_dns_record_set.wildcard-sys.name
     wildcard_apps_dns   = google_dns_record_set.wildcard-apps.name
     doppler_sys_dns     = google_dns_record_set.doppler-sys.name

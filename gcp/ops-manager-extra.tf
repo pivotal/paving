@@ -16,6 +16,8 @@ resource "google_compute_instance" "ops-manager" {
   zone         = element(var.availability_zones, 1)
   tags         = ["${var.environment_name}-ops-manager"]
 
+  allow_stopping_for_update = true
+
   timeouts {
     create = "10m"
   }
@@ -37,7 +39,7 @@ resource "google_compute_instance" "ops-manager" {
   }
 
   service_account {
-    email  = google_service_account.opsman_service_account.email
+    email  = google_service_account.ops-manager.email
     scopes = ["cloud-platform"]
   }
 
