@@ -13,7 +13,7 @@ to facilitate incorporating these templates into your own automation easily.
 
 ## Requirements
 
-- Terraform v0.12+
+- [Terraform v0.12+](https://www.terraform.io/downloads.html)
 
 ## Usage
 
