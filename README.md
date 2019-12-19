@@ -1,20 +1,37 @@
 # Paving
 
-Terraform templates for paving Pivotal Platform on AWS, vSphere, Azure, and (maybe) GCP.
+This repository contains terraform templates for paving the necessary
+infrastructure to deploy the Pivotal Platform to a single foundation. You can
+deploy Pivotal Application Service (PAS) and Pivotal Container Service (PKS) to
+the same foundation. The templates **do not** create an Ops Manager VM but **do**
+create the necessary infrastructure for the VM (security groups, keys, etc).
+The templates supoprt paving on AWS, vSphere, Azure, and GCP.
 
-These templates are configured such that you can deploy
-Pivotal Application Service (PAS) and Pivotal Container
-Service (PKS) to the same foundation.
+## Requirements
+
+- Terraform v0.12+
 
 ## Usage
 
 ## Conventions
 
-These templates demonstrate a modest production deployment in two AZs on each IaaS. They contain extremely minimal interdependence or cleverness, to facilitate incorporating these templates into your own automation easily.
+These templates demonstrate a modest production deployment in two AZs on
+each IaaS. They contain extremely minimal interdependence or cleverness,
+to facilitate incorporating these templates into your own automation easily.
+
+## Outputs
+
+```
+terraform output stable_config
+```
 
 ## Versioning
 
-The semantics of the versioning of paving's releases are based on the contents of `terraform output stable_config`. `stable_config` should always represent the minimum necessary to install Pivotal Platform. Any other output may be added or removed without a change in version. However, MAJOR.MINOR.PATCH should change according to the following:
+The semantics of the versioning of paving's releases are based on the contents
+of `terraform output stable_config`. `stable_config` should always represent
+the minimum necessary to install Pivotal Platform. Any other output may be
+added or removed without a change in version. However, MAJOR.MINOR.PATCH should
+change according to the following:
 - If an output is removed, the MAJOR version should be incremented
 - If an output is added, the MINOR version should be incremented
 - Otherwise, the patch version should be incremented
