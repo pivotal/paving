@@ -36,6 +36,7 @@ locals {
     target_pool_ssh      = google_compute_target_pool.ssh-lb.name
     target_pool_tcp      = google_compute_target_pool.tcp-lb.name
     target_pool_ws       = google_compute_target_pool.ws-lb.name
+    target_pool_pks_api  = google_compute_target_pool.pks-api-lb.name
 
     dns_wildcard_sys    = google_dns_record_set.wildcard-sys.name
     dns_wildcard_apps   = google_dns_record_set.wildcard-apps.name
