@@ -24,6 +24,9 @@ locals {
     subnet_pks_cidr    = google_compute_subnetwork.pks.ip_cidr_range
     subnet_pks_gateway = google_compute_subnetwork.pks.gateway_address
 
+    service_account_pks_master_id = google_service_account.pks-master-node-service-account.email
+    service_account_pks_worker_id = google_service_account.pks-worker-node-service-account.email
+
     ops_manager_service_account_key = google_service_account_key.ops-manager.private_key
     ops_manager_public_ip           = google_compute_address.ops-manager.address
     ops_manager_ssh_public_key      = tls_private_key.ops-manager.public_key_openssh
