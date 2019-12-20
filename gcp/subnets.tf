@@ -1,13 +1,13 @@
 locals {
-  infrastructure_subnet_cidr = "10.0.0.0/26"
-  pas_subnet_cidr            = "10.0.4.0/24"
-  services_subnet_cidr       = "10.0.8.0/24"
-  pks_subnet_cidr            = "10.0.10.0/24"
+  management_subnet_cidr = "10.0.0.0/26"
+  pas_subnet_cidr        = "10.0.4.0/24"
+  services_subnet_cidr   = "10.0.8.0/24"
+  pks_subnet_cidr        = "10.0.10.0/24"
 }
 
-resource "google_compute_subnetwork" "infrastructure" {
-  name          = "${var.environment_name}-infrastructure-subnet"
-  ip_cidr_range = local.infrastructure_subnet_cidr
+resource "google_compute_subnetwork" "management" {
+  name          = "${var.environment_name}-management-subnet"
+  ip_cidr_range = local.management_subnet_cidr
   network       = google_compute_network.network.self_link
   region        = var.region
 }

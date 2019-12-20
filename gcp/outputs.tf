@@ -8,9 +8,9 @@ locals {
 
     dns_name_servers = data.google_dns_managed_zone.hosted-zone.name_servers
 
-    infrastructure_subnet_name    = google_compute_subnetwork.infrastructure.name
-    infrastructure_subnet_cidr    = google_compute_subnetwork.infrastructure.ip_cidr_range
-    infrastructure_subnet_gateway = google_compute_subnetwork.infrastructure.gateway_address
+    subnet_management_name    = google_compute_subnetwork.management.name
+    subnet_management_cidr    = google_compute_subnetwork.management.ip_cidr_range
+    subnet_management_gateway = google_compute_subnetwork.management.gateway_address
 
     pas_subnet_name    = google_compute_subnetwork.pas.name
     pas_subnet_cidr    = google_compute_subnetwork.pas.ip_cidr_range
