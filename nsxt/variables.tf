@@ -15,14 +15,14 @@ variable "nsxt_password" {
 }
 
 variable "allow_unverified_ssl" {
-  default = false
+  default     = false
   description = "Allow connection to NSX-T manager with self-signed certificates. Set to `true` for POC or development environments"
-  type    = "string"
+  type        = "string"
 }
 
 variable "environment_name" {
   description = "An identifier used to tag resources; examples: `dev`, `EMEA`, `prod`"
-  type	      = "string"
+  type        = "string"
 }
 
 variable "east_west_transport_zone_name" {

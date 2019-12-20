@@ -1,4 +1,3 @@
-# Data {
 data "nsxt_edge_cluster" "edge_cluster" {
   display_name var.nsxt_edge_cluster_name
 }
@@ -6,9 +5,7 @@ data "nsxt_edge_cluster" "edge_cluster" {
 data "nsxt_transport_zone" "east-west-overlay" {
   display_name = var.east_west_transport_zone_name
 }
-# }
 
-# Tier-0 Routers {
 data "nsxt_logical_tier0_router" "t0_router" {
   display_name = var.nsxt_t0_router_name
 }
@@ -36,9 +33,7 @@ resource "nsxt_logical_router_link_port_on_tier0" "t0_to_t1_infrastructure" {
     tag   = var.environment_name
   }
 }
-# }
 
-# Tier-1 Router (Infrastructure) {
 resource "nsxt_logical_tier1_router" "t1_infrastructure" {
   display_name = "T1-Router-PAS-Infrastructure"
 
@@ -107,9 +102,7 @@ resource "nsxt_logical_router_downlink_port" "infrastructure_dp" {
     tag   = var.environment_name
   }
 }
-# }
 
-# Tier-1 Router (Deployment) {
 resource "nsxt_logical_tier1_router" "t1_deployment" {
   display_name = "T1-Router-PAS-Deployment"
 
@@ -181,9 +174,7 @@ resource "nsxt_logical_router_downlink_port" "deployment_dp" {
     tag   = var.environment_name
   }
 }
-# }
 
-# NAT Rules {
 resource "nsxt_nat_rule" "snat_vm" {
   display_name = "snat-vm"
   action       = "SNAT"
@@ -240,9 +231,7 @@ resource "nsxt_nat_rule" "dnat_om" {
     tag   = var.environment_name
   }
 }
-# }
 
-# Extras {
 resource "nsxt_ip_pool" "external_ip_pool" {
   description = "IP Pool that provides IPs for each of the NSX-T container networks."
   display_name = "external-ip-pool"
@@ -264,4 +253,3 @@ resource "nsxt_ip_block" "container_ip_block" {
   display_name = var.container_ip_block_name
   cidr         = var.container_ip_block_cidr
 }
-# }
