@@ -157,8 +157,8 @@ resource "nsxt_lb_service" "pas_lb" {
   ]
 
   depends_on = [
-    "nsxt_logical_router_link_port_on_tier1.t1_infrastructure_to_t0",
-    "nsxt_logical_router_link_port_on_tier1.t1_deployment_to_t0",
+    nsxt_logical_router_link_port_on_tier1.t1_infrastructure_to_t0,
+    nsxt_logical_router_link_port_on_tier1.t1_deployment_to_t0,
   ]
 
   tag {

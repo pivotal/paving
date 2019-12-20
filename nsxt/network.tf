@@ -1,5 +1,5 @@
 data "nsxt_edge_cluster" "edge_cluster" {
-  display_name var.nsxt_edge_cluster_name
+  display_name = var.nsxt_edge_cluster_name
 }
 
 data "nsxt_transport_zone" "east-west-overlay" {
@@ -236,7 +236,7 @@ resource "nsxt_ip_pool" "external_ip_pool" {
   description = "IP Pool that provides IPs for each of the NSX-T container networks."
   display_name = "external-ip-pool"
 
-  subnet = {
+  subnet {
     allocation_ranges = var.external_ip_pool_ranges
     cidr              = var.external_ip_pool_cidr
     gateway_ip        = var.external_ip_pool_gateway
