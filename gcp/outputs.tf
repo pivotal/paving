@@ -29,6 +29,10 @@ locals {
     ops_manager_ssh_public_key      = tls_private_key.ops-manager.public_key_openssh
     ops_manager_ssh_private_key     = tls_private_key.ops-manager.private_key_pem
 
+    http_backend_service = google_compute_backend_service.http-lb.name
+    ssh_router_pool      = google_compute_target_pool.ssh-lb.name
+    tcp_router_pool      = google_compute_target_pool.tcp-lb.name
+
     wildcard_sys_dns    = google_dns_record_set.wildcard-sys.name
     wildcard_apps_dns   = google_dns_record_set.wildcard-apps.name
     doppler_sys_dns     = google_dns_record_set.doppler-sys.name
