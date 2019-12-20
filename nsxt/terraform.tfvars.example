@@ -1,0 +1,31 @@
+nsxt_username = "admin"
+nsxt_password = "a_secret_password"
+nsxt_host = "nsxmgr.domain.tld"
+
+environment_name = "environment_name" # An identifier used to tag resources; examples: dev, EMEA, prod
+east_west_transport_zone_name = "overlay-tz"
+
+# Routers
+nsxt_edge_cluster_name = "edge-cluster-1"
+nat_gateway_ip = "10.195.74.251"
+om_ip = "10.195.74.16"
+
+# Each PAS Org will draw an IP address from this pool; make sure you have enough
+# Your LB Virtual Servers, gateway, NAT gateway, OM should be in the CIDR but not in the available range
+external_ip_pool_cidr    = "10.195.74.0/24"
+external_ip_pool_ranges  = ["10.195.74.128-10.195.74.250"]
+external_ip_pool_gateway = "10.195.74.1"
+
+# Load Balancers
+nsxt_lb_web_virtual_server_ip_address = "10.195.74.17"
+nsxt_lb_tcp_virtual_server_ip_address = "10.195.74.19"
+nsxt_lb_ssh_virtual_server_ip_address = "10.195.74.18"
+nsxt_lb_tcp_virtual_server_ports = ["8080", "52135", "34000-35000"]
+
+
+# OPTIONAL
+# These variables have reasonable default values.
+# If your foundation setup is tricky, you may need to set different values.
+allow_unverified_ssl = true  # set to true if NSX manager's TLS cert is self-signed
+nsxt_lb_web_virtual_server_ports = ["80", "443"]
+nsxt_lb_ssh_virtual_server_ports = ["2222"]

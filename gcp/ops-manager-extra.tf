@@ -31,7 +31,7 @@ resource "google_compute_instance" "ops-manager" {
   }
 
   network_interface {
-    subnetwork = google_compute_subnetwork.infrastructure.self_link
+    subnetwork = google_compute_subnetwork.management.self_link
 
     access_config {
       nat_ip = google_compute_address.ops-manager.address

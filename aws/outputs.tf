@@ -1,8 +1,15 @@
 locals {
   stable_config = {
-    region = var.region
+    bucket_pas_buildpacks = aws_s3_bucket.buildpacks-bucket.bucket
+    bucket_pas_droplets   = aws_s3_bucket.droplets-bucket.bucket
+    bucket_pas_packages   = aws_s3_bucket.packages-bucket.bucket
+    bucket_pas_resources  = aws_s3_bucket.resources-bucket.bucket
 
-    vpc_subnet_id = aws_vpc.vpc.id
+    dns_wildcard_sys  = aws_route53_record.wildcard-sys.name
+    dns_wildcard_apps = aws_route53_record.wildcard-apps.name
+    dns_ssh           = aws_route53_record.ssh.name
+    dns_tcp           = aws_route53_record.tcp.name
+    dns_pks_api       = aws_route53_record.pks-api.name
 
     ops_manager_security_group            = aws_security_group.ops-manager.id
     ops_manager_public_ip                 = aws_eip.ops-manager.public_ip
@@ -15,41 +22,34 @@ locals {
     ops_manager_ssh_private_key           = tls_private_key.ops-manager.private_key_pem
     ops_manager_bucket                    = aws_s3_bucket.ops-manager-bucket.bucket
 
-    wildcard_sys_dns  = aws_route53_record.wildcard-sys.name
-    wildcard_apps_dns = aws_route53_record.wildcard-apps.name
-    ssh_dns           = aws_route53_record.ssh.name
-    tcp_dns           = aws_route53_record.tcp.name
-    pks_api_dns       = aws_route53_record.pks-api.name
+    region = var.region
 
-    platform_security_group     = aws_security_group.platform.id
-    nat_security_group          = aws_security_group.nat.id
-    ssh_lb_security_group       = aws_security_group.ssh-lb.id
-    tcp_lb_security_group       = aws_security_group.tcp-lb.id
-    web_lb_security_group       = aws_security_group.web-lb.id
-    mysql_security_group        = aws_security_group.mysql.id
-    pks_internal_security_group = aws_security_group.pks-internal-sg.id
-    pks_api_lb_security_group   = aws_security_group.pks-api-lb.id
+    security_group_platform     = aws_security_group.platform.id
+    security_group_nat          = aws_security_group.nat.id
+    security_group_ssh_lb       = aws_security_group.ssh-lb.id
+    security_group_tcp_lb       = aws_security_group.tcp-lb.id
+    security_group_web_lb       = aws_security_group.web-lb.id
+    security_group_mysql        = aws_security_group.mysql.id
+    security_group_pks_internal = aws_security_group.pks-internal-sg.id
+    security_group_pks_api_lb   = aws_security_group.pks-api-lb.id
 
-    pas_buildpacks_bucket = aws_s3_bucket.buildpacks-bucket.bucket
-    pas_droplets_bucket   = aws_s3_bucket.droplets-bucket.bucket
-    pas_packages_bucket   = aws_s3_bucket.packages-bucket.bucket
-    pas_resources_bucket  = aws_s3_bucket.resources-bucket.bucket
+    subnet_public_ids       = aws_subnet.public-subnet[*].id
+    subnet_public_cidrs     = aws_subnet.public-subnet[*].cidr_block
+    subnet_management_ids   = aws_subnet.management-subnet[*].id
+    subnet_management_cidrs = aws_subnet.management-subnet[*].cidr_block
+    subnet_pas_ids          = aws_subnet.pas-subnet[*].id
+    subnet_pas_cidrs        = aws_subnet.pas-subnet[*].cidr_block
+    subnet_services_ids     = aws_subnet.services-subnet[*].id
+    subnet_services_cidrs   = aws_subnet.services-subnet[*].cidr_block
+    subnet_pks_ids          = aws_subnet.pks-subnet[*].id
+    subnet_pks_cidrs        = aws_subnet.pks-subnet[*].cidr_block
 
-    web_target_groups     = [aws_lb_target_group.web-80.name, aws_lb_target_group.web-443.name]
-    tcp_target_groups     = aws_lb_target_group.tcp[*].name
-    ssh_target_groups     = aws_lb_target_group.ssh.name
-    pks_api_target_groups = [aws_lb_target_group.pks-api-9021.name, aws_lb_target_group.pks-api-8443.name]
+    target_groups_web     = [aws_lb_target_group.web-80.name, aws_lb_target_group.web-443.name]
+    target_groups_tcp     = aws_lb_target_group.tcp[*].name
+    target_groups_ssh     = aws_lb_target_group.ssh.name
+    target_groups_pks_api = [aws_lb_target_group.pks-api-9021.name, aws_lb_target_group.pks-api-8443.name]
 
-    public_subnet_ids       = aws_subnet.public-subnet[*].id
-    public_subnet_cidrs     = aws_subnet.public-subnet[*].cidr_block
-    management_subnet_ids   = aws_subnet.management-subnet[*].id
-    management_subnet_cidrs = aws_subnet.management-subnet[*].cidr_block
-    pas_subnet_ids          = aws_subnet.pas-subnet[*].id
-    pas_subnet_cidrs        = aws_subnet.pas-subnet[*].cidr_block
-    services_subnet_ids     = aws_subnet.services-subnet[*].id
-    services_subnet_cidrs   = aws_subnet.services-subnet[*].cidr_block
-    pks_subnet_ids          = aws_subnet.pks-subnet[*].id
-    pks_subnet_cidrs        = aws_subnet.pks-subnet[*].cidr_block
+    vpc_subnet_id = aws_vpc.vpc.id
   }
 }
 
