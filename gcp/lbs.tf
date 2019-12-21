@@ -1,10 +1,9 @@
-# TCP Router Load Balancer
-resource "google_compute_address" "tcp-lb" {
-  name = "${var.environment_name}-tcp-lb"
-}
-
 locals {
   tcp_ports = ["1024-1123"]
+}
+
+resource "google_compute_address" "tcp-lb" {
+  name = "${var.environment_name}-tcp-lb"
 }
 
 resource "google_compute_forwarding_rule" "tcp-lb" {
@@ -33,65 +32,34 @@ resource "google_compute_http_health_check" "tcp-lb" {
   unhealthy_threshold = 2
 }
 
-resource "google_compute_firewall" "tcp-lb-health-check" {
-  name    = "${var.environment_name}-tcp-lb-health-check"
-  network = google_compute_network.network.name
-
-  direction = "INGRESS"
-
-  allow {
-    protocol = "tcp"
-    ports    = ["80"]
-  }
-
-  source_ranges = ["130.211.0.0/22", "35.191.0.0/16"]
-
-  target_tags = ["${var.environment_name}-tcp-lb"]
+resource "google_compute_address" "websocket-lb" {
+  name = "${var.environment_name}-websocket-lb"
 }
 
-resource "google_compute_firewall" "tcp-lb" {
-  name    = "${var.environment_name}-tcp-lb-firewall"
-  network = google_compute_network.network.name
-
-  direction = "INGRESS"
-
-  allow {
-    protocol = "tcp"
-    ports    = ["1024-65535"]
-  }
-
-  target_tags = ["${var.environment_name}-tcp-lb"]
-}
-
-# WebSocket Load Balancer
-resource "google_compute_address" "ws-lb" {
-  name = "${var.environment_name}-ws-lb"
-}
-
-resource "google_compute_forwarding_rule" "ws-lb-80" {
-  name        = "${var.environment_name}-ws-lb-80"
-  ip_address  = google_compute_address.ws-lb.address
-  target      = google_compute_target_pool.ws-lb.self_link
+resource "google_compute_forwarding_rule" "websocket-lb-80" {
+  name        = "${var.environment_name}-websocket-lb-80"
+  ip_address  = google_compute_address.websocket-lb.address
+  target      = google_compute_target_pool.websocket-lb.self_link
   port_range  = "80"
   ip_protocol = "TCP"
 }
 
-resource "google_compute_forwarding_rule" "ws-lb-443" {
-  name        = "${var.environment_name}-ws-lb-443"
-  ip_address  = google_compute_address.ws-lb.address
-  target      = google_compute_target_pool.ws-lb.self_link
+resource "google_compute_forwarding_rule" "websocket-lb-443" {
+  name        = "${var.environment_name}-websocket-lb-443"
+  ip_address  = google_compute_address.websocket-lb.address
+  target      = google_compute_target_pool.websocket-lb.self_link
   port_range  = "443"
   ip_protocol = "TCP"
 }
 
-resource "google_compute_target_pool" "ws-lb" {
-  name = "${var.environment_name}-ws-lb"
+resource "google_compute_target_pool" "websocket-lb" {
+  name = "${var.environment_name}-websocket-lb"
 
-  health_checks = [google_compute_http_health_check.ws-lb.self_link]
+  health_checks = [google_compute_http_health_check.websocket-lb.self_link]
 }
 
-resource "google_compute_http_health_check" "ws-lb" {
-  name                = "${var.environment_name}-ws-lb"
+resource "google_compute_http_health_check" "websocket-lb" {
+  name                = "${var.environment_name}-websocket-lb"
   port                = 8080
   request_path        = "/health"
   check_interval_sec  = 5
@@ -100,23 +68,6 @@ resource "google_compute_http_health_check" "ws-lb" {
   unhealthy_threshold = 3
 }
 
-resource "google_compute_firewall" "ws-lb-health-check" {
-  name    = "${var.environment_name}-ws-lb-health-check"
-  network = google_compute_network.network.name
-
-  direction = "INGRESS"
-
-  allow {
-    protocol = "tcp"
-    ports    = ["8080"]
-  }
-
-  source_ranges = ["130.211.0.0/22", "35.191.0.0/16"]
-
-  target_tags = [google_compute_http_health_check.ws-lb.name]
-}
-
-# SSH Load Balancer
 resource "google_compute_address" "ssh-lb" {
   name = "${var.environment_name}-ssh-lb"
 }
@@ -133,7 +84,6 @@ resource "google_compute_target_pool" "ssh-lb" {
   name = "${var.environment_name}-ssh-lb"
 }
 
-# GoRouter Load Balancer
 resource "google_compute_backend_service" "http-lb" {
   name        = "${var.environment_name}-http-lb"
   port_name   = "http"
@@ -204,21 +154,6 @@ resource "google_compute_http_health_check" "http-lb" {
   unhealthy_threshold = 3
 }
 
-resource "google_compute_firewall" "http-lb" {
-  name    = "${var.environment_name}-http-lb-firewall"
-  network = google_compute_network.network.self_link
-
-  direction = "INGRESS"
-
-  allow {
-    protocol = "tcp"
-    ports    = ["80", "443"]
-  }
-
-  target_tags = ["${var.environment_name}-http-lb"]
-}
-
-# PKS API Load Balancer
 resource "google_compute_address" "pks-api-lb" {
   name = "${var.environment_name}-pks-api-lb"
 }
@@ -241,18 +176,4 @@ resource "google_compute_forwarding_rule" "pks-api-lb-8443" {
 
 resource "google_compute_target_pool" "pks-api-lb" {
   name = "${var.environment_name}-pks-api-lb"
-}
-
-resource "google_compute_firewall" "pks-api-lb" {
-  name    = "${var.environment_name}-pks-api-lb-firewall"
-  network = google_compute_network.network.name
-
-  direction = "INGRESS"
-
-  allow {
-    protocol = "tcp"
-    ports    = ["8443", "9021"]
-  }
-
-  target_tags = ["${var.environment_name}-pks-api-lb"]
 }

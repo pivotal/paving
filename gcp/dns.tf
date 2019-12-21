@@ -22,14 +22,14 @@ resource "google_dns_record_set" "wildcard-apps" {
   rrdatas = [google_compute_global_address.http-lb.address]
 }
 
-resource "google_dns_record_set" "wildcard-ws" {
+resource "google_dns_record_set" "wildcard-websocket" {
   name = "*.ws.${data.google_dns_managed_zone.hosted-zone.dns_name}"
   type = "A"
   ttl  = 300
 
   managed_zone = var.hosted_zone
 
-  rrdatas = [google_compute_address.ws-lb.address]
+  rrdatas = [google_compute_address.websocket-lb.address]
 }
 
 resource "google_dns_record_set" "doppler-sys" {
@@ -39,7 +39,7 @@ resource "google_dns_record_set" "doppler-sys" {
 
   managed_zone = var.hosted_zone
 
-  rrdatas = [google_compute_address.ws-lb.address]
+  rrdatas = [google_compute_address.websocket-lb.address]
 }
 
 resource "google_dns_record_set" "loggregator-sys" {
@@ -49,7 +49,7 @@ resource "google_dns_record_set" "loggregator-sys" {
 
   managed_zone = var.hosted_zone
 
-  rrdatas = [google_compute_address.ws-lb.address]
+  rrdatas = [google_compute_address.websocket-lb.address]
 }
 
 resource "google_dns_record_set" "ssh" {

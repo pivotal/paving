@@ -32,11 +32,11 @@ locals {
     ops_manager_ssh_public_key      = tls_private_key.ops-manager.public_key_openssh
     ops_manager_ssh_private_key     = tls_private_key.ops-manager.private_key_pem
 
-    backend_service_http = google_compute_backend_service.http-lb.name
-    target_pool_ssh      = google_compute_target_pool.ssh-lb.name
-    target_pool_tcp      = google_compute_target_pool.tcp-lb.name
-    target_pool_ws       = google_compute_target_pool.ws-lb.name
-    target_pool_pks_api  = google_compute_target_pool.pks-api-lb.name
+    backend_service_http  = google_compute_backend_service.http-lb.name
+    target_pool_ssh       = google_compute_target_pool.ssh-lb.name
+    target_pool_tcp       = google_compute_target_pool.tcp-lb.name
+    target_pool_websocket = google_compute_target_pool.websocket-lb.name
+    target_pool_pks_api   = google_compute_target_pool.pks-api-lb.name
 
     dns_wildcard_sys    = google_dns_record_set.wildcard-sys.name
     dns_wildcard_apps   = google_dns_record_set.wildcard-apps.name
