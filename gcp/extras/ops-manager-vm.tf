@@ -48,4 +48,3 @@ resource "google_compute_instance" "ops-manager" {
     block-project-ssh-keys = "TRUE"
   }
 }
-
