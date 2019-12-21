@@ -37,6 +37,8 @@ resource "google_compute_firewall" "tcp-lb-health-check" {
   name    = "${var.environment_name}-tcp-lb-health-check"
   network = google_compute_network.network.name
 
+  direction = "INGRESS"
+
   allow {
     protocol = "tcp"
     ports    = ["80"]
@@ -50,6 +52,8 @@ resource "google_compute_firewall" "tcp-lb-health-check" {
 resource "google_compute_firewall" "tcp-lb" {
   name    = "${var.environment_name}-tcp-lb-firewall"
   network = google_compute_network.network.name
+
+  direction = "INGRESS"
 
   allow {
     protocol = "tcp"
@@ -99,6 +103,8 @@ resource "google_compute_http_health_check" "ws-lb" {
 resource "google_compute_firewall" "ws-lb-health-check" {
   name    = "${var.environment_name}-ws-lb-health-check"
   network = google_compute_network.network.name
+
+  direction = "INGRESS"
 
   allow {
     protocol = "tcp"
@@ -202,6 +208,8 @@ resource "google_compute_firewall" "http-lb" {
   name    = "${var.environment_name}-http-lb-firewall"
   network = google_compute_network.network.self_link
 
+  direction = "INGRESS"
+
   allow {
     protocol = "tcp"
     ports    = ["80", "443"]
@@ -238,6 +246,8 @@ resource "google_compute_target_pool" "pks-api-lb" {
 resource "google_compute_firewall" "pks-api-lb" {
   name    = "${var.environment_name}-pks-api-lb-firewall"
   network = google_compute_network.network.name
+
+  direction = "INGRESS"
 
   allow {
     protocol = "tcp"
