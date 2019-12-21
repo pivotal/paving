@@ -109,3 +109,25 @@ resource "google_compute_firewall" "pks-api-lb" {
 
   target_tags = ["${var.environment_name}-pks-api-lb"]
 }
+
+resource "google_compute_firewall" "pks-master-external" {
+  name    = "${var.environment_name}-pks-master-external"
+  network = google_compute_network.network.name
+
+  direction = "EGRESS"
+
+  allow {
+    protocol = "icmp"
+  }
+
+  allow {
+    protocol = "tcp"
+  }
+
+  allow {
+    protocol = "udp"
+  }
+
+  destination_ranges = ["0.0.0.0/0"]
+  target_tags        = ["master"]
+}
