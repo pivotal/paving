@@ -120,6 +120,7 @@ data "aws_iam_policy_document" "ops-manager" {
       "ec2:DescribeAvailabilityZones",
       "ec2:DescribeAccountAttributes",
       "ec2:DescribeImages",
+      "ec2:DeregisterImage",
       "ec2:DescribeSubnets",
       "ec2:RunInstances",
       "ec2:DescribeInstances",
