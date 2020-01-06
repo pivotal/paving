@@ -1,0 +1,5 @@
+subscription_id = "YOUR-SUBSCRIPTION-ID"
+tenant_id = "YOUR-TENANT-ID"
+client_id = "YOUR-CLIENT-ID"
+client_secret = "YOUR-CLIENT-SECRET"
+location = "YOUR-REGION"
