@@ -6,5 +6,5 @@ secret_key = "YOUR-AWS-SECRET-KEY"
 region = "YOUR-AWS-REGION"
 availability_zones = ["YOUR-AWS-ZONE-1", "YOUR-AWS-ZONE-2"]
 
-dns_suffix = "YOUR-DNS-SUFFIX"
-hosted_zone = "YOUR-HOSTED-ZONE"
+dns_suffix = "foo.example.com"
+hosted_zone = "example.com."
