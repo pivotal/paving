@@ -2,7 +2,7 @@ data "azurerm_dns_zone" "hosted" {
   name = var.hosted_zone
 }
 
-resource "azurerm_dns_a_record" "ops_manager_dns" {
+resource "azurerm_dns_a_record" "opsmanager" {
   name                = "opsmanager"
   zone_name           = data.azurerm_dns_zone.hosted.name
   resource_group_name = data.azurerm_dns_zone.hosted.resource_group_name
