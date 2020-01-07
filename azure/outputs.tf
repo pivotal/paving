@@ -1,18 +1,29 @@
 locals {
   stable_config = {
+    location = var.location
+    env_name = var.env_name
+
+    network             = azurerm_virtual_network.platform.name
+    resource_group_name = azurerm_resource_group.platform.name
+
+    security_group_platform_vms_name = azurerm_network_security_group.platform-vms.name
+    security_group_ops_manager_name  = azurerm_network_security_group.ops-manager.name
 
     subnet_management_name    = azurerm_subnet.management.name
     subnet_management_cidr    = azurerm_subnet.management.address_prefix
     subnet_management_gateway = cidrhost(azurerm_subnet.management.address_prefix, 1)
-    subnet_pas_name           = azurerm_subnet.pas.name
-    subnet_pas_cidr           = azurerm_subnet.pas.address_prefix
-    subnet_pas_gateway        = cidrhost(azurerm_subnet.pas.address_prefix, 1)
-    subnet_pks_name           = azurerm_subnet.pks.name
-    subnet_pks_cidr           = azurerm_subnet.pks.address_prefix
-    subnet_pks_gateway        = cidrhost(azurerm_subnet.pks.address_prefix, 1)
-    subnet_services_name      = azurerm_subnet.services.name
-    subnet_services_cidr      = azurerm_subnet.services.address_prefix
-    subnet_services_gateway   = cidrhost(azurerm_subnet.services.address_prefix, 1)
+
+    subnet_pas_name    = azurerm_subnet.pas.name
+    subnet_pas_cidr    = azurerm_subnet.pas.address_prefix
+    subnet_pas_gateway = cidrhost(azurerm_subnet.pas.address_prefix, 1)
+
+    subnet_pks_name    = azurerm_subnet.pks.name
+    subnet_pks_cidr    = azurerm_subnet.pks.address_prefix
+    subnet_pks_gateway = cidrhost(azurerm_subnet.pks.address_prefix, 1)
+
+    subnet_services_name    = azurerm_subnet.services.name
+    subnet_services_cidr    = azurerm_subnet.services.address_prefix
+    subnet_services_gateway = cidrhost(azurerm_subnet.services.address_prefix, 1)
 
 
     lb_web       = azurerm_lb.web.name
