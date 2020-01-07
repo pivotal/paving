@@ -33,6 +33,13 @@ locals {
     security_group_pks_internal = aws_security_group.pks-internal-sg.id
     security_group_pks_api_lb   = aws_security_group.pks-api-lb.id
 
+    target_group_ssh      = aws_lb_target_group.ssh.name
+    target_group_web_80   = aws_lb_target_group.web-80.name
+    target_group_web_443  = aws_lb_target_group.web-443.name
+    target_group_tcp      = aws_lb_target_group.tcp.*.name
+    target_group_pks_9021 = aws_lb_target_group.pks-api-9021.name
+    target_group_pks_8443 = aws_lb_target_group.pks-api-8443.name
+
     subnet_public_ids       = aws_subnet.public-subnet[*].id
     subnet_public_cidrs     = aws_subnet.public-subnet[*].cidr_block
     subnet_management_ids   = aws_subnet.management-subnet[*].id
