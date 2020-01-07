@@ -24,14 +24,14 @@ locals {
 
     region = var.region
 
-    security_group_platform     = aws_security_group.platform.id
-    security_group_nat          = aws_security_group.nat.id
-    security_group_ssh_lb       = aws_security_group.ssh-lb.id
-    security_group_tcp_lb       = aws_security_group.tcp-lb.id
-    security_group_web_lb       = aws_security_group.web-lb.id
-    security_group_mysql        = aws_security_group.mysql.id
-    security_group_pks_internal = aws_security_group.pks-internal-sg.id
-    security_group_pks_api_lb   = aws_security_group.pks-api-lb.id
+    security_group_platform     = aws_security_group.platform.name
+    security_group_nat          = aws_security_group.nat.name
+    security_group_ssh_lb       = aws_security_group.ssh-lb.name
+    security_group_tcp_lb       = aws_security_group.tcp-lb.name
+    security_group_web_lb       = aws_security_group.web-lb.name
+    security_group_mysql        = aws_security_group.mysql.name
+    security_group_pks_internal = aws_security_group.pks-internal-sg.name
+    security_group_pks_api_lb   = aws_security_group.pks-api-lb.name
 
     subnet_public_ids       = aws_subnet.public-subnet[*].id
     subnet_public_cidrs     = aws_subnet.public-subnet[*].cidr_block
