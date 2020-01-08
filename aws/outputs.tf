@@ -49,7 +49,7 @@ locals {
     target_groups_ssh     = aws_lb_target_group.ssh.name
     target_groups_pks_api = [aws_lb_target_group.pks-api-9021.name, aws_lb_target_group.pks-api-8443.name]
 
-    vpc_subnet_id = aws_vpc.vpc.id
+    vpc_id = aws_vpc.vpc.id
   }
 }
 
