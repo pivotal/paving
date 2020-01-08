@@ -37,7 +37,7 @@ resource "nsxt_logical_router_link_port_on_tier0" "t0_to_t1_infrastructure" {
 resource "nsxt_logical_tier1_router" "t1_infrastructure" {
   display_name = "T1-Router-PAS-Infrastructure"
 
-  description     = "Infrastructure Tier 1 Router."
+  description = "Infrastructure Tier 1 Router."
 
   enable_router_advertisement = true
   advertise_connected_routes  = true
@@ -233,7 +233,7 @@ resource "nsxt_nat_rule" "dnat_om" {
 }
 
 resource "nsxt_ip_pool" "external_ip_pool" {
-  description = "IP Pool that provides IPs for each of the NSX-T container networks."
+  description  = "IP Pool that provides IPs for each of the NSX-T container networks."
   display_name = "external-ip-pool"
 
   subnet {
@@ -250,6 +250,6 @@ resource "nsxt_ip_pool" "external_ip_pool" {
 
 resource "nsxt_ip_block" "container_ip_block" {
   description  = "Subnets are allocated from this pool to each newly-created Org"
-  display_name = var.container_ip_block_name
-  cidr         = var.container_ip_block_cidr
+  display_name = "${var.environment_name}-pas-container-ip-block"
+  cidr         = "10.12.0.0/14"
 }

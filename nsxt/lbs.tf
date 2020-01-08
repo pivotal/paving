@@ -1,6 +1,6 @@
 resource "nsxt_lb_http_monitor" "lb_web_monitor" {
   description           = "The Active Health Monitor (healthcheck) for Web (HTTP(S)) traffic."
-  display_name          = var.nsxt_lb_web_monitor_name
+  display_name          = "${var.environment_name}-pas-web-monitor"
   monitor_port          = 8080
   request_method        = "GET"
   request_url           = "/health"
@@ -15,7 +15,7 @@ resource "nsxt_lb_http_monitor" "lb_web_monitor" {
 
 resource "nsxt_lb_http_monitor" "lb_tcp_monitor" {
   description     = "The Active Health Monitor (healthcheck) for TCP traffic."
-  display_name    = var.nsxt_lb_tcp_monitor_name
+  display_name    = "${var.environment_name}-pas-tcp-monitor"
   monitor_port    = 80
   request_method  = "GET"
   request_url     = "/health"
@@ -30,7 +30,7 @@ resource "nsxt_lb_http_monitor" "lb_tcp_monitor" {
 
 resource "nsxt_lb_tcp_monitor" "lb_ssh_monitor" {
   description  = "The Active Health Monitor (healthcheck) for SSH traffic."
-  display_name = var.nsxt_lb_ssh_monitor_name
+  display_name = "${var.environment_name}-pas-ssh-monitor"
   monitor_port = 2222
 
   tag {
@@ -41,7 +41,7 @@ resource "nsxt_lb_tcp_monitor" "lb_ssh_monitor" {
 
 resource "nsxt_lb_pool" "lb_web_pool" {
   description              = "The Server Pool of Web (HTTP(S)) traffic handling VMs"
-  display_name             = var.nsxt_lb_web_server_pool_name
+  display_name             = "${var.environment_name}-pas-web-pool"
   algorithm                = "ROUND_ROBIN"
   tcp_multiplexing_enabled = false
   active_monitor_id        = nsxt_lb_http_monitor.lb_web_monitor.id
@@ -58,7 +58,7 @@ resource "nsxt_lb_pool" "lb_web_pool" {
 
 resource "nsxt_lb_pool" "lb_tcp_pool" {
   description              = "The Server Pool of TCP traffic handling VMs"
-  display_name             = var.nsxt_lb_tcp_server_pool_name
+  display_name             = "${var.environment_name}-pas-tcp-pool"
   algorithm                = "ROUND_ROBIN"
   tcp_multiplexing_enabled = false
   active_monitor_id        = nsxt_lb_http_monitor.lb_tcp_monitor.id
@@ -75,7 +75,7 @@ resource "nsxt_lb_pool" "lb_tcp_pool" {
 
 resource "nsxt_lb_pool" "lb_ssh_pool" {
   description              = "The Server Pool of SSH traffic handling VMs"
-  display_name             = var.nsxt_lb_ssh_server_pool_name
+  display_name             = "${var.environment_name}-pas-ssh-pool"
   algorithm                = "ROUND_ROBIN"
   tcp_multiplexing_enabled = false
   active_monitor_id        = nsxt_lb_tcp_monitor.lb_ssh_monitor.id
@@ -103,10 +103,10 @@ resource "nsxt_lb_fast_tcp_application_profile" "pas_lb_tcp_application_profile"
 
 resource "nsxt_lb_tcp_virtual_server" "lb_web_virtual_server" {
   description            = "The Virtual Server for Web (HTTP(S)) traffic"
-  display_name           = var.nsxt_lb_web_virtual_server_name
+  display_name           = "${var.environment_name}-pas-web-vs"
   application_profile_id = nsxt_lb_fast_tcp_application_profile.pas_lb_tcp_application_profile.id
   ip_address             = var.nsxt_lb_web_virtual_server_ip_address
-  ports                  = var.nsxt_lb_web_virtual_server_ports
+  ports                  = ["80", "443"]
   pool_id                = nsxt_lb_pool.lb_web_pool.id
 
   tag {
@@ -117,7 +117,7 @@ resource "nsxt_lb_tcp_virtual_server" "lb_web_virtual_server" {
 
 resource "nsxt_lb_tcp_virtual_server" "lb_tcp_virtual_server" {
   description            = "The Virtual Server for TCP traffic"
-  display_name           = var.nsxt_lb_tcp_virtual_server_name
+  display_name           = "${var.environment_name}-pas-tcp-vs"
   application_profile_id = nsxt_lb_fast_tcp_application_profile.pas_lb_tcp_application_profile.id
   ip_address             = var.nsxt_lb_tcp_virtual_server_ip_address
   ports                  = var.nsxt_lb_tcp_virtual_server_ports
@@ -131,10 +131,10 @@ resource "nsxt_lb_tcp_virtual_server" "lb_tcp_virtual_server" {
 
 resource "nsxt_lb_tcp_virtual_server" "lb_ssh_virtual_server" {
   description            = "The Virtual Server for SSH traffic"
-  display_name           = var.nsxt_lb_ssh_virtual_server_name
+  display_name           = "${var.environment_name}-pas-ssh-vs"
   application_profile_id = nsxt_lb_fast_tcp_application_profile.pas_lb_tcp_application_profile.id
   ip_address             = var.nsxt_lb_ssh_virtual_server_ip_address
-  ports                  = var.nsxt_lb_ssh_virtual_server_ports
+  ports                  = ["2222"]
   pool_id                = nsxt_lb_pool.lb_ssh_pool.id
 
   tag {
@@ -145,11 +145,11 @@ resource "nsxt_lb_tcp_virtual_server" "lb_ssh_virtual_server" {
 
 resource "nsxt_lb_service" "pas_lb" {
   description  = "The Load Balancer for handling Web (HTTP(S)), TCP, and SSH traffic."
-  display_name = var.nsxt_lb_name
+  display_name = "${var.environment_name}-pas-lb"
 
   enabled           = true
   logical_router_id = nsxt_logical_tier1_router.t1_deployment.id
-  size              = var.nsxt_lb_size
+  size              = "SMALL"
   virtual_server_ids = [
     nsxt_lb_tcp_virtual_server.lb_web_virtual_server.id,
     nsxt_lb_tcp_virtual_server.lb_tcp_virtual_server.id,

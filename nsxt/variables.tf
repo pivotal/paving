@@ -1,4 +1,3 @@
-# General {
 variable "nsxt_host" {
   description = "The NSX-T host. Must resolve to a reachable IP address, e.g. `nsxmgr.example.tld`"
   type        = string
@@ -45,21 +44,6 @@ variable "external_ip_pool_gateway" {
   type        = string
 }
 
-variable "container_ip_block_name" {
-  default     = "PAS-container-ip-block"
-  description = "The name of the IP block from which subnets are allocated to each newly-created Org"
-  type        = string
-}
-
-variable "container_ip_block_cidr" {
-  default     = "10.12.0.0/14"
-  description = "The CIDR of the container IP Block, e.g. `10.12.0.0/14`"
-  type        = string
-}
-
-# }
-
-# Logical Routers + Switches {
 variable "nsxt_edge_cluster_name" {
   description = "The name of the deployed Edge Cluster, e.g. `edge-cluster-1`"
   type        = string
@@ -80,65 +64,9 @@ variable "om_ip" {
   description = "The public IP Address of the Operations Manager. The om's DNS (e.g. `om.system.tld`) should resolve to this IP, e.g. `10.195.74.16`"
   type        = string
 }
-# }
-
-# Load Balancer {
-variable "nsxt_lb_web_monitor_name" {
-  default     = "pas-web-monitor"
-  description = "The name of the Active Health Monitor (healthcheck) for Web (HTTP(S)) traffic"
-  type        = string
-}
-
-variable "nsxt_lb_tcp_monitor_name" {
-  default     = "pas-tcp-monitor"
-  description = "The name of the Active Health Monitor (healthcheck) for TCP traffic"
-  type        = string
-}
-
-variable "nsxt_lb_ssh_monitor_name" {
-  default     = "pas-ssh-monitor"
-  description = "The name of the Active Health Monitor (healthcheck) for SSH traffic"
-  type        = string
-}
-
-variable "nsxt_lb_web_server_pool_name" {
-  default     = "pas-web-pool"
-  description = "The name of the Server Pool (collection of VMs which handle traffic) for Web (HTTP(S)) traffic"
-  type        = string
-}
-
-variable "nsxt_lb_tcp_server_pool_name" {
-  default     = "pas-tcp-pool"
-  description = "The name of the Server Pool (collection of VMs which handle traffic) for TCP traffic"
-  type        = string
-}
-
-variable "nsxt_lb_ssh_server_pool_name" {
-  default     = "pas-ssh-pool"
-  description = "The name of the Server Pool (collection of VMs which handle traffic) for SSH traffic"
-  type        = string
-}
-
-variable "nsxt_lb_web_virtual_server_name" {
-  default     = "pas-web-vs"
-  description = "The name of the Virtual Server for Web (HTTP(S)) traffic"
-  type        = string
-}
 
 variable "nsxt_lb_web_virtual_server_ip_address" {
   description = "The ip address on which the Virtual Server listens for Web (HTTP(S)) traffic, should be in the same subnet as the external IP pool, but not in the range of available IP addresses, e.g. `10.195.74.17`"
-  type        = string
-}
-
-variable "nsxt_lb_web_virtual_server_ports" {
-  default     = ["80", "443"]
-  description = "The list of port(s) on which the Virtual Server listens for Web (HTTP(S)) traffic, e.g. `10.195.74.19`"
-  type        = list(string)
-}
-
-variable "nsxt_lb_tcp_virtual_server_name" {
-  default     = "pas-tcp-vs"
-  description = "The name of the Virtual Server for TCP traffic"
   type        = string
 }
 
@@ -152,32 +80,8 @@ variable "nsxt_lb_tcp_virtual_server_ports" {
   type        = list(string)
 }
 
-variable "nsxt_lb_ssh_virtual_server_name" {
-  default     = "pas-ssh-vs"
-  description = "The name of the Virtual Server for SSH traffic"
-  type        = string
-}
-
 variable "nsxt_lb_ssh_virtual_server_ip_address" {
   description = "The ip address on which the Virtual Server listens for SSH traffic, should be in the same subnet as the external IP pool, but not in the range of available IP addresses, e.g. `10.195.74.18`"
   type        = string
 }
 
-variable "nsxt_lb_ssh_virtual_server_ports" {
-  default     = ["2222"]
-  description = "The list of port(s) on which the Virtual Server listens for SSH traffic"
-  type        = list(string)
-}
-
-variable "nsxt_lb_name" {
-  default     = "pas-lb"
-  description = "The name of the Load Balancer itself"
-  type        = string
-}
-
-variable "nsxt_lb_size" {
-  default     = "SMALL"
-  description = "The size of the Load Balancer. Accepted values: SMALL, MEDIUM, or LARGE"
-  type        = string
-}
-# }
