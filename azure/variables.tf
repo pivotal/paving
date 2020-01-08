@@ -3,7 +3,7 @@ variable "client_id" {}
 variable "client_secret" {}
 variable "tenant_id" {}
 
-variable "env_name" {}
+variable "environment_name" {}
 variable "location" {}
 
 variable "hosted_zone" {}

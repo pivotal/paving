@@ -1,7 +1,7 @@
 locals {
   stable_config = {
-    location = var.location
-    env_name = var.env_name
+    location         = var.location
+    environment_name = var.environment_name
 
     network             = azurerm_virtual_network.platform.name
     resource_group_name = azurerm_resource_group.platform.name

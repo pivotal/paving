@@ -1,17 +1,17 @@
 resource "azurerm_application_security_group" "pks-master" {
-  name                = "${var.env_name}-pks-master-app-sec-group"
+  name                = "${var.environment_name}-pks-master-app-sec-group"
   location            = var.location
   resource_group_name = azurerm_resource_group.platform.name
 }
 
 resource "azurerm_application_security_group" "pks-api" {
-  name                = "${var.env_name}-pks-api-app-sec-group"
+  name                = "${var.environment_name}-pks-api-app-sec-group"
   location            = var.location
   resource_group_name = azurerm_resource_group.platform.name
 }
 
 resource "azurerm_network_security_group" "pks-master" {
-  name                = "${var.env_name}-pks-master-sg"
+  name                = "${var.environment_name}-pks-master-sg"
   location            = var.location
   resource_group_name = azurerm_resource_group.platform.name
 
@@ -29,7 +29,7 @@ resource "azurerm_network_security_group" "pks-master" {
 }
 
 resource "azurerm_network_security_group" "pks-api" {
-  name                = "${var.env_name}-pks-api-sg"
+  name                = "${var.environment_name}-pks-api-sg"
   location            = var.location
   resource_group_name = azurerm_resource_group.platform.name
 
@@ -47,7 +47,7 @@ resource "azurerm_network_security_group" "pks-api" {
 }
 
 resource "azurerm_network_security_group" "pks-internal" {
-  name                = "${var.env_name}-pks-internal-sg"
+  name                = "${var.environment_name}-pks-internal-sg"
   location            = var.location
   resource_group_name = azurerm_resource_group.platform.name
 

@@ -1,4 +1,4 @@
 resource "azurerm_resource_group" "platform" {
-  name     = var.env_name
+  name     = var.environment_name
   location = var.location
 }

@@ -1,5 +1,5 @@
 resource "azurerm_network_security_group" "platform-vms" {
-  name                = "${var.env_name}-platform-vms-sg"
+  name                = "${var.environment_name}-platform-vms-sg"
   location            = var.location
   resource_group_name = azurerm_resource_group.platform.name
 

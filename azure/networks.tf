@@ -6,7 +6,7 @@ locals {
 }
 
 resource "azurerm_virtual_network" "platform" {
-  name                = "${var.env_name}-platform"
+  name                = "${var.environment_name}-platform"
   depends_on          = [azurerm_resource_group.platform]
   resource_group_name = azurerm_resource_group.platform.name
   address_space       = ["10.0.0.0/16"]
@@ -14,7 +14,7 @@ resource "azurerm_virtual_network" "platform" {
 }
 
 resource "azurerm_subnet" "management" {
-  name                 = "${var.env_name}-management-subnet"
+  name                 = "${var.environment_name}-management-subnet"
   depends_on           = [azurerm_resource_group.platform]
   resource_group_name  = azurerm_resource_group.platform.name
   virtual_network_name = azurerm_virtual_network.platform.name
@@ -27,14 +27,14 @@ resource "azurerm_subnet_network_security_group_association" "ops-manager" {
 }
 
 resource "azurerm_subnet" "pks" {
-  name                 = "${var.env_name}-pks-subnet"
+  name                 = "${var.environment_name}-pks-subnet"
   resource_group_name  = azurerm_resource_group.platform.name
   virtual_network_name = azurerm_virtual_network.platform.name
   address_prefix       = local.pks_subnet_cidr
 }
 
 resource "azurerm_subnet" "pas" {
-  name = "${var.env_name}-pas-subnet"
+  name = "${var.environment_name}-pas-subnet"
 
   resource_group_name  = azurerm_resource_group.platform.name
   virtual_network_name = azurerm_virtual_network.platform.name
@@ -47,7 +47,7 @@ resource "azurerm_subnet_network_security_group_association" "pas" {
 }
 
 resource "azurerm_subnet" "services" {
-  name = "${var.env_name}-services-subnet"
+  name = "${var.environment_name}-services-subnet"
 
   resource_group_name  = azurerm_resource_group.platform.name
   virtual_network_name = azurerm_virtual_network.platform.name

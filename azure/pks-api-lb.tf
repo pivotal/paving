@@ -1,5 +1,5 @@
 resource "azurerm_public_ip" "pks-lb" {
-  name                = "${var.env_name}-pks-lb-ip"
+  name                = "${var.environment_name}-pks-lb-ip"
   location            = var.location
   resource_group_name = azurerm_resource_group.platform.name
   allocation_method   = "Static"
@@ -7,7 +7,7 @@ resource "azurerm_public_ip" "pks-lb" {
 }
 
 resource "azurerm_lb" "pks" {
-  name                = "${var.env_name}-pks-lb"
+  name                = "${var.environment_name}-pks-lb"
   location            = var.location
   sku                 = "Standard"
   resource_group_name = azurerm_resource_group.platform.name
@@ -19,13 +19,13 @@ resource "azurerm_lb" "pks" {
 }
 
 resource "azurerm_lb_backend_address_pool" "pks-lb" {
-  name                = "${var.env_name}-pks-backend-pool"
+  name                = "${var.environment_name}-pks-backend-pool"
   resource_group_name = azurerm_resource_group.platform.name
   loadbalancer_id     = azurerm_lb.pks.id
 }
 
 resource "azurerm_lb_probe" "pks-lb-uaa" {
-  name                = "${var.env_name}-pks-lb-uaa-health-probe"
+  name                = "${var.environment_name}-pks-lb-uaa-health-probe"
   resource_group_name = azurerm_resource_group.platform.name
   loadbalancer_id     = azurerm_lb.pks.id
   protocol            = "Tcp"
@@ -35,7 +35,7 @@ resource "azurerm_lb_probe" "pks-lb-uaa" {
 }
 
 resource "azurerm_lb_rule" "pks-lb-uaa" {
-  name                           = "${var.env_name}-pks-lb-uaa-rule"
+  name                           = "${var.environment_name}-pks-lb-uaa-rule"
   resource_group_name            = azurerm_resource_group.platform.name
   loadbalancer_id                = azurerm_lb.pks.id
   protocol                       = "Tcp"
@@ -47,7 +47,7 @@ resource "azurerm_lb_rule" "pks-lb-uaa" {
 }
 
 resource "azurerm_lb_probe" "pks-lb-api" {
-  name                = "${var.env_name}-pks-lb-api-health-probe"
+  name                = "${var.environment_name}-pks-lb-api-health-probe"
   resource_group_name = azurerm_resource_group.platform.name
   loadbalancer_id     = azurerm_lb.pks.id
   protocol            = "Tcp"
@@ -57,7 +57,7 @@ resource "azurerm_lb_probe" "pks-lb-api" {
 }
 
 resource "azurerm_lb_rule" "pks-lb-api-rule" {
-  name                           = "${var.env_name}-pks-lb-api-rule"
+  name                           = "${var.environment_name}-pks-lb-api-rule"
   resource_group_name            = azurerm_resource_group.platform.name
   loadbalancer_id                = azurerm_lb.pks.id
   protocol                       = "Tcp"
