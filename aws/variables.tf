@@ -3,7 +3,6 @@ variable "secret_key" {}
 variable "environment_name" {}
 variable "region" {}
 
-variable "dns_suffix" {}
 variable "hosted_zone" {}
 
 variable "availability_zones" {
