@@ -16,3 +16,9 @@ variable "ops_manager_allowed_ips" {
   description = "IPs allowed to communicate with Ops Manager."
   type        = list
 }
+
+variable "tags" {
+  type        = map(string)
+  default     = {}
+  description = "Key/value tags to assign to all resources."
+}

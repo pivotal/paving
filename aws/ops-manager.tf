@@ -1,9 +1,10 @@
 resource "aws_eip" "ops-manager" {
   vpc = true
 
-  tags = {
-    "Name" = "${var.environment_name}-ops-manager-eip"
-  }
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-ops-manager-eip" },
+  )
 }
 
 resource "aws_key_pair" "ops-manager" {

@@ -16,9 +16,10 @@ resource "aws_security_group" "nat" {
     to_port     = 0
   }
 
-  tags = {
-    "Name" = "${var.environment_name}-nat-sg"
-  }
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-nat-sg" },
+  )
 }
 
 resource "aws_security_group" "ops-manager" {
@@ -53,9 +54,10 @@ resource "aws_security_group" "ops-manager" {
     to_port     = 0
   }
 
-  tags = {
-    "Name" = "${var.environment_name}-ops-manager-sg"
-  }
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-ops-manager-sg" },
+  )
 }
 
 resource "aws_security_group" "platform" {
@@ -76,9 +78,10 @@ resource "aws_security_group" "platform" {
     to_port     = 0
   }
 
-  tags = {
-    "Name" = "${var.environment_name}-platform-vms-sg"
-  }
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-platform-vms-sg" },
+  )
 }
 
 resource "aws_security_group" "web-lb" {
@@ -106,9 +109,10 @@ resource "aws_security_group" "web-lb" {
     to_port     = 0
   }
 
-  tags = {
-    "Name" = "${var.environment_name}-web-lb-sg"
-  }
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-web-lb-sg" },
+  )
 }
 
 resource "aws_security_group" "ssh-lb" {
@@ -129,9 +133,10 @@ resource "aws_security_group" "ssh-lb" {
     to_port     = 0
   }
 
-  tags = {
-    "Name" = "${var.environment_name}-ssh-lb-sg"
-  }
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-ssh-lb-sg" },
+  )
 }
 
 resource "aws_security_group" "tcp-lb" {
@@ -152,9 +157,10 @@ resource "aws_security_group" "tcp-lb" {
     to_port     = 0
   }
 
-  tags = {
-    "Name" = "${var.environment_name}-tcp-lb-sg"
-  }
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-tcp-lb-sg" },
+  )
 }
 
 resource "aws_security_group" "mysql" {
@@ -175,12 +181,12 @@ resource "aws_security_group" "mysql" {
     to_port     = 0
   }
 
-  tags = {
-    "Name" = "${var.environment_name}-mysql-sg"
-  }
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-mysql-sg" },
+  )
 }
 
-// Allow open access between internal VMs for a PKS deployment
 resource "aws_security_group" "pks-internal-sg" {
   name        = "${var.environment_name}-pks-internal"
   description = "PKS Internal Security Group"
@@ -213,9 +219,13 @@ resource "aws_security_group" "pks-internal-sg" {
     from_port   = 0
     to_port     = 0
   }
+
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-pks-internal" },
+  )
 }
 
-// Allow access to PKS API
 resource "aws_security_group" "pks-api-lb" {
   name        = "${var.environment_name}-pks-api-lb-sg"
   description = "PKS API LB Security Group"
@@ -242,7 +252,8 @@ resource "aws_security_group" "pks-api-lb" {
     to_port     = 0
   }
 
-  tags = {
-    "Name" = "${var.environment_name}-pks-api-lb-sg"
-  }
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-pks-api-lb-sg" },
+  )
 }

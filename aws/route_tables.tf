@@ -1,5 +1,3 @@
-# Management, PAS, PKS, and Services Subnets
-
 resource "aws_route_table" "deployment" {
   count  = length(var.availability_zones)
   vpc_id = aws_vpc.vpc.id
@@ -36,8 +34,6 @@ resource "aws_route_table_association" "route-services-subnet" {
   subnet_id      = element(aws_subnet.services-subnet[*].id, count.index)
   route_table_id = element(aws_route_table.deployment[*].id, count.index)
 }
-
-# Public Subnet
 
 resource "aws_route_table" "public-route-table" {
   vpc_id = aws_vpc.vpc.id

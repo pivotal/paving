@@ -13,9 +13,10 @@ resource "aws_subnet" "public-subnet" {
   cidr_block        = element(local.public_subnet_cidrs, count.index)
   availability_zone = element(var.availability_zones, count.index)
 
-  tags = {
-    Name = "${var.environment_name}-public-subnet-${count.index}"
-  }
+  tags = merge(
+    var.tags,
+    { Name = "${var.environment_name}-public-subnet-${count.index}" },
+  )
 }
 
 resource "aws_subnet" "management-subnet" {
@@ -25,9 +26,10 @@ resource "aws_subnet" "management-subnet" {
   cidr_block        = element(local.management_subnet_cidrs, count.index)
   availability_zone = element(var.availability_zones, count.index)
 
-  tags = {
-    Name = "${var.environment_name}-management-subnet-${count.index}"
-  }
+  tags = merge(
+    var.tags,
+    { Name = "${var.environment_name}-management-subnet-${count.index}" }
+  )
 }
 
 resource "aws_subnet" "pas-subnet" {
@@ -37,9 +39,10 @@ resource "aws_subnet" "pas-subnet" {
   cidr_block        = element(local.pas_subnet_cidrs, count.index)
   availability_zone = element(var.availability_zones, count.index)
 
-  tags = {
-    Name = "${var.environment_name}-pas-subnet-${count.index}"
-  }
+  tags = merge(
+    var.tags,
+    { Name = "${var.environment_name}-pas-subnet-${count.index}" },
+  )
 }
 
 resource "aws_subnet" "services-subnet" {
@@ -49,9 +52,10 @@ resource "aws_subnet" "services-subnet" {
   cidr_block        = element(local.services_subnet_cidrs, count.index)
   availability_zone = element(var.availability_zones, count.index)
 
-  tags = {
-    Name = "${var.environment_name}-services-subnet-${count.index}"
-  }
+  tags = merge(
+    var.tags,
+    { Name = "${var.environment_name}-services-subnet-${count.index}" },
+  )
 }
 
 resource "aws_subnet" "pks-subnet" {
@@ -61,7 +65,8 @@ resource "aws_subnet" "pks-subnet" {
   cidr_block        = element(local.pks_subnet_cidrs, count.index)
   availability_zone = element(var.availability_zones, count.index)
 
-  tags = {
-    Name = "${var.environment_name}-pks-subnet-${count.index}"
-  }
+  tags = merge(
+    var.tags,
+    { Name = "${var.environment_name}-pks-subnet-${count.index}" },
+  )
 }
