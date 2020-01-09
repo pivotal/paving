@@ -1,8 +1,10 @@
 # AWS
 
-Create an IAM user with the following permissions for running the terraform templates.
+Follow [these instructions](https://docs.pivotal.io/platform/ops-manager/2-8/aws/prepare-env-terraform.html)
+to create an IAM user that is needed to run the terraform templates.
 
-Install the `aws` cli following [these instructions](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv1.html).
+The above instructions specify manual steps for creating the IAM user. If you have the `aws` cli,
+you can follow these steps:
 
 ```console
 $ export AWS_IAM_POLICY_DOCUMENT=/tmp/policy-document.json

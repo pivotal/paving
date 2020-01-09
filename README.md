@@ -4,19 +4,6 @@ This repository contains Terraform templates for paving the necessary
 infrastructure to deploy the Pivotal Platform to a single foundation.
 The templates support AWS, vSphere, Azure, and GCP.
 
-### Notes
-
-- These templates support deploying Pivotal Application Service (PAS)
-and Pivotal Container Service (PKS) to the same foundation.
-
-- The templates **do not** create an Ops Manager VM but **do**
-create the necessary infrastructure for the VM (security groups, keys, etc).
-
-- These templates demonstrate a modest production deployment in two AZs on
-each IaaS.
-
-- These templates contain extremely minimal interdependence or cleverness,
-to facilitate incorporating these templates into your own automation easily.
 
 ## Requirements
 
@@ -29,37 +16,26 @@ to facilitate incorporating these templates into your own automation easily.
 In each IaaS directory, there is a `terraform.tfvars.example` you can copy
 and modify with your configuration choices and credentials.
 
-### init
-
-```
-terraform init
-```
-
-### plan
-
-```
-terraform plan -var-file terraform.tfvars
-```
-
-### apply
-
-```
-terraform apply -var-file terraform.tfvars
-```
-
-### outputs
-
-```
-terraform output stable_config
-```
-
-### destroy
-
-```
-terraform destroy -var-file terraform.tfvars
-```
+1. `terraform init`
+1. `terraform plan -var-file terraform.tfvars`
+1. `terraform apply -var-file terraform.tfvars`
+1. `terraform output stable_config`
+1. `terraform destroy -var-file terraform.tfvars`
 
 
+## Notes
+
+- These templates support deploying Pivotal Application Service (PAS)
+and Pivotal Container Service (PKS) to the same foundation.
+
+- The templates **do not** create an Ops Manager VM but **do**
+create the necessary infrastructure for the VM (security groups, keys, etc).
+
+- These templates demonstrate a modest production deployment in two AZs on
+each IaaS.
+
+- These templates contain extremely minimal interdependence or cleverness,
+to facilitate incorporating these templates into your own automation easily.
 
 ## Versioning
 
