@@ -4,11 +4,7 @@ variable "region" {}
 variable "service_account_key" {}
 
 variable "hosted_zone" {
-  description = "Name of the DNS zone (e.g. foo)."
-}
-
-variable "dns_zone_name" {
-  description = "DNS Name of the target DNS zone to add environment subdomain to (e.g. foo.example.com.)."
+  description = "Name of the DNS zone (e.g. foo.example.com)."
 }
 
 variable "availability_zones" {
