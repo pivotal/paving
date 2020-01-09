@@ -2,6 +2,8 @@
 
 Create an IAM user with the following permissions for running the terraform templates.
 
+Install the `aws` cli following [these instructions](https://docs.aws.amazon.com/cli/latest/userguide/install-cliv1.html).
+
 ```console
 $ export AWS_IAM_POLICY_DOCUMENT=/tmp/policy-document.json
 
