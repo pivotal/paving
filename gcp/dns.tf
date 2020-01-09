@@ -3,7 +3,7 @@ data "google_dns_managed_zone" "hosted-zone" {
 }
 
 resource "google_dns_record_set" "wildcard-sys" {
-  name = "*.sys.${data.google_dns_managed_zone.hosted-zone.dns_name}"
+  name = "*.sys.${var.environment_name}.${data.google_dns_managed_zone.hosted-zone.dns_name}"
   type = "A"
   ttl  = 300
 
@@ -13,7 +13,7 @@ resource "google_dns_record_set" "wildcard-sys" {
 }
 
 resource "google_dns_record_set" "wildcard-apps" {
-  name = "*.apps.${data.google_dns_managed_zone.hosted-zone.dns_name}"
+  name = "*.apps.${var.environment_name}.${data.google_dns_managed_zone.hosted-zone.dns_name}"
   type = "A"
   ttl  = 300
 
@@ -23,7 +23,7 @@ resource "google_dns_record_set" "wildcard-apps" {
 }
 
 resource "google_dns_record_set" "wildcard-websocket" {
-  name = "*.ws.${data.google_dns_managed_zone.hosted-zone.dns_name}"
+  name = "*.ws.${var.environment_name}.${data.google_dns_managed_zone.hosted-zone.dns_name}"
   type = "A"
   ttl  = 300
 
@@ -33,7 +33,7 @@ resource "google_dns_record_set" "wildcard-websocket" {
 }
 
 resource "google_dns_record_set" "doppler-sys" {
-  name = "doppler.sys.${data.google_dns_managed_zone.hosted-zone.dns_name}"
+  name = "doppler.sys.${var.environment_name}.${data.google_dns_managed_zone.hosted-zone.dns_name}"
   type = "A"
   ttl  = 300
 
@@ -43,7 +43,7 @@ resource "google_dns_record_set" "doppler-sys" {
 }
 
 resource "google_dns_record_set" "loggregator-sys" {
-  name = "loggregator.sys.${data.google_dns_managed_zone.hosted-zone.dns_name}"
+  name = "loggregator.sys.${var.environment_name}.${data.google_dns_managed_zone.hosted-zone.dns_name}"
   type = "A"
   ttl  = 300
 
@@ -53,7 +53,7 @@ resource "google_dns_record_set" "loggregator-sys" {
 }
 
 resource "google_dns_record_set" "ssh" {
-  name = "ssh.sys.${data.google_dns_managed_zone.hosted-zone.dns_name}"
+  name = "ssh.sys.${var.environment_name}.${data.google_dns_managed_zone.hosted-zone.dns_name}"
   type = "A"
   ttl  = 300
 
@@ -63,7 +63,7 @@ resource "google_dns_record_set" "ssh" {
 }
 
 resource "google_dns_record_set" "tcp" {
-  name = "tcp.${data.google_dns_managed_zone.hosted-zone.dns_name}"
+  name = "tcp.${var.environment_name}.${data.google_dns_managed_zone.hosted-zone.dns_name}"
   type = "A"
   ttl  = 300
 
@@ -73,7 +73,7 @@ resource "google_dns_record_set" "tcp" {
 }
 
 resource "google_dns_record_set" "ops-manager" {
-  name = "opsmanager.${data.google_dns_managed_zone.hosted-zone.dns_name}"
+  name = "opsmanager.${var.environment_name}.${data.google_dns_managed_zone.hosted-zone.dns_name}"
   type = "A"
   ttl  = 300
 
@@ -83,7 +83,7 @@ resource "google_dns_record_set" "ops-manager" {
 }
 
 resource "google_dns_record_set" "pks-api" {
-  name = "*.pks.${data.google_dns_managed_zone.hosted-zone.dns_name}"
+  name = "*.pks.${var.environment_name}.${data.google_dns_managed_zone.hosted-zone.dns_name}"
   type = "A"
   ttl  = 300
 
