@@ -74,8 +74,6 @@ change according to the following:
 
 ## Customization
 
-You can find common overrides in `$iaas/overrides/`.
-
 ### Jumpbox
 
 In our current configuration, we are using the Ops Manager VM as the
@@ -83,4 +81,3 @@ jumpbox. The Ops Manager VM is deployed in the public subnet with a
 configuration (`var.ops_manager_allowed_ips`) to restrict it by IP. If you want to use a
 jumpbox instead, you may deploy ops manager in the management subnet.
 
-### Isolation Segments
