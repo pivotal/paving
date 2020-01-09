@@ -10,7 +10,6 @@ region = "YOUR-GCP-REGION"
 availability_zones = ["YOUR-GCP-ZONE-1", "YOUR-GCP-ZONE-2"]
 
 hosted_zone = "foo"
-dns_zone_name = "foo.example.com."
 
 ssl_certificate = <<SSL_CERTIFICATE
 "YOUR-LB-SSL-PRIVATE-KEY"
