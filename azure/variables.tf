@@ -24,11 +24,11 @@ variable "location" {
 
 variable "hosted_zone" {
   description = "Hosted zone name (e.g. foo.example.com)"
-  type = string
+  type        = string
 }
 
 variable "cloud_name" {
   description = "The Azure cloud environment to use. Available values at https://www.terraform.io/docs/providers/azurerm/#environment"
   default     = "public"
-  type = string
+  type        = string
 }

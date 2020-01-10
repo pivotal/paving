@@ -27,4 +27,3 @@ resource "google_storage_bucket" "backup" {
   name          = "${var.project}-${var.environment_name}-backup"
   force_destroy = true
 }
-

@@ -16,7 +16,7 @@ variable "region" {
 
 variable "hosted_zone" {
   description = "Hosted zone name (e.g. foo.example.com)"
-  type = string
+  type        = string
 }
 
 variable "availability_zones" {

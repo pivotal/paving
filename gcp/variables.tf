@@ -1,7 +1,18 @@
-variable "project" {}
-variable "environment_name" {}
-variable "region" {}
-variable "service_account_key" {}
+variable "project" {
+  type = string
+}
+
+variable "environment_name" {
+  type = string
+}
+
+variable "region" {
+  type = string
+}
+
+variable "service_account_key" {
+  type = string
+}
 
 variable "hosted_zone" {
   description = "Hosted zone name (e.g. foo is the zone name and foo.example.com is the DNS name)."
