@@ -9,6 +9,9 @@ locals {
     security_group_platform_vms_name = azurerm_network_security_group.platform-vms.name
     security_group_ops_manager_name  = azurerm_network_security_group.ops-manager.name
 
+    opsmanager_private_key = tls_private_key.ops_manager.private_key_pem
+    opsmanager_public_key  = tls_private_key.ops_manager.public_key_openssh
+
     storage_ops_manager_image = azurerm_storage_container.ops-manager.name
     storage_pas_buildpacks    = azurerm_storage_container.pas-buildpacks.name
     storage_pas_packages      = azurerm_storage_container.pas-packages.name
