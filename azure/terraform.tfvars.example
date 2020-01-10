@@ -1,3 +1,4 @@
+environment_name = "YOUR-ENVIRONMENT-NAME"
 subscription_id = "YOUR-SUBSCRIPTION-ID"
 tenant_id = "YOUR-TENANT-ID"
 client_id = "YOUR-CLIENT-ID"
