@@ -1,9 +1,23 @@
-variable "access_key" {}
-variable "secret_key" {}
-variable "environment_name" {}
-variable "region" {}
+variable "access_key" {
+  type = string
+}
 
-variable "hosted_zone" {}
+variable "secret_key" {
+  type = string
+}
+
+variable "environment_name" {
+  type = string
+}
+
+variable "region" {
+  type = string
+}
+
+variable "hosted_zone" {
+  description = "Hosted zone name (e.g. foo.example.com)"
+  type = string
+}
 
 variable "availability_zones" {
   description = "Requires exactly two availability zones that must belong to the provided region."
@@ -11,13 +25,13 @@ variable "availability_zones" {
 }
 
 variable "ops_manager_allowed_ips" {
-  default     = ["0.0.0.0/0"]
   description = "IPs allowed to communicate with Ops Manager."
+  default     = ["0.0.0.0/0"]
   type        = list
 }
 
 variable "tags" {
-  type        = map(string)
-  default     = {}
   description = "Key/value tags to assign to all resources."
+  default     = {}
+  type        = map(string)
 }
