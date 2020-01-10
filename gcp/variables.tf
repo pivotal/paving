@@ -4,7 +4,7 @@ variable "region" {}
 variable "service_account_key" {}
 
 variable "hosted_zone" {
-  description = "Name of the DNS zone (e.g. foo.example.com)."
+  description = "Hosted zone name (e.g. foo is the zone name and foo.example.com is the DNS name)."
 }
 
 variable "availability_zones" {
