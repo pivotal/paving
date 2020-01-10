@@ -9,6 +9,12 @@ locals {
     security_group_platform_vms_name = azurerm_network_security_group.platform-vms.name
     security_group_ops_manager_name  = azurerm_network_security_group.ops-manager.name
 
+    storage_ops_manager_image = azurerm_storage_container.ops-manager.name
+    storage_pas_buildpacks    = azurerm_storage_container.pas-buildpacks.name
+    storage_pas_packages      = azurerm_storage_container.pas-packages.name
+    storage_pas_droplets      = azurerm_storage_container.pas-droplets.name
+    storage_pas_resources     = azurerm_storage_container.pas-resources.name
+
     subnet_management_name    = azurerm_subnet.management.name
     subnet_management_cidr    = azurerm_subnet.management.address_prefix
     subnet_management_gateway = cidrhost(azurerm_subnet.management.address_prefix, 1)
