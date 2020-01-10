@@ -23,7 +23,7 @@ and modify with your configuration choices and credentials.
 1. `terraform destroy -var-file terraform.tfvars`
 
 
-## Notes
+## Decisions
 
 - These templates support deploying Pivotal Application Service (PAS)
 and Pivotal Container Service (PKS) to the same foundation.
