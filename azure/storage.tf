@@ -16,6 +16,12 @@ resource "azurerm_storage_account" "ops-manager" {
   }
 }
 
+resource "azurerm_storage_container" "ops-manager" {
+  name                  = "opsmanagerimage"
+  storage_account_name  = azurerm_storage_account.ops-manager.name
+  container_access_type = "private"
+}
+
 resource "random_string" "pas" {
   length  = 20
   special = false
