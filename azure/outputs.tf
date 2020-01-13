@@ -13,11 +13,14 @@ locals {
     opsmanager_public_key  = tls_private_key.ops_manager.public_key_openssh
     opsmanager_public_ip   = azurerm_public_ip.ops-manager.ip_address
 
-    storage_opsmanager_image = azurerm_storage_container.ops-manager.name
-    storage_pas_buildpacks    = azurerm_storage_container.pas-buildpacks.name
-    storage_pas_packages      = azurerm_storage_container.pas-packages.name
-    storage_pas_droplets      = azurerm_storage_container.pas-droplets.name
-    storage_pas_resources     = azurerm_storage_container.pas-resources.name
+    container_opsmanager_image  = azurerm_storage_container.ops-manager.name
+    container_pas_buildpacks    = azurerm_storage_container.pas-buildpacks.name
+    container_pas_packages      = azurerm_storage_container.pas-packages.name
+    container_pas_droplets      = azurerm_storage_container.pas-droplets.name
+    container_pas_resources     = azurerm_storage_container.pas-resources.name
+
+    storage_account_opsmanager  = azurerm_storage_account.ops-manager.name
+    storage_account_pas         = azurerm_storage_account.pas.name
 
     subnet_management_name    = azurerm_subnet.management.name
     subnet_management_id      = azurerm_subnet.management.id
