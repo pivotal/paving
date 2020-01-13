@@ -11,6 +11,7 @@ locals {
 
     opsmanager_private_key = tls_private_key.ops_manager.private_key_pem
     opsmanager_public_key  = tls_private_key.ops_manager.public_key_openssh
+    opsmanager_public_ip   = azurerm_public_ip.ops-manager.ip_address
 
     storage_opsmanager_image = azurerm_storage_container.ops-manager.name
     storage_pas_buildpacks    = azurerm_storage_container.pas-buildpacks.name
