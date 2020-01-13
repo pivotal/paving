@@ -19,6 +19,7 @@ locals {
     container_pas_droplets      = azurerm_storage_container.pas-droplets.name
     container_pas_resources     = azurerm_storage_container.pas-resources.name
 
+    storage_account_bosh        = azurerm_storage_account.bosh.name
     storage_account_opsmanager  = azurerm_storage_account.ops-manager.name
     storage_account_pas         = azurerm_storage_account.pas.name
 
