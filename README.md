@@ -1,7 +1,7 @@
 # Paving
 
 This repository contains Terraform templates for paving the necessary
-infrastructure to deploy the Pivotal Platform to a single foundation.
+infrastructure to deploy Pivotal Platform (PKS and PAS) to a single foundation.
 The templates support AWS, vSphere, Azure, and GCP.
 
 
