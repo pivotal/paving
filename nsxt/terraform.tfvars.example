@@ -27,5 +27,3 @@ nsxt_lb_tcp_virtual_server_ports = ["8080", "52135", "34000-35000"]
 # These variables have reasonable default values.
 # If your foundation setup is tricky, you may need to set different values.
 allow_unverified_ssl = true  # set to true if NSX manager's TLS cert is self-signed
-nsxt_lb_web_virtual_server_ports = ["80", "443"]
-nsxt_lb_ssh_virtual_server_ports = ["2222"]
