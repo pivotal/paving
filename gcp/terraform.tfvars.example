@@ -7,7 +7,7 @@ service_account_key = <<SERVICE_ACCOUNT_KEY
 SERVICE_ACCOUNT_KEY
 
 region = "YOUR-GCP-REGION"
-availability_zones = ["YOUR-GCP-ZONE-1", "YOUR-GCP-ZONE-2"]
+availability_zones = ["YOUR-GCP-ZONE-1", "YOUR-GCP-ZONE-2", "YOUR-GCP-ZONE-3"]
 
 hosted_zone = "foo"
 

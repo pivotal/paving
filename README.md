@@ -31,7 +31,7 @@ and Pivotal Container Service (PKS) to the same foundation.
 - The templates **do not** create an Ops Manager VM but **do**
 create the necessary infrastructure for the VM (security groups, keys, etc).
 
-- These templates demonstrate a modest production deployment in two AZs on
+- These templates demonstrate a modest production deployment in three (3) AZs on
 each IaaS.
 
 - These templates contain extremely minimal interdependence or cleverness,
