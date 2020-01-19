@@ -4,6 +4,6 @@ access_key = "YOUR-AWS-ACCESS-KEY"
 secret_key = "YOUR-AWS-SECRET-KEY"
 
 region = "YOUR-AWS-REGION"
-availability_zones = ["YOUR-AWS-ZONE-1", "YOUR-AWS-ZONE-2"]
+availability_zones = ["YOUR-AWS-ZONE-1", "YOUR-AWS-ZONE-2", "YOUR-AWS-ZONE-3"]
 
 hosted_zone = "example.com."

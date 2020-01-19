@@ -20,7 +20,7 @@ variable "hosted_zone" {
 }
 
 variable "availability_zones" {
-  description = "Requires exactly two availability zones that must belong to the provided region."
+  description = "Requires exactly THREE availability zones that must belong to the provided region."
   type        = list
 }
 
