@@ -7,21 +7,21 @@ locals {
     resource_group_name = azurerm_resource_group.platform.name
 
     security_group_platform_vms_name = azurerm_network_security_group.platform-vms.name
-    security_group_opsmanager_name  = azurerm_network_security_group.ops-manager.name
+    security_group_opsmanager_name   = azurerm_network_security_group.ops-manager.name
 
     opsmanager_private_key = tls_private_key.ops_manager.private_key_pem
     opsmanager_public_key  = tls_private_key.ops_manager.public_key_openssh
     opsmanager_public_ip   = azurerm_public_ip.ops-manager.ip_address
 
-    container_opsmanager_image  = azurerm_storage_container.ops-manager.name
-    container_pas_buildpacks    = azurerm_storage_container.pas-buildpacks.name
-    container_pas_packages      = azurerm_storage_container.pas-packages.name
-    container_pas_droplets      = azurerm_storage_container.pas-droplets.name
-    container_pas_resources     = azurerm_storage_container.pas-resources.name
+    container_opsmanager_image = azurerm_storage_container.ops-manager.name
+    container_pas_buildpacks   = azurerm_storage_container.pas-buildpacks.name
+    container_pas_packages     = azurerm_storage_container.pas-packages.name
+    container_pas_droplets     = azurerm_storage_container.pas-droplets.name
+    container_pas_resources    = azurerm_storage_container.pas-resources.name
 
-    storage_account_bosh        = azurerm_storage_account.bosh.name
-    storage_account_opsmanager  = azurerm_storage_account.ops-manager.name
-    storage_account_pas         = azurerm_storage_account.pas.name
+    storage_account_bosh       = azurerm_storage_account.bosh.name
+    storage_account_opsmanager = azurerm_storage_account.ops-manager.name
+    storage_account_pas        = azurerm_storage_account.pas.name
 
     subnet_management_name    = azurerm_subnet.management.name
     subnet_management_id      = azurerm_subnet.management.id

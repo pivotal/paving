@@ -81,6 +81,13 @@ resource "azurerm_storage_account" "bosh" {
     environment = var.environment_name
     account_for = "bosh"
   }
+
+  lifecycle {
+    create_before_destroy = true
+    ignore_changes = [
+      tags
+    ]
+  }
 }
 
 resource "azurerm_storage_container" "bosh_storage_container" {
