@@ -7,27 +7,39 @@ locals {
     resource_group_name = azurerm_resource_group.platform.name
 
     security_group_platform_vms_name = azurerm_network_security_group.platform-vms.name
-    security_group_ops_manager_name  = azurerm_network_security_group.ops-manager.name
+    security_group_opsmanager_name  = azurerm_network_security_group.ops-manager.name
 
-    storage_ops_manager_image = azurerm_storage_container.ops-manager.name
-    storage_pas_buildpacks    = azurerm_storage_container.pas-buildpacks.name
-    storage_pas_packages      = azurerm_storage_container.pas-packages.name
-    storage_pas_droplets      = azurerm_storage_container.pas-droplets.name
-    storage_pas_resources     = azurerm_storage_container.pas-resources.name
+    opsmanager_private_key = tls_private_key.ops_manager.private_key_pem
+    opsmanager_public_key  = tls_private_key.ops_manager.public_key_openssh
+    opsmanager_public_ip   = azurerm_public_ip.ops-manager.ip_address
+
+    container_opsmanager_image  = azurerm_storage_container.ops-manager.name
+    container_pas_buildpacks    = azurerm_storage_container.pas-buildpacks.name
+    container_pas_packages      = azurerm_storage_container.pas-packages.name
+    container_pas_droplets      = azurerm_storage_container.pas-droplets.name
+    container_pas_resources     = azurerm_storage_container.pas-resources.name
+
+    storage_account_bosh        = azurerm_storage_account.bosh.name
+    storage_account_opsmanager  = azurerm_storage_account.ops-manager.name
+    storage_account_pas         = azurerm_storage_account.pas.name
 
     subnet_management_name    = azurerm_subnet.management.name
+    subnet_management_id      = azurerm_subnet.management.id
     subnet_management_cidr    = azurerm_subnet.management.address_prefix
     subnet_management_gateway = cidrhost(azurerm_subnet.management.address_prefix, 1)
 
     subnet_pas_name    = azurerm_subnet.pas.name
+    subnet_pas_id      = azurerm_subnet.pas.id
     subnet_pas_cidr    = azurerm_subnet.pas.address_prefix
     subnet_pas_gateway = cidrhost(azurerm_subnet.pas.address_prefix, 1)
 
     subnet_pks_name    = azurerm_subnet.pks.name
+    subnet_pks_id      = azurerm_subnet.pks.id
     subnet_pks_cidr    = azurerm_subnet.pks.address_prefix
     subnet_pks_gateway = cidrhost(azurerm_subnet.pks.address_prefix, 1)
 
     subnet_services_name    = azurerm_subnet.services.name
+    subnet_services_id      = azurerm_subnet.services.id
     subnet_services_cidr    = azurerm_subnet.services.address_prefix
     subnet_services_gateway = cidrhost(azurerm_subnet.services.address_prefix, 1)
 

@@ -47,3 +47,8 @@ resource "azurerm_network_security_group" "ops-manager" {
     destination_address_prefix = "*"
   }
 }
+
+resource "tls_private_key" "ops_manager" {
+  algorithm = "RSA"
+  rsa_bits  = "4096"
+}
