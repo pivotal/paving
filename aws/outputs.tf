@@ -1,5 +1,8 @@
 locals {
   stable_config = {
+    availability_zones = var.availability_zones
+    region             = var.region
+
     bucket_pas_buildpacks = aws_s3_bucket.buildpacks-bucket.bucket
     bucket_pas_droplets   = aws_s3_bucket.droplets-bucket.bucket
     bucket_pas_packages   = aws_s3_bucket.packages-bucket.bucket
@@ -21,7 +24,6 @@ locals {
     ops_manager_ssh_private_key           = tls_private_key.ops-manager.private_key_pem
     ops_manager_bucket                    = aws_s3_bucket.ops-manager-bucket.bucket
 
-    region = var.region
 
     security_group_ops_manager_id    = aws_security_group.ops-manager.id
     security_group_ops_manager_name  = aws_security_group.ops-manager.name
