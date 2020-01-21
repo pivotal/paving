@@ -122,22 +122,15 @@ resource "azurerm_network_security_group" "platform-vms" {
     source_address_prefix      = "Internet"
     destination_address_prefix = "*"
   }
-}
 
-resource "azurerm_application_security_group" "pks-master" {
-  name                = "${var.environment_name}-pks-master-app-sec-group"
-  location            = var.location
-  resource_group_name = azurerm_resource_group.platform.name
-}
-
-resource "azurerm_application_security_group" "pks-api" {
-  name                = "${var.environment_name}-pks-api-app-sec-group"
-  location            = var.location
-  resource_group_name = azurerm_resource_group.platform.name
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-platform-vms-network-sg" },
+  )
 }
 
 resource "azurerm_network_security_group" "pks-master" {
-  name                = "${var.environment_name}-pks-master-sg"
+  name                = "${var.environment_name}-pks-master-network-sg"
   location            = var.location
   resource_group_name = azurerm_resource_group.platform.name
 
@@ -152,10 +145,15 @@ resource "azurerm_network_security_group" "pks-master" {
     source_address_prefix                      = "*"
     destination_application_security_group_ids = [azurerm_application_security_group.pks-master.id]
   }
+
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-pks-master-network-sg" },
+  )
 }
 
 resource "azurerm_network_security_group" "pks-api" {
-  name                = "${var.environment_name}-pks-api-sg"
+  name                = "${var.environment_name}-pks-api-network-sg"
   location            = var.location
   resource_group_name = azurerm_resource_group.platform.name
 
@@ -170,10 +168,15 @@ resource "azurerm_network_security_group" "pks-api" {
     source_address_prefix                      = "*"
     destination_application_security_group_ids = [azurerm_application_security_group.pks-api.id]
   }
+
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-pks-api-network-sg" },
+  )
 }
 
 resource "azurerm_network_security_group" "pks-internal" {
-  name                = "${var.environment_name}-pks-internal-sg"
+  name                = "${var.environment_name}-pks-internal-network-sg"
   location            = var.location
   resource_group_name = azurerm_resource_group.platform.name
 
@@ -188,5 +191,31 @@ resource "azurerm_network_security_group" "pks-internal" {
     source_address_prefixes    = [local.pks_subnet_cidr, local.services_subnet_cidr]
     destination_address_prefix = "*"
   }
+
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-pks-internal-network-sg" },
+  )
 }
 
+resource "azurerm_application_security_group" "pks-master" {
+  name                = "${var.environment_name}-pks-master-app-sg"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.platform.name
+
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-pks-master-app-sg" },
+  )
+}
+
+resource "azurerm_application_security_group" "pks-api" {
+  name                = "${var.environment_name}-pks-api-app-sg"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.platform.name
+
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-pks-api-app-sg" },
+  )
+}

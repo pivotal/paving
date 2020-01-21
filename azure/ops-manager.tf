@@ -4,10 +4,15 @@ resource "azurerm_public_ip" "ops-manager" {
   resource_group_name     = azurerm_resource_group.platform.name
   allocation_method       = "Static"
   idle_timeout_in_minutes = 30
+
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-ops-manager-public-ip" },
+  )
 }
 
 resource "azurerm_network_security_group" "ops-manager" {
-  name                = "${var.environment_name}-ops-manager-sg"
+  name                = "${var.environment_name}-ops-manager-network-sg"
   location            = var.location
   resource_group_name = azurerm_resource_group.platform.name
 
@@ -46,6 +51,11 @@ resource "azurerm_network_security_group" "ops-manager" {
     source_address_prefix      = "Internet"
     destination_address_prefix = "*"
   }
+
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-ops-manager-network-sg" },
+  )
 }
 
 resource "tls_private_key" "ops_manager" {
