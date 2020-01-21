@@ -8,6 +8,11 @@ resource "azurerm_dns_a_record" "opsmanager" {
   resource_group_name = data.azurerm_dns_zone.hosted.resource_group_name
   ttl                 = "60"
   records             = [azurerm_public_ip.ops-manager.ip_address]
+
+  tags = merge(
+    var.tags,
+    { "Name" = "opsmanager.${var.environment_name}" },
+  )
 }
 
 resource "azurerm_dns_a_record" "apps" {
@@ -16,6 +21,11 @@ resource "azurerm_dns_a_record" "apps" {
   resource_group_name = data.azurerm_dns_zone.hosted.resource_group_name
   ttl                 = "60"
   records             = [azurerm_public_ip.web-lb.ip_address]
+
+  tags = merge(
+    var.tags,
+    { "Name" = "*.apps.${var.environment_name}" },
+  )
 }
 
 resource "azurerm_dns_a_record" "sys" {
@@ -24,6 +34,11 @@ resource "azurerm_dns_a_record" "sys" {
   resource_group_name = data.azurerm_dns_zone.hosted.resource_group_name
   ttl                 = "60"
   records             = [azurerm_public_ip.web-lb.ip_address]
+
+  tags = merge(
+    var.tags,
+    { "Name" = "*.sys.${var.environment_name}" },
+  )
 }
 
 resource "azurerm_dns_a_record" "ssh" {
@@ -32,6 +47,11 @@ resource "azurerm_dns_a_record" "ssh" {
   resource_group_name = data.azurerm_dns_zone.hosted.resource_group_name
   ttl                 = "60"
   records             = [azurerm_public_ip.diego-ssh-lb.ip_address]
+
+  tags = merge(
+    var.tags,
+    { "Name" = "ssh.sys.${var.environment_name}" },
+  )
 }
 
 resource "azurerm_dns_a_record" "mysql" {
@@ -40,6 +60,11 @@ resource "azurerm_dns_a_record" "mysql" {
   resource_group_name = data.azurerm_dns_zone.hosted.resource_group_name
   ttl                 = "60"
   records             = [azurerm_lb.mysql.private_ip_address]
+
+  tags = merge(
+    var.tags,
+    { "Name" = "mysql.${var.environment_name}" },
+  )
 }
 
 resource "azurerm_dns_a_record" "tcp" {
@@ -48,6 +73,11 @@ resource "azurerm_dns_a_record" "tcp" {
   resource_group_name = data.azurerm_dns_zone.hosted.resource_group_name
   ttl                 = "60"
   records             = [azurerm_public_ip.tcp-lb.ip_address]
+
+  tags = merge(
+    var.tags,
+    { "Name" = "tcp.${var.environment_name}" },
+  )
 }
 
 resource "azurerm_dns_a_record" "pks" {
@@ -56,4 +86,9 @@ resource "azurerm_dns_a_record" "pks" {
   resource_group_name = data.azurerm_dns_zone.hosted.resource_group_name
   ttl                 = "60"
   records             = [azurerm_public_ip.pks-lb.ip_address]
+
+  tags = merge(
+    var.tags,
+    { "Name" = "pks.${var.environment_name}" },
+  )
 }

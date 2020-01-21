@@ -6,6 +6,11 @@ resource "azurerm_public_ip" "web-lb" {
   allocation_method       = "Static"
   sku                     = "Standard"
   idle_timeout_in_minutes = 30
+
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-web-lb-public-ip" },
+  )
 }
 
 resource "azurerm_lb" "web" {
@@ -18,6 +23,11 @@ resource "azurerm_lb" "web" {
     name                 = "frontendip"
     public_ip_address_id = azurerm_public_ip.web-lb.id
   }
+
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-web-lb" },
+  )
 }
 
 resource "azurerm_lb_backend_address_pool" "web" {
@@ -92,6 +102,11 @@ resource "azurerm_public_ip" "tcp-lb" {
   resource_group_name = azurerm_resource_group.platform.name
   allocation_method   = "Static"
   sku                 = "Standard"
+
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-tcp-lb-public-ip" },
+  )
 }
 
 resource "azurerm_lb" "tcp" {
@@ -104,6 +119,11 @@ resource "azurerm_lb" "tcp" {
     name                 = "frontendip"
     public_ip_address_id = azurerm_public_ip.tcp-lb.id
   }
+
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-tcp-lb" },
+  )
 }
 
 resource "azurerm_lb_backend_address_pool" "tcp" {
@@ -159,6 +179,11 @@ resource "azurerm_lb" "mysql" {
     name      = "frontendip"
     subnet_id = azurerm_subnet.pas.id
   }
+
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-mysql-lb" },
+  )
 }
 
 resource "azurerm_lb_backend_address_pool" "mysql" {
@@ -209,6 +234,11 @@ resource "azurerm_public_ip" "diego-ssh-lb" {
   resource_group_name = azurerm_resource_group.platform.name
   allocation_method   = "Static"
   sku                 = "Standard"
+
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-diego-ssh-lb-public-ip" },
+  )
 }
 
 resource "azurerm_lb" "diego-ssh" {
@@ -221,6 +251,11 @@ resource "azurerm_lb" "diego-ssh" {
     name                 = "frontendip"
     public_ip_address_id = azurerm_public_ip.diego-ssh-lb.id
   }
+
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-diego-ssh-lb" },
+  )
 }
 
 resource "azurerm_lb_backend_address_pool" "diego-ssh" {
@@ -271,6 +306,11 @@ resource "azurerm_public_ip" "pks-lb" {
   resource_group_name = azurerm_resource_group.platform.name
   allocation_method   = "Static"
   sku                 = "Standard"
+
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-pks-lb-ip" },
+  )
 }
 
 resource "azurerm_lb" "pks" {
@@ -283,6 +323,11 @@ resource "azurerm_lb" "pks" {
     name                 = azurerm_public_ip.pks-lb.name
     public_ip_address_id = azurerm_public_ip.pks-lb.id
   }
+
+  tags = merge(
+    var.tags,
+    { "Name" = "${var.environment_name}-pks-lb" },
+  )
 }
 
 resource "azurerm_lb_backend_address_pool" "pks-lb" {

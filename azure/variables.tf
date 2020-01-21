@@ -32,3 +32,9 @@ variable "cloud_name" {
   default     = "public"
   type        = string
 }
+
+variable "tags" {
+  description = "Key/value tags to assign to all resources."
+  default     = {}
+  type        = map(string)
+}
