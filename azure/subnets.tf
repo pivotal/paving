@@ -6,23 +6,18 @@ locals {
 }
 
 resource "azurerm_subnet" "management" {
-  name                 = "${var.environment_name}-management-subnet"
-  depends_on           = [azurerm_resource_group.platform]
+  name = "${var.environment_name}-management-subnet"
+
   resource_group_name  = azurerm_resource_group.platform.name
   virtual_network_name = azurerm_virtual_network.platform.name
   address_prefix       = local.management_subnet_cidr
+
+  network_security_group_id = azurerm_network_security_group.ops-manager.id # Deprecated but required until AzureRM Provider 2.0
 }
 
 resource "azurerm_subnet_network_security_group_association" "ops-manager" {
   subnet_id                 = azurerm_subnet.management.id
   network_security_group_id = azurerm_network_security_group.ops-manager.id
-}
-
-resource "azurerm_subnet" "pks" {
-  name                 = "${var.environment_name}-pks-subnet"
-  resource_group_name  = azurerm_resource_group.platform.name
-  virtual_network_name = azurerm_virtual_network.platform.name
-  address_prefix       = local.pks_subnet_cidr
 }
 
 resource "azurerm_subnet" "pas" {
@@ -31,6 +26,8 @@ resource "azurerm_subnet" "pas" {
   resource_group_name  = azurerm_resource_group.platform.name
   virtual_network_name = azurerm_virtual_network.platform.name
   address_prefix       = local.pas_subnet_cidr
+
+  network_security_group_id = azurerm_network_security_group.platform-vms.id # Deprecated but required until AzureRM Provider 2.0
 }
 
 resource "azurerm_subnet_network_security_group_association" "pas" {
@@ -44,9 +41,26 @@ resource "azurerm_subnet" "services" {
   resource_group_name  = azurerm_resource_group.platform.name
   virtual_network_name = azurerm_virtual_network.platform.name
   address_prefix       = local.services_subnet_cidr
+
+  network_security_group_id = azurerm_network_security_group.platform-vms.id # Deprecated but required until AzureRM Provider 2.0
 }
 
 resource "azurerm_subnet_network_security_group_association" "services" {
   subnet_id                 = azurerm_subnet.services.id
+  network_security_group_id = azurerm_network_security_group.platform-vms.id
+}
+
+resource "azurerm_subnet" "pks" {
+  name = "${var.environment_name}-pks-subnet"
+
+  resource_group_name  = azurerm_resource_group.platform.name
+  virtual_network_name = azurerm_virtual_network.platform.name
+  address_prefix       = local.pks_subnet_cidr
+
+  network_security_group_id = azurerm_network_security_group.platform-vms.id # Deprecated but required until AzureRM Provider 2.0
+}
+
+resource "azurerm_subnet_network_security_group_association" "pks" {
+  subnet_id                 = azurerm_subnet.pks.id
   network_security_group_id = azurerm_network_security_group.platform-vms.id
 }
