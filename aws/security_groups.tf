@@ -193,21 +193,21 @@ resource "aws_security_group" "pks-internal-sg" {
   vpc_id      = aws_vpc.vpc.id
 
   ingress {
-    cidr_blocks = concat(local.pks_subnet_cidrs, local.services_subnet_cidrs)
+    cidr_blocks = concat(var.pks_subnet_cidrs, var.services_subnet_cidrs)
     protocol    = "icmp"
     from_port   = 0
     to_port     = 0
   }
 
   ingress {
-    cidr_blocks = concat(local.pks_subnet_cidrs, local.services_subnet_cidrs)
+    cidr_blocks = concat(var.pks_subnet_cidrs, var.services_subnet_cidrs)
     protocol    = "tcp"
     from_port   = 0
     to_port     = 0
   }
 
   ingress {
-    cidr_blocks = concat(local.pks_subnet_cidrs, local.services_subnet_cidrs)
+    cidr_blocks = concat(var.pks_subnet_cidrs, var.services_subnet_cidrs)
     protocol    = "udp"
     from_port   = 0
     to_port     = 0

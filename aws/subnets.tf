@@ -1,16 +1,8 @@
-locals {
-  public_subnet_cidrs     = ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24"]
-  management_subnet_cidrs = ["10.0.16.0/28", "10.0.16.16/28", "10.0.16.32/28"]
-  pas_subnet_cidrs        = ["10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24"]
-  services_subnet_cidrs   = ["10.0.8.0/24", "10.0.9.0/24", "10.0.10.0/24"]
-  pks_subnet_cidrs        = ["10.0.12.0/24", "10.0.13.0/24", "10.0.14.0/24"]
-}
-
 resource "aws_subnet" "public-subnet" {
-  count = length(local.public_subnet_cidrs)
+  count = length(var.public_subnet_cidrs)
 
   vpc_id            = aws_vpc.vpc.id
-  cidr_block        = element(local.public_subnet_cidrs, count.index)
+  cidr_block        = element(var.public_subnet_cidrs, count.index)
   availability_zone = element(var.availability_zones, count.index)
 
   tags = merge(
@@ -20,10 +12,10 @@ resource "aws_subnet" "public-subnet" {
 }
 
 resource "aws_subnet" "management-subnet" {
-  count = length(local.management_subnet_cidrs)
+  count = length(var.management_subnet_cidrs)
 
   vpc_id            = aws_vpc.vpc.id
-  cidr_block        = element(local.management_subnet_cidrs, count.index)
+  cidr_block        = element(var.management_subnet_cidrs, count.index)
   availability_zone = element(var.availability_zones, count.index)
 
   tags = merge(
@@ -33,10 +25,10 @@ resource "aws_subnet" "management-subnet" {
 }
 
 resource "aws_subnet" "pas-subnet" {
-  count = length(local.pas_subnet_cidrs)
+  count = length(var.pas_subnet_cidrs)
 
   vpc_id            = aws_vpc.vpc.id
-  cidr_block        = element(local.pas_subnet_cidrs, count.index)
+  cidr_block        = element(var.pas_subnet_cidrs, count.index)
   availability_zone = element(var.availability_zones, count.index)
 
   tags = merge(
@@ -46,10 +38,10 @@ resource "aws_subnet" "pas-subnet" {
 }
 
 resource "aws_subnet" "services-subnet" {
-  count = length(local.services_subnet_cidrs)
+  count = length(var.services_subnet_cidrs)
 
   vpc_id            = aws_vpc.vpc.id
-  cidr_block        = element(local.services_subnet_cidrs, count.index)
+  cidr_block        = element(var.services_subnet_cidrs, count.index)
   availability_zone = element(var.availability_zones, count.index)
 
   tags = merge(
@@ -59,10 +51,10 @@ resource "aws_subnet" "services-subnet" {
 }
 
 resource "aws_subnet" "pks-subnet" {
-  count = length(local.pks_subnet_cidrs)
+  count = length(var.pks_subnet_cidrs)
 
   vpc_id            = aws_vpc.vpc.id
-  cidr_block        = element(local.pks_subnet_cidrs, count.index)
+  cidr_block        = element(var.pks_subnet_cidrs, count.index)
   availability_zone = element(var.availability_zones, count.index)
 
   tags = merge(
