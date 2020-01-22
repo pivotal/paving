@@ -1,0 +1,4 @@
+# Default platform automation folders.
+config/
+env/
+state/

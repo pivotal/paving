@@ -8,6 +8,12 @@ locals {
 
     security_group_platform_vms_name = azurerm_network_security_group.platform-vms.name
     security_group_opsmanager_name   = azurerm_network_security_group.ops-manager.name
+    security_group_pks_api_name      = azurerm_network_security_group.pks-api.name
+    security_group_pks_internal_name = azurerm_network_security_group.pks-internal.name
+    security_group_pks_master_name   = azurerm_network_security_group.pks-master.name
+
+    application_security_group_pks_api_name    = azurerm_application_security_group.pks-api.name
+    application_security_group_pks_master_name = azurerm_application_security_group.pks-master.name
 
     opsmanager_private_key = tls_private_key.ops_manager.private_key_pem
     opsmanager_public_key  = tls_private_key.ops_manager.public_key_openssh
@@ -57,6 +63,9 @@ locals {
     dns_sys        = "${azurerm_dns_a_record.sys.name}.${azurerm_dns_a_record.sys.zone_name}"
     dns_tcp        = "${azurerm_dns_a_record.tcp.name}.${azurerm_dns_a_record.tcp.zone_name}"
     dns_mysql      = "${azurerm_dns_a_record.mysql.name}.${azurerm_dns_a_record.mysql.zone_name}"
+
+    pks_as = azurerm_availability_set.pks_as.name
+
   }
 }
 

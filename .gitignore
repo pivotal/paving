@@ -5,6 +5,10 @@
 **/*.tfstate
 **/*.tfstate.*
 
+**/*.tfplan
+
+**/*.orig
+
 crash.log
 
 override.tf
@@ -12,4 +16,8 @@ override.tf.json
 *_override.tf
 *_override.tf.json
 
+**/*.pem
+**/*.pem.pub
 
+# Ignore platform automation's default output
+**/output.json
