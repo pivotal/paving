@@ -38,3 +38,23 @@ variable "tags" {
   default     = {}
   type        = map(string)
 }
+
+variable "management_subnet_cidr" {
+  default = "10.0.8.0/26"
+  type    = string
+}
+
+variable "pas_subnet_cidr" {
+  default = "10.0.0.0/22"
+  type    = string
+}
+
+variable "pks_subnet_cidr" {
+  default = "10.0.10.0/24"
+  type    = string
+}
+
+variable "services_subnet_cidr" {
+  default = "10.0.4.0/22"
+  type    = string
+}
