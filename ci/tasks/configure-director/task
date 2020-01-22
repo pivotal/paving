@@ -1,0 +1,25 @@
+#!/bin/bash -exu
+
+main() {
+  om -v
+
+  local cwd=${PWD}
+  local opsman_dns=$(jq -r .ops_manager_dns < "${cwd}/env-state/metadata")
+
+  set +x
+    WITH_CERT=$(cat "${cwd}/env-state/metadata" | jq --arg terraformingca "${CA_CERT}" '. + {terraforming_ca_cert: $terraformingca}')
+    echo "${WITH_CERT}" > "${PWD}/config.yml"
+  set -x
+
+  texplate execute "${TEMPLATE_PATH}" \
+    -f  "${PWD}/config.yml" \
+    -o yaml > "${cwd}/director-config.yml"
+
+  set +x
+    om -t "https://${opsman_dns}" -k -o 30 configure-authentication -dp "${OM_PASSWORD}"
+  set -x
+
+  om -t "https://${opsman_dns}" -k configure-director --config "${cwd}/director-config.yml"
+}
+
+main "$@"

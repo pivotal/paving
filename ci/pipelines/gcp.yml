@@ -1,0 +1,203 @@
+resource_types:
+- name: terraform
+  type: docker-image
+  source:
+    repository: ljfranklin/terraform-resource
+    tag: latest
+
+- name: pivnet
+  type: docker-image
+  source:
+    repository: pivotalcf/pivnet-resource
+    tag: latest-final
+
+shared:
+- params: &om-creds
+    OM_USERNAME: ((Shared-Paving Terraform/ci/om/Notes/username))
+    OM_PASSWORD: ((Shared-Paving Terraform/ci/om/Notes/password))
+
+resources:
+- name: paving
+  type: git
+  source:
+    branch: master
+    uri: git@github.com:pivotal/paving.git
+    private_key: ((Shared-Paving Terraform/ci/paving_pas_deploy_key/Notes/private_key))
+    ignore_paths:
+    - "ci/*"
+
+- name: paving-ci
+  type: git
+  source:
+    branch: master
+    uri: git@github.com:pivotal/paving.git
+    private_key: ((Shared-Paving Terraform/ci/paving_pas_deploy_key/Notes/private_key))
+    paths:
+    - "ci/*"
+
+- name: env-state-gcp
+  type: terraform
+  source:
+    backend_type: gcs
+    backend_config:
+      bucket: infra-tf-states
+      prefix: gcp
+      credentials: ((Shared-Paving Terraform/ci/cf_infra_gcp_service_account_key/Notes))
+    vars:
+      project: ((Shared-Paving Terraform/ci/cf_infra_gcp_project_id/Notes))
+      region: us-east1
+      availability_zones: ["us-east1-b", "us-east1-c",  "us-east1-d"]
+      dns_suffix: gcp.infrastructure.cf-app.com
+      hosted_zone: ((Shared-Paving Terraform/ci/terraforming-gcp-root-zone-name/Notes))
+      service_account_key: ((Shared-Paving Terraform/ci/cf_infra_gcp_service_account_key/Notes))
+      ssl_certificate: ((Shared-Paving Terraform/ci/terraforming-gcp/Notes/certificate))
+      ssl_private_key: ((Shared-Paving Terraform/ci/terraforming-gcp/Notes/private_key))
+
+- name: pcf-releng-ci
+  type: git
+  source:
+    uri: git@github.com:pivotal-cf/pcf-releng-ci.git
+    private_key: ((Shared-Paving Terraform/ci/cf_infra_bot_github_user/Notes/private_key))
+    ignore_paths:
+    - pipelines
+    - ci_screen
+
+- name: srt
+  type: pivnet
+  source:
+    api_token: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
+    product_slug: elastic-runtime
+    product_version: ^\d+\.\d+\.\d+
+    sort_by: semver
+
+- name: opsman-image
+  type: pivnet
+  source:
+    product_slug: ops-manager
+    api_token: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
+    product_version: ^\d+\.\d+\.\d+
+    sort_by: semver
+
+jobs:
+- name: deploy-gcp
+  serial: true
+  public: false
+  plan:
+  - in_parallel:
+    - get: paving
+      trigger: true
+    - get: paving-ci
+    - get: pcf-releng-ci
+    - get: srt
+      trigger: true
+      params:
+        globs:
+        - srt-*.pivotal
+    - get: opsman-image
+      trigger: true
+      params:
+        globs:
+        - '*gcp*.yml'
+  - do:
+    - in_parallel:
+      - task: download-stemcell
+        file: pcf-releng-ci/tasks/configuration/download-pivnet-stemcell/task.yml
+        input_mapping:
+          ert-product: srt
+        params:
+          IAAS_TYPE: gcp
+          PIVNET_TOKEN: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
+      - task: opsman-url
+        file: paving-ci/scripts/terraforming/latest-opsman/task.yml
+        params:
+          IAAS: gcp
+          KEY: us
+    - put: env-state-gcp
+      params:
+        generate_random_name: true
+        terraform_source: paving/gcp
+        delete_on_failure: true
+        var_files: [tfvars/terraform.yml]
+    - task: configure-authentication
+      file: paving-ci/ci/tasks/configure-authentication/task.yml
+      params:
+        <<: *om-creds
+      input_mapping:
+        env-state: env-state-gcp
+      on_failure:
+        do:
+        - put: env-state-gcp
+          params:
+            terraform_source: paving/gcp
+            env_name_file: env-state-gcp/name
+            delete_on_failure: true
+            action: destroy
+            var_files: [tfvars/terraform.yml]
+          get_params:
+            action: destroy
+    - task: configure-director
+      file: paving-ci/scripts/terraforming/configure-director/task.yml
+      params:
+        <<: *om-creds
+        TEMPLATE_PATH: director-config-template/ci/assets/gcp/director-config.yml
+      input_mapping:
+        env-state: env-state-gcp
+        director-config-template: paving-ci
+      on_failure:
+        do:
+        - put: env-state-gcp
+          params:
+            terraform_source: paving/gcp
+            env_name_file: env-state-gcp/name
+            delete_on_failure: true
+            action: destroy
+            var_files: [tfvars/terraform.yml]
+          get_params:
+            action: destroy
+    - task: upload-configure-stage-pas
+      file: paving-ci/ci/tasks/upload-configure-stage/task.yml
+      params:
+        <<: *om-creds
+        PRODUCT_NAME: cf
+        PRODUCT_CONFIG_TEMPLATE: paving-ci/assets/gcp/srt-config.yml
+      input_mapping:
+        env-state: env-state-gcp
+        product: srt
+        product-config-repo: paving-ci
+      on_failure:
+        do:
+        - put: env-state-gcp
+          params:
+            terraform_source: paving/gcp
+            env_name_file: env-state-gcp/name
+            delete_on_failure: true
+            action: destroy
+            var_files: [tfvars/terraform.yml]
+          get_params:
+            action: destroy
+    - task: apply-changes
+      attempts: 3
+      file: paving-ci/scripts/terraforming/apply-changes/task.yml
+      params:
+        <<: *om-creds
+      input_mapping:
+        env-state: env-state-gcp
+      ensure:
+        do:
+        - task: delete-installation
+          file: pcf-releng-ci/tasks/environment/delete-installation/task.yml
+          params:
+            OPSMAN_USERNAME: ((Shared-Paving Terraform/ci/om/Notes/username))
+            OPSMAN_PASSWORD: ((Shared-Paving Terraform/ci/om/Notes/password))
+            OPSMAN_URL_SUFFIX: gcp.infrastructure.cf-app.com
+          input_mapping:
+            environment: env-state-gcp
+        - put: env-state-gcp
+          params:
+            terraform_source: paving/gcp
+            env_name_file: env-state-gcp/name
+            delete_on_failure: true
+            action: destroy
+            var_files: [tfvars/terraform.yml]
+          get_params:
+            action: destroy
