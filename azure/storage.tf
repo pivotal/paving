@@ -11,9 +11,13 @@ resource "azurerm_storage_account" "ops-manager" {
   account_tier             = "Standard"
   account_replication_type = "LRS"
 
-  tags = {
-    environment = var.environment_name
-  }
+  tags = merge(
+    var.tags,
+    {
+      environment = var.environment_name
+      name        = random_string.ops-manager.result
+    },
+  )
 }
 
 resource "azurerm_storage_container" "ops-manager" {
@@ -35,9 +39,13 @@ resource "azurerm_storage_account" "pas" {
   account_tier             = "Standard"
   account_replication_type = "LRS"
 
-  tags = {
-    environment = var.environment_name
-  }
+  tags = merge(
+    var.tags,
+    {
+      environment = var.environment_name
+      name        = random_string.pas.result
+    },
+  )
 }
 
 resource "azurerm_storage_container" "pas-buildpacks" {
@@ -64,23 +72,27 @@ resource "azurerm_storage_container" "pas-resources" {
   container_access_type = "private"
 }
 
-resource random_string "bosh_storage_account_name" {
+resource random_string "bosh" {
   length  = 20
   special = false
   upper   = false
 }
 
 resource "azurerm_storage_account" "bosh" {
-  name                     = random_string.bosh_storage_account_name.result
+  name                     = random_string.bosh.result
   location                 = var.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
   resource_group_name      = azurerm_resource_group.platform.name
 
-  tags = {
-    environment = var.environment_name
-    account_for = "bosh"
-  }
+  tags = merge(
+    var.tags,
+    {
+      environment = var.environment_name
+      account_for = "bosh"
+      name        = random_string.bosh.result
+    },
+  )
 
   lifecycle {
     create_before_destroy = true
@@ -90,21 +102,21 @@ resource "azurerm_storage_account" "bosh" {
   }
 }
 
-resource "azurerm_storage_container" "bosh_storage_container" {
+resource "azurerm_storage_container" "bosh" {
   name                  = "bosh"
   depends_on            = [azurerm_storage_account.bosh]
   storage_account_name  = azurerm_storage_account.bosh.name
   container_access_type = "private"
 }
 
-resource "azurerm_storage_container" "stemcell_storage_container" {
+resource "azurerm_storage_container" "stemcell" {
   name                  = "stemcell"
   depends_on            = [azurerm_storage_account.bosh]
   storage_account_name  = azurerm_storage_account.bosh.name
   container_access_type = "blob"
 }
 
-resource "azurerm_storage_table" "stemcells_storage_table" {
+resource "azurerm_storage_table" "stemcells" {
   name                 = "stemcells"
   storage_account_name = azurerm_storage_account.bosh.name
 }
