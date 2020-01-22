@@ -44,10 +44,10 @@ resources:
       prefix: gcp
       credentials: ((Shared-Paving Terraform/ci/cf_infra_gcp_service_account_key/Notes))
     vars:
+      environment_name: paving-gcp
       project: ((Shared-Paving Terraform/ci/cf_infra_gcp_project_id/Notes))
       region: us-east1
       availability_zones: ["us-east1-b", "us-east1-c",  "us-east1-d"]
-      dns_suffix: gcp.infrastructure.cf-app.com
       hosted_zone: ((Shared-Paving Terraform/ci/terraforming-gcp-root-zone-name/Notes))
       service_account_key: ((Shared-Paving Terraform/ci/cf_infra_gcp_service_account_key/Notes))
       ssl_certificate: ((Shared-Paving Terraform/ci/terraforming-gcp/Notes/certificate))
@@ -114,7 +114,7 @@ jobs:
           KEY: us
     - put: env-state-gcp
       params:
-        generate_random_name: true
+        env_name: paving-gcp
         terraform_source: paving/gcp
         delete_on_failure: true
         var_files: [tfvars/terraform.yml]

@@ -1,0 +1,28 @@
+#!/bin/bash -xu
+
+main() {
+  metadata="${PWD}/env-state/metadata"
+  opsman_dns=$(yq -r .ops_manager_dns < "${metadata}")
+
+  if [[ "${opsman_dns}" == "null" ]]; then
+    opsman_dns=$(yq -r .opsman.hostname < "${metadata}")
+  fi
+
+  set +x
+    while :
+    do
+      om -t "https://${opsman_dns}" -k -o 30 configure-authentication -p "${OM_PASSWORD}" -dp "${OM_PASSWORD}" -u "${OM_USERNAME}"
+
+      if [[ $? -eq 0 ]]
+      then
+        break
+      else
+        echo "waiting, failed to configure-authentication"
+        sleep 1
+        continue
+      fi
+    done
+  set -x
+}
+
+main "$@"
