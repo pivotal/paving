@@ -108,7 +108,7 @@ jobs:
           IAAS_TYPE: gcp
           PIVNET_TOKEN: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
       - task: opsman-url
-        file: paving-ci/scripts/terraforming/latest-opsman/task.yml
+        file: paving-ci/ci/tasks/latest-opsman/task.yml
         params:
           IAAS: gcp
           KEY: us
@@ -136,7 +136,7 @@ jobs:
           get_params:
             action: destroy
     - task: configure-director
-      file: paving-ci/scripts/terraforming/configure-director/task.yml
+      file: paving-ci/ci/tasks/configure-director/task.yml
       params:
         <<: *om-creds
         TEMPLATE_PATH: director-config-template/ci/assets/gcp/director-config.yml
@@ -177,7 +177,7 @@ jobs:
             action: destroy
     - task: apply-changes
       attempts: 3
-      file: paving-ci/scripts/terraforming/apply-changes/task.yml
+      file: paving-ci/ci/tasks/apply-changes/task.yml
       params:
         <<: *om-creds
       input_mapping:
