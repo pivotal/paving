@@ -78,6 +78,45 @@ resources:
     product_version: ^\d+\.\d+\.\d+
     sort_by: semver
 
+- name: platform-automation
+  type: pivnet
+  source:
+    product_slug: platform-automation
+    api_token: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
+
+- name: platform-automation-tasks
+  type: s3
+  source:
+    access_key_id: ((Shared-Paving Terraform/ci/Notes/aws_access_key_id))
+    secret_access_key: ((Shared-Paving Terraform/ci/Notes/aws_secret_access_key))
+    bucket: ((Shared-Paving Terraform/ci/Notes/s3_platform_automation_bucket))
+    region_name: ((Shared-Paving Terraform/ci/Notes/s3_platform_automation_bucket))
+    regexp: platform-automation-tasks-(.*).zip
+
+- name: platform-automation-image
+  type: s3
+  source:
+    access_key_id: ((Shared-Paving Terraform/ci/Notes/aws_access_key_id))
+    secret_access_key: ((Shared-Paving Terraform/ci/Notes/aws_secret_access_key))
+    bucket: ((Shared-Paving Terraform/ci/Notes/s3_platform_automation_bucket))
+    region_name: ((Shared-Paving Terraform/ci/Notes/s3_platform_automation_bucket))
+    regexp: platform-automation-image-(.*).tgz
+
+credhub-interpolate: &credhub-interpolate
+  image: platform-automation-image
+  file: platform-automation-tasks/tasks/credhub-interpolate.yml
+  params:
+    CREDHUB_CLIENT: ((credhub-client))
+    CREDHUB_SECRET: ((credhub-secret))
+    CREDHUB_SERVER: ((credhub-server))
+    CREDHUB_CA_CERT: ((credhub-ca-cert))
+    PREFIX: '/pipeline/vsphere'
+    INTERPOLATION_PATHS: "download-product"
+  input_mapping:
+    files: config
+  output_mapping:
+    interpolated-files: config
+
 jobs:
 - name: deploy-gcp
   serial: true
@@ -98,7 +137,15 @@ jobs:
       params:
         globs:
         - '*gcp*.yml'
+    - get: platform-automation-image
+      params:
+        unpack: true
+    - get: platform-automation-tasks
+      params:
+        unpack: true
+
   - do:
+
     - in_parallel:
       - task: download-stemcell
         file: pcf-releng-ci/tasks/configuration/download-pivnet-stemcell/task.yml
@@ -112,12 +159,38 @@ jobs:
         params:
           IAAS: gcp
           KEY: us
+
     - put: env-state-gcp
       params:
         env_name: paving-gcp
         terraform_source: paving/gcp
         delete_on_failure: true
         var_files: [tfvars/terraform.yml]
+
+    - task: create-vm
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/create-vm.yml
+      input_mapping:
+        image: downloaded-product
+        state: configuration
+        config: configuration
+        vars: interpolated-files
+      params:
+        OPSMAN_CONFIG_FILE: products/ops-manager.yml
+        VARS_FILES: vars/ops-manager-vars.yml
+        STATE_FILE: state/state.yml
+      on_failure:
+        do:
+        - put: env-state-gcp
+          params:
+            terraform_source: paving/gcp
+            env_name_file: env-state-gcp/name
+            delete_on_failure: true
+            action: destroy
+            var_files: [tfvars/terraform.yml]
+          get_params:
+            action: destroy
+
     - task: configure-authentication
       file: paving-ci/ci/tasks/configure-authentication/task.yml
       params:
@@ -135,6 +208,7 @@ jobs:
             var_files: [tfvars/terraform.yml]
           get_params:
             action: destroy
+
     - task: configure-director
       file: paving-ci/ci/tasks/configure-director/task.yml
       params:
@@ -154,6 +228,7 @@ jobs:
             var_files: [tfvars/terraform.yml]
           get_params:
             action: destroy
+
     - task: upload-configure-stage-pas
       file: paving-ci/ci/tasks/upload-configure-stage/task.yml
       params:
@@ -175,6 +250,7 @@ jobs:
             var_files: [tfvars/terraform.yml]
           get_params:
             action: destroy
+
     - task: apply-changes
       attempts: 3
       file: paving-ci/ci/tasks/apply-changes/task.yml
