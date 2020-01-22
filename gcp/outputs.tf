@@ -29,6 +29,7 @@ locals {
 
     ops_manager_service_account_key = google_service_account_key.ops-manager.private_key
     ops_manager_public_ip           = google_compute_address.ops-manager.address
+    ops_manager_dns                 = google_dns_record_set.ops-manager.name
     ops_manager_ssh_public_key      = tls_private_key.ops-manager.public_key_openssh
     ops_manager_ssh_private_key     = tls_private_key.ops-manager.private_key_pem
 
@@ -44,7 +45,6 @@ locals {
     dns_loggregator_sys = google_dns_record_set.loggregator-sys.name
     dns_ssh             = google_dns_record_set.ssh.name
     dns_tcp             = google_dns_record_set.tcp.name
-    dns_ops_manager     = google_dns_record_set.ops-manager.name
     dns_pks_api         = google_dns_record_set.pks-api.name
   }
 }

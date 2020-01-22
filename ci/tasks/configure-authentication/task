@@ -5,7 +5,8 @@ main() {
   opsman_dns=$(yq -r .ops_manager_dns < "${metadata}")
 
   if [[ "${opsman_dns}" == "null" ]]; then
-    opsman_dns=$(yq -r .opsman.hostname < "${metadata}")
+    echo "missing ops manager dns, exiting"
+    exit 1
   fi
 
   set +x
