@@ -2,7 +2,7 @@
 
 main() {
   metadata="${PWD}/env-state/metadata"
-  opsman_dns=$(yq -r .ops_manager_dns < "${metadata}")
+  opsman_dns=$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_dns)
 
   if [[ "${opsman_dns}" == "null" ]]; then
     echo "missing ops manager dns, exiting"
