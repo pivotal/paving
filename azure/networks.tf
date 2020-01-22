@@ -7,7 +7,7 @@ resource "azurerm_virtual_network" "platform" {
 
   tags = merge(
     var.tags,
-    { "Name" = "${var.environment_name}-platform" },
+    { name = "${var.environment_name}-platform" },
   )
 }
 

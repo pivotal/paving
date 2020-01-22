@@ -11,7 +11,7 @@ resource "azurerm_dns_a_record" "opsmanager" {
 
   tags = merge(
     var.tags,
-    { "Name" = "opsmanager.${var.environment_name}" },
+    { name = "opsmanager.${var.environment_name}" },
   )
 }
 
@@ -24,7 +24,7 @@ resource "azurerm_dns_a_record" "apps" {
 
   tags = merge(
     var.tags,
-    { "Name" = "*.apps.${var.environment_name}" },
+    { name = "*.apps.${var.environment_name}" },
   )
 }
 
@@ -37,7 +37,7 @@ resource "azurerm_dns_a_record" "sys" {
 
   tags = merge(
     var.tags,
-    { "Name" = "*.sys.${var.environment_name}" },
+    { name = "*.sys.${var.environment_name}" },
   )
 }
 
@@ -50,7 +50,7 @@ resource "azurerm_dns_a_record" "ssh" {
 
   tags = merge(
     var.tags,
-    { "Name" = "ssh.sys.${var.environment_name}" },
+    { name = "ssh.sys.${var.environment_name}" },
   )
 }
 
@@ -63,7 +63,7 @@ resource "azurerm_dns_a_record" "mysql" {
 
   tags = merge(
     var.tags,
-    { "Name" = "mysql.${var.environment_name}" },
+    { name = "mysql.${var.environment_name}" },
   )
 }
 
@@ -76,7 +76,7 @@ resource "azurerm_dns_a_record" "tcp" {
 
   tags = merge(
     var.tags,
-    { "Name" = "tcp.${var.environment_name}" },
+    { name = "tcp.${var.environment_name}" },
   )
 }
 
@@ -89,6 +89,6 @@ resource "azurerm_dns_a_record" "pks" {
 
   tags = merge(
     var.tags,
-    { "Name" = "pks.${var.environment_name}" },
+    { name = "pks.${var.environment_name}" },
   )
 }

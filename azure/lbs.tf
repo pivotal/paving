@@ -9,7 +9,7 @@ resource "azurerm_public_ip" "web-lb" {
 
   tags = merge(
     var.tags,
-    { "Name" = "${var.environment_name}-web-lb-public-ip" },
+    { name = "${var.environment_name}-web-lb-public-ip" },
   )
 }
 
@@ -26,7 +26,7 @@ resource "azurerm_lb" "web" {
 
   tags = merge(
     var.tags,
-    { "Name" = "${var.environment_name}-web-lb" },
+    { name = "${var.environment_name}-web-lb" },
   )
 }
 
@@ -105,7 +105,7 @@ resource "azurerm_public_ip" "tcp-lb" {
 
   tags = merge(
     var.tags,
-    { "Name" = "${var.environment_name}-tcp-lb-public-ip" },
+    { name = "${var.environment_name}-tcp-lb-public-ip" },
   )
 }
 
@@ -122,7 +122,7 @@ resource "azurerm_lb" "tcp" {
 
   tags = merge(
     var.tags,
-    { "Name" = "${var.environment_name}-tcp-lb" },
+    { name = "${var.environment_name}-tcp-lb" },
   )
 }
 
@@ -182,7 +182,7 @@ resource "azurerm_lb" "mysql" {
 
   tags = merge(
     var.tags,
-    { "Name" = "${var.environment_name}-mysql-lb" },
+    { name = "${var.environment_name}-mysql-lb" },
   )
 }
 
@@ -237,7 +237,7 @@ resource "azurerm_public_ip" "diego-ssh-lb" {
 
   tags = merge(
     var.tags,
-    { "Name" = "${var.environment_name}-diego-ssh-lb-public-ip" },
+    { name = "${var.environment_name}-diego-ssh-lb-public-ip" },
   )
 }
 
@@ -254,7 +254,7 @@ resource "azurerm_lb" "diego-ssh" {
 
   tags = merge(
     var.tags,
-    { "Name" = "${var.environment_name}-diego-ssh-lb" },
+    { name = "${var.environment_name}-diego-ssh-lb" },
   )
 }
 
@@ -309,7 +309,7 @@ resource "azurerm_public_ip" "pks-lb" {
 
   tags = merge(
     var.tags,
-    { "Name" = "${var.environment_name}-pks-lb-ip" },
+    { name = "${var.environment_name}-pks-lb-ip" },
   )
 }
 
@@ -326,7 +326,7 @@ resource "azurerm_lb" "pks" {
 
   tags = merge(
     var.tags,
-    { "Name" = "${var.environment_name}-pks-lb" },
+    { name = "${var.environment_name}-pks-lb" },
   )
 }
 

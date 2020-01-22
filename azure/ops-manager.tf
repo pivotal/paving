@@ -7,7 +7,7 @@ resource "azurerm_public_ip" "ops-manager" {
 
   tags = merge(
     var.tags,
-    { "Name" = "${var.environment_name}-ops-manager-public-ip" },
+    { name = "${var.environment_name}-ops-manager-public-ip" },
   )
 }
 
@@ -54,7 +54,7 @@ resource "azurerm_network_security_group" "ops-manager" {
 
   tags = merge(
     var.tags,
-    { "Name" = "${var.environment_name}-ops-manager-network-sg" },
+    { name = "${var.environment_name}-ops-manager-network-sg" },
   )
 }
 
