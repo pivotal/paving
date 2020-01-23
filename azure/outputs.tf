@@ -29,6 +29,8 @@ locals {
     storage_account_opsmanager = azurerm_storage_account.ops-manager.name
     storage_account_pas        = azurerm_storage_account.pas.name
 
+    storage_account_pas_access_key = azurerm_storage_account.pas.primary_access_key
+
     subnet_management_name    = azurerm_subnet.management.name
     subnet_management_id      = azurerm_subnet.management.id
     subnet_management_cidr    = azurerm_subnet.management.address_prefix

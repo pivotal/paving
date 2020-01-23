@@ -9,6 +9,7 @@ resource "azurerm_storage_account" "ops-manager" {
   resource_group_name      = azurerm_resource_group.platform.name
   location                 = var.location
   account_tier             = "Standard"
+  account_kind             = "StorageV2"
   account_replication_type = "LRS"
 
   tags = merge(
@@ -37,6 +38,7 @@ resource "azurerm_storage_account" "pas" {
   resource_group_name      = azurerm_resource_group.platform.name
   location                 = var.location
   account_tier             = "Standard"
+  account_kind             = "StorageV2"
   account_replication_type = "LRS"
 
   tags = merge(
@@ -49,7 +51,7 @@ resource "azurerm_storage_account" "pas" {
 }
 
 resource "azurerm_storage_container" "pas-buildpacks" {
-  name                  = "${var.environment_name}-pas-buildpakcs"
+  name                  = "${var.environment_name}-pas-buildpacks"
   storage_account_name  = azurerm_storage_account.pas.name
   container_access_type = "private"
 }
@@ -83,6 +85,7 @@ resource "azurerm_storage_account" "bosh" {
   location                 = var.location
   account_tier             = "Standard"
   account_replication_type = "LRS"
+  account_kind             = "StorageV2"
   resource_group_name      = azurerm_resource_group.platform.name
 
   tags = merge(
