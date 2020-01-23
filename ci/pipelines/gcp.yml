@@ -145,10 +145,9 @@ jobs:
         env_name: paving-gcp
         terraform_source: paving/gcp
         delete_on_failure: true
-        var_files: [tfvars/terraform.yml]
 
     - task: create-opsman-config
-      file: paving-ci/ci/tasks/get-ops-manager-config.yml
+      file: paving-ci/ci/tasks/get-ops-manager-config/task.yml
       input_mapping:
         env-state: env-state-gcp
       params:
@@ -172,7 +171,6 @@ jobs:
             env_name_file: env-state-gcp/name
             delete_on_failure: true
             action: destroy
-            var_files: [tfvars/terraform.yml]
           get_params:
             action: destroy
 
@@ -190,7 +188,6 @@ jobs:
             env_name_file: env-state-gcp/name
             delete_on_failure: true
             action: destroy
-            var_files: [tfvars/terraform.yml]
           get_params:
             action: destroy
 
@@ -210,7 +207,6 @@ jobs:
             env_name_file: env-state-gcp/name
             delete_on_failure: true
             action: destroy
-            var_files: [tfvars/terraform.yml]
           get_params:
             action: destroy
 
@@ -232,7 +228,6 @@ jobs:
             env_name_file: env-state-gcp/name
             delete_on_failure: true
             action: destroy
-            var_files: [tfvars/terraform.yml]
           get_params:
             action: destroy
 
@@ -259,6 +254,5 @@ jobs:
             env_name_file: env-state-gcp/name
             delete_on_failure: true
             action: destroy
-            var_files: [tfvars/terraform.yml]
           get_params:
             action: destroy
