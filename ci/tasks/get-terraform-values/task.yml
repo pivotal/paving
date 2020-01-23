@@ -1,0 +1,23 @@
+---
+platform: linux
+image_resource:
+  type: registry-image
+  source:
+    repository: governmentpaas/bosh-cli-v2
+    tag: latest
+inputs:
+  - name: env-state-gcp
+run:
+  path: bash
+  args:
+    - -c
+    - |
+      credhub login --client-name="$CH_USER" --client-secret="$CH_PASS" -s "$CH_URL" --ca-cert="$CH_CA"
+      apt-get update -qq -y
+      apt-get install jq -qq -y
+      credhub get -n /concourse/((foundation))/tfstate -j | jq -r .value | jq -r .stable_config >> stable_config.json
+      cat "stable_config.json" | jq -r '. | keys[]' |
+      while IFS= read -r value; do
+          credhub delete -n "/concourse/((foundation))/tf_$value"
+          credhub set -n "/concourse/((foundation))/tf_$value" -t value -v "$(cat stable_config.json | jq -r .$value | sed 's/\.$//' )"
+      done
