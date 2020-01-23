@@ -1,0 +1,73 @@
+resource_types:
+- name: terraform
+  type: docker-image
+  source:
+    repository: ljfranklin/terraform-resource
+    tag: latest
+
+resources:
+- name: paving
+  type: git
+  source:
+    branch: master
+    uri: git@github.com:pivotal/paving.git
+    private_key: ((Shared-Paving Terraform/ci/paving_pas_deploy_key/Notes/private_key))
+    ignore_paths:
+    - "ci/*"
+
+- name: paving-ci
+  type: git
+  source:
+    branch: master
+    uri: git@github.com:pivotal/paving.git
+    private_key: ((Shared-Paving Terraform/ci/paving_pas_deploy_key/Notes/private_key))
+    paths:
+    - "ci/*"
+
+- name: env-state-azure
+  type: terraform
+  source:
+    backend_type: gcs
+    backend_config:
+      bucket: infra-tf-states
+      prefix: azure
+      credentials: ((Shared-Paving Terraform/ci/cf_infra_gcp_service_account_key/Notes))
+    vars:
+      subscription_id: ((Shared-Paving Terraform/ci/azure_subscription_id/Notes))
+      tenant_id: ((Shared-Paving Terraform/ci/azure_tenant_id/Notes))
+      client_id: ((Shared-Paving Terraform/ci/azure_client_id/Notes))
+      client_secret: ((Shared-Paving Terraform/ci/azure_client_secret/Notes))
+      location: "East US"
+      hosted_zone: azure.infrastructure.cf-app.com
+
+jobs:
+- name: deploy-azure
+  serial: true
+  public: false
+  plan:
+  - in_parallel:
+    - get: paving
+      trigger: true
+    - get: paving-ci
+  - do:
+    - put: env-state-azure
+      params:
+        env_name: paving-azure
+        terraform_source: paving/azure
+        delete_on_failure: true
+    # - task: create-opsman-config
+    #   file: paving-ci/ci/tasks/get-ops-manager-config/task.yml
+    #   input_mapping:
+    #     env-state: env-state-gcp
+    #   params:
+    #     IAAS: azure
+    #   output_mapping:
+    #     env-state: config
+    - put: env-state-azure
+      params:
+        terraform_source: paving/azure
+        env_name_file: env-state-azure/name
+        delete_on_failure: true
+        action: destroy
+      get_params:
+        action: destroy
