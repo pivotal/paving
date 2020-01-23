@@ -161,6 +161,7 @@ jobs:
       input_mapping:
         image: opsman-image
         config: env-state-gcp
+        state: env-state-gcp
       params:
         OPSMAN_CONFIG_FILE: ops-manager.yml
       on_failure:
