@@ -78,44 +78,29 @@ resources:
     product_version: ^\d+\.\d+\.\d+
     sort_by: semver
 
-- name: platform-automation
-  type: pivnet
-  source:
-    product_slug: platform-automation
-    api_token: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
+# - name: platform-automation
+#   type: pivnet
+#   source:
+#     product_slug: platform-automation
+#     api_token: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
 
 - name: platform-automation-tasks
   type: s3
   source:
-    access_key_id: ((Shared-Paving Terraform/ci/Notes/aws_access_key_id))
-    secret_access_key: ((Shared-Paving Terraform/ci/Notes/aws_secret_access_key))
-    bucket: ((Shared-Paving Terraform/ci/Notes/s3_platform_automation_bucket))
-    region_name: ((Shared-Paving Terraform/ci/Notes/s3_platform_automation_bucket))
+    access_key_id: ((Shared-Paving Terraform/ci/aws_access_key_id/Notes))
+    secret_access_key: ((Shared-Paving Terraform/ci/aws_secret_access_key/Notes))
+    bucket: ((Shared-Paving Terraform/ci/s3_platform_automation_bucket/Notes))
+    region_name: ((Shared-Paving Terraform/ci/s3_platform_automation_bucket_region/Notes))
     regexp: platform-automation-tasks-(.*).zip
 
 - name: platform-automation-image
   type: s3
   source:
-    access_key_id: ((Shared-Paving Terraform/ci/Notes/aws_access_key_id))
-    secret_access_key: ((Shared-Paving Terraform/ci/Notes/aws_secret_access_key))
-    bucket: ((Shared-Paving Terraform/ci/Notes/s3_platform_automation_bucket))
-    region_name: ((Shared-Paving Terraform/ci/Notes/s3_platform_automation_bucket))
+    access_key_id: ((Shared-Paving Terraform/ci/aws_access_key_id/Notes))
+    secret_access_key: ((Shared-Paving Terraform/ci/aws_secret_access_key/Notes))
+    bucket: ((Shared-Paving Terraform/ci/s3_platform_automation_bucket/Notes))
+    region_name: ((Shared-Paving Terraform/ci/s3_platform_automation_bucket_region/Notes))
     regexp: platform-automation-image-(.*).tgz
-
-credhub-interpolate: &credhub-interpolate
-  image: platform-automation-image
-  file: platform-automation-tasks/tasks/credhub-interpolate.yml
-  params:
-    CREDHUB_CLIENT: ((credhub-client))
-    CREDHUB_SECRET: ((credhub-secret))
-    CREDHUB_SERVER: ((credhub-server))
-    CREDHUB_CA_CERT: ((credhub-ca-cert))
-    PREFIX: '/pipeline/vsphere'
-    INTERPOLATION_PATHS: "download-product"
-  input_mapping:
-    files: config
-  output_mapping:
-    interpolated-files: config
 
 jobs:
 - name: deploy-gcp
