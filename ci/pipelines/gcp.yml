@@ -130,20 +130,13 @@ jobs:
         unpack: true
 
   - do:
-
-    - in_parallel:
-      - task: download-stemcell
-        file: pcf-releng-ci/tasks/configuration/download-pivnet-stemcell/task.yml
-        input_mapping:
-          ert-product: srt
-        params:
-          IAAS_TYPE: gcp
-          PIVNET_TOKEN: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
-      - task: opsman-url
-        file: paving-ci/ci/tasks/latest-opsman/task.yml
-        params:
-          IAAS: gcp
-          KEY: us
+    - task: download-stemcell
+      file: pcf-releng-ci/tasks/configuration/download-pivnet-stemcell/task.yml
+      input_mapping:
+        ert-product: srt
+      params:
+        IAAS_TYPE: gcp
+        PIVNET_TOKEN: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
 
     - put: env-state-gcp
       params:
@@ -152,18 +145,20 @@ jobs:
         delete_on_failure: true
         var_files: [tfvars/terraform.yml]
 
+# TODO: convert terraform stuff to state.yml for OM VM
+
     - task: create-vm
       image: platform-automation-image
       file: platform-automation-tasks/tasks/create-vm.yml
       input_mapping:
-        image: downloaded-product
-        state: configuration
-        config: configuration
-        vars: interpolated-files
+        image: opsman-image
+        config: paving-ci
+        # state: paving-ci
+        # vars: interpolated-files
       params:
-        OPSMAN_CONFIG_FILE: products/ops-manager.yml
-        VARS_FILES: vars/ops-manager-vars.yml
-        STATE_FILE: state/state.yml
+        OPSMAN_CONFIG_FILE: ci/configuration/gcp/ops-manager.yml
+        # STATE_FILE: state/state.yml
+        # VARS_FILES: vars/ops-manager-vars.yml
       on_failure:
         do:
         - put: env-state-gcp
