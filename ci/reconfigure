@@ -5,6 +5,8 @@ main() {
   go get github.com/genevieve/reconfigure-pipeline@v0.25.0
 
   reconfigure-pipeline --target i --pipeline paving --config pipelines/gcp.yml
+
+  reconfigure-pipeline --target i --pipeline paving-aws --config pipelines/aws.yml
 }
 
 main

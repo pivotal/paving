@@ -1,7 +1,59 @@
-# terraform apply
-# convert outputs
-# deploy + configure OM
-# upload and configure PAS
-# upload and configure PKS
-# deploy
-# terraform destroy
+resource_types:
+- name: terraform
+  type: docker-image
+  source:
+    repository: ljfranklin/terraform-resource
+    tag: latest
+
+resources:
+- name: paving
+  type: git
+  source:
+    branch: master
+    uri: git@github.com:pivotal/paving.git
+    private_key: ((Shared-Paving Terraform/ci/paving_pas_deploy_key/Notes/private_key))
+    ignore_paths:
+    - "ci/*"
+
+- name: env-state-aws
+  type: terraform
+  source:
+    backend_type: gcs
+    backend_config:
+      bucket: infra-tf-states
+      prefix: aws
+      credentials: ((Shared-Paving Terraform/ci/cf_infra_gcp_service_account_key/Notes))
+    vars:
+      environment_name: paving-aws
+      region: us-east-2
+      access_key: ((Shared-Paving Terraform/ci/aws_access_key_id/Notes))
+      secret_key: ((Shared-Paving Terraform/ci/aws_secret_access_key/Notes))
+      availability_zones: ["us-east-2a", "us-east-2c", "us-east-2d"]
+      hosted_zone: aws.infrastructure.cf-app.com
+    env:
+      AWS_ACCESS_KEY_ID: ((Shared-Paving Terraform/ci/aws_access_key_id/Notes))
+      AWS_SECRET_ACCESS_KEY: ((Shared-Paving Terraform/ci/aws_secret_access_key/Notes))
+      AWS_DEFAULT_REGION: us-east-2
+
+jobs:
+- name: deploy-aws
+  serial: true
+  public: false
+  plan:
+  - in_parallel:
+    - get: paving
+      trigger: true
+  - do:
+    - put: env-state-aws
+      params:
+        env_name: paving-aws
+        terraform_source: paving/aws
+        delete_on_failure: true
+    - put: env-state-aws
+      params:
+        terraform_source: paving/aws
+        env_name_file: env-state-aws/name
+        delete_on_failure: true
+        action: destroy
+      get_params:
+        action: destroy
