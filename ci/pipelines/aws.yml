@@ -15,6 +15,15 @@ resources:
     ignore_paths:
     - "ci/*"
 
+- name: paving-ci
+  type: git
+  source:
+    branch: master
+    uri: git@github.com:pivotal/paving.git
+    private_key: ((Shared-Paving Terraform/ci/paving_pas_deploy_key/Notes/private_key))
+    paths:
+    - "ci/*"
+
 - name: env-state-aws
   type: terraform
   source:
@@ -43,6 +52,7 @@ jobs:
   - in_parallel:
     - get: paving
       trigger: true
+    - get: paving-ci
   - do:
     - put: env-state-aws
       params:
