@@ -151,6 +151,7 @@ jobs:
       input_mapping:
         env-state: env-state-gcp
       params:
+        IAAS: gcp
         GCP_SERVICE_ACCOUNT_KEY: ((Shared-Paving Terraform/ci/cf_infra_gcp_service_account_key/Notes))
       output_mapping:
         env-state: config
