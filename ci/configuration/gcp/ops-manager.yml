@@ -1,0 +1,18 @@
+---
+
+opsman-configuration:
+  gcp:
+    gcp_service_account: ((gcp.gcp_service_account))
+    project: ((gcp.project))
+    region: ((gcp.region))
+    zone: ((gcp.zone))
+    vm_name: ((gcp.vm_name))                            # default: OpsManager-vm
+    # For SharedVPC: projects/[HOST_PROJECT_ID]/regions/[REGION]/subnetworks/[SUBNET]
+    vpc_subnet: ((gcp.vpc_subnet))
+    tags: ((gcp.tags))
+    custom_cpu: ((gcp.custom_cpu))                      # default:  8
+    custom_memory: ((gcp.custom_memory))                # default: 16
+    boot_disk_size: ((gcp.boot_disk_size))              # default: 400
+    # At least one IP address (public or private) needs to be assigned to the VM.
+    public_ip: ((gcp.public_ip))
+    private_ip: ((gcp.private_ip))
