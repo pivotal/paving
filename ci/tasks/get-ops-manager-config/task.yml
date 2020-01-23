@@ -15,3 +15,6 @@ outputs:
 
 run:
   path: paving-ci/ci/tasks/get-ops-manager-config.yml
+
+params:
+  GCP_SERVICE_ACCOUNT_KEY:
