@@ -10,11 +10,15 @@ locals {
     management_subnet_id      = azurerm_subnet.management.id
     management_subnet_cidr    = azurerm_subnet.management.address_prefix
     management_subnet_gateway = cidrhost(azurerm_subnet.management.address_prefix, 1)
+    management_subnet_range   = cidrhost(azurerm_subnet.management.address_prefix, 10)
 
     bosh_storage_account_name = azurerm_storage_account.bosh.name
 
+
+
     ops_manager_security_group_name  = azurerm_network_security_group.ops-manager.name
     ops_manager_private_key          = tls_private_key.ops_manager.private_key_pem
+    ops_manager_private_ip           = cidrhost(azurerm_subnet.management.address_prefix, 5)
     ops_manager_public_key           = tls_private_key.ops_manager.public_key_openssh
     ops_manager_public_ip            = azurerm_public_ip.ops-manager.ip_address
     ops_manager_container_name       = azurerm_storage_container.ops-manager.name
@@ -27,6 +31,7 @@ locals {
     pas_subnet_id                  = azurerm_subnet.pas.id
     pas_subnet_cidr                = azurerm_subnet.pas.address_prefix
     pas_subnet_gateway             = cidrhost(azurerm_subnet.pas.address_prefix, 1)
+    pas_subnet_range               = cidrhost(azurerm_subnet.pas.address_prefix, 10)
     pas_buildpacks_container_name  = azurerm_storage_container.pas-buildpacks.name
     pas_packages_container_name    = azurerm_storage_container.pas-packages.name
     pas_droplets_container_name    = azurerm_storage_container.pas-droplets.name
@@ -52,6 +57,7 @@ locals {
     pks_subnet_id                              = azurerm_subnet.pks.id
     pks_subnet_cidr                            = azurerm_subnet.pks.address_prefix
     pks_subnet_gateway                         = cidrhost(azurerm_subnet.pks.address_prefix, 1)
+    pks_subnet_range                           = cidrhost(azurerm_subnet.pks.address_prefix, 10)
     pks_api_application_security_group_name    = azurerm_application_security_group.pks-api.name
     pks_api_network_security_group_name        = azurerm_network_security_group.pks-api.name
     pks_internal_network_security_group_name   = azurerm_network_security_group.pks-internal.name
@@ -62,6 +68,7 @@ locals {
     services_subnet_id      = azurerm_subnet.services.id
     services_subnet_cidr    = azurerm_subnet.services.address_prefix
     services_subnet_gateway = cidrhost(azurerm_subnet.services.address_prefix, 1)
+    services_subnet_range   = cidrhost(azurerm_subnet.services.address_prefix, 10)
   }
 }
 

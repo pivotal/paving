@@ -1,17 +1,21 @@
----
 opsman-configuration:
   azure:
-    tenant_id: ((tenant_id))
+    vm_name: opsman-((environment_name))
     subscription_id: ((subscription_id))
+    resource_group: ((resource_group))
+    tenant_id: ((tenant_id))
     client_id: ((client_id))
     client_secret: ((client_secret))
     location: ((location))
-    resource_group: ((resource_group))
-    storage_account: ((storage_account))  # account name of container
-    ssh_public_key: ((ssh_public_key))
-
-    # Note that there are several environment-specific details in this path
-    # This path can reach out to other resource groups if necessary
-    subnet_id: /subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.Network/virtualNetworks/<VNET>/subnets/<SUBNET>
-
-    public_ip: ((public_ip))
+    public_ip: ((opsmanager_public_ip))
+    private_ip: ((ops_manager_private_ip))
+    container: ((ops_manager_public_ip))
+    boot_disk_size: "100"
+    use_managed_disk: "true"
+    network_security_group: ((ops_manager_security_group_name))
+    subnet_id: ((management_subnet_id))
+    storage_account: ((ops_manager_storage_account_name))
+    ssh_public_key: ((ops_manager_public_key))
+    vm_size: "Standard_DS2_v2"
+    storage_sku: "Premium_LRS"
+    cloud_name: ((cloud_name))
