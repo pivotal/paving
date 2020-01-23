@@ -14,7 +14,8 @@ outputs:
 - name: env-state
 
 run:
-  path: paving-ci/ci/tasks/get-ops-manager-config.yml
+  path: paving-ci/ci/tasks/get-ops-manager-config/task
 
 params:
+  IAAS:
   GCP_SERVICE_ACCOUNT_KEY:

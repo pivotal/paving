@@ -4,17 +4,19 @@ main() {
   om -v
 
   metadata="${PWD}/env-state/metadata"
-  config="${PWD}/ci/configuration/gcp/ops-manager.yml"
   updated_config="${PWD}/env-state/ops-manager.yml"
 
-  bosh interpolate "${config}" \
-    --var gcp_service_account_key="$GCP_SERVICE_ACCOUNT_KEY" \
-    --var project="$(cat "${metadata}" | yq -r .stable_config | jq -r .project)" \
-    --var region="$(cat "${metadata}" | yq -r .stable_config | jq -r .region)" \
-    --var zone="$(cat "${metadata}" | yq -r .stable_config | jq -r .availability_zones[0])" \
-    --var vpc_subnet="$(cat "${metadata}" | yq -r .stable_config | jq -r .network_name)" \
-    --var public_ip="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_public_ip)" \
-    > "${updated_config}"
+  if [ "${IAAS}" == "gcp" ]; then 
+    config="${PWD}/ci/configuration/gcp/ops-manager.yml"
+    bosh interpolate "${config}" \
+      --var gcp_service_account_key="$GCP_SERVICE_ACCOUNT_KEY" \
+      --var project="$(cat "${metadata}" | yq -r .stable_config | jq -r .project)" \
+      --var region="$(cat "${metadata}" | yq -r .stable_config | jq -r .region)" \
+      --var zone="$(cat "${metadata}" | yq -r .stable_config | jq -r .availability_zones[0])" \
+      --var vpc_subnet="$(cat "${metadata}" | yq -r .stable_config | jq -r .network_name)" \
+      --var public_ip="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_public_ip)" \
+      > "${updated_config}"
+  fi 
 }
 
 main "$@"
