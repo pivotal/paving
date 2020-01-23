@@ -150,18 +150,17 @@ jobs:
       file: paving-ci/ci/tasks/get-ops-manager-config/task.yml
       input_mapping:
         env-state: env-state-gcp
+        paving: paving-ci
       params:
         IAAS: gcp
         GCP_SERVICE_ACCOUNT_KEY: ((Shared-Paving Terraform/ci/cf_infra_gcp_service_account_key/Notes))
-      output_mapping:
-        env-state: config
 
     - task: create-vm
       image: platform-automation-image
       file: platform-automation-tasks/tasks/create-vm.yml
       input_mapping:
         image: opsman-image
-        config: config
+        config: env-state-gcp
       params:
         OPSMAN_CONFIG_FILE: ops-manager.yml
       on_failure:

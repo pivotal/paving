@@ -5,7 +5,7 @@ main() {
 
   metadata="${PWD}/env-state/metadata"
 
-  config="${PWD}/config/ci/configuration/${IAAS}/ops-manager.yml"
+  config="${PWD}/paving/ci/configuration/${IAAS}/ops-manager.yml"
   updated_config="${PWD}/env-state/ops-manager.yml"
 
   if [ "${IAAS}" == "gcp" ]; then 
@@ -33,20 +33,20 @@ main() {
       > "${updated_config}"
   fi 
 
-  # if [ "${IAAS}" == "azure" ]; then 
-  #   bosh interpolate "${config}" \
-  #     --var tenant_id="" \
-  #     --var subscription_id="" \
-  #     --var client_id="" \
-  #     --var client_secret="" \
-  #     --var location="" \
-  #     --var resource_group="" \
-  #     --var storage_account="" \
-  #     --var ssh_public_key="" \
-  #     --var subnet_id="" \
-  #     --var public_ip="" \
-  #     > "${updated_config}"
-  # fi 
+  if [ "${IAAS}" == "azure" ]; then 
+    bosh interpolate "${config}" \
+      --var tenant_id="${AZURE_TENANT_ID}" \
+      --var subscription_id="${AZURE_SUBSCRIPTION_ID}" \
+      --var client_id="${AZURE_CLIENT_ID}" \
+      --var client_secret="${AZURE_CLIENT_SECRET}" \
+      --var location="" \
+      --var resource_group="" \
+      --var storage_account="" \
+      --var ssh_public_key="" \
+      --var subnet_id="" \
+      --var public_ip="" \
+      > "${updated_config}"
+  fi 
 }
 
 main "$@"
