@@ -15,6 +15,11 @@ shared:
 - params: &om-creds
     OM_USERNAME: ((Shared-Paving Terraform/ci/om/Notes/username))
     OM_PASSWORD: ((Shared-Paving Terraform/ci/om/Notes/password))
+- params: &gcp-creds
+    SERVICE_ACCOUNT_KEY: ((Shared-Paving Terraform/ci/cf_infra_gcp_service_account_key/Notes))
+    PROJECT: ((Shared-Paving Terraform/ci/cf_infra_gcp_project_id/Notes))
+    REGION: us-east1
+    ZONE: ["us-east1-b"]
 
 resources:
 - name: paving
@@ -146,19 +151,17 @@ jobs:
         var_files: [tfvars/terraform.yml]
 
 # TODO: convert terraform stuff to state.yml for OM VM
+    - task: create-opsman-config
+      file: paving-ci/ci/tasks/convert-tf-output-to-om-config.yml
 
     - task: create-vm
       image: platform-automation-image
       file: platform-automation-tasks/tasks/create-vm.yml
       input_mapping:
         image: opsman-image
-        config: paving-ci
-        # state: paving-ci
-        # vars: interpolated-files
+        config: config
       params:
-        OPSMAN_CONFIG_FILE: ci/configuration/gcp/ops-manager.yml
-        # STATE_FILE: state/state.yml
-        # VARS_FILES: vars/ops-manager-vars.yml
+        OPSMAN_CONFIG_FILE: ops-manager.yml
       on_failure:
         do:
         - put: env-state-gcp
