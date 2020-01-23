@@ -1,0 +1,44 @@
+---
+opsman-configuration:
+  azure:
+    tenant_id: 3e52862f-a01e-4b97-98d5-f31a409df682
+    subscription_id: 90f35f10-ea9e-4e80-aac4-d6778b995532
+    client_id: 5782deb6-9195-4827-83ae-a13fda90aa0d
+    client_secret: ((opsman-client-secret))
+    location: westus
+    resource_group: res-group
+    storage_account: opsman                       # account name of container
+    ssh_public_key: ssh-rsa AAAAB3NzaC1yc2EAZ...  # ssh key to access VM
+
+    # Note that there are several environment-specific details in this path
+    # This path can reach out to other resource groups if necessary
+    subnet_id: /subscriptions/<SUBSCRIPTION_ID>/resourceGroups/<RESOURCE_GROUP>/providers/Microsoft.Network/virtualNetworks/<VNET>/subnets/<SUBNET>
+
+    # At least one IP address (public or private) needs to be assigned
+    # to the VM. It is also permissible to assign both.
+    private_ip: 10.0.0.3
+    public_ip: 1.2.3.4
+
+      # Optional
+      # cloud_name: AzureCloud          # default - AzureCloud
+      # storage_key: ((storage-key))    # only required if your client does not
+      # have the needed storage permissions
+      # container: opsmanagerimage      # storage account container name
+      # default - opsmanagerimage
+      # network_security_group: ops-manager-security-group
+      # vm_name: OpsManager-vm          # default - OpsManager-vm
+      # boot_disk_size: 200             # default - 200 (GB)
+      # use_managed_disk: true          # this flag is only respected by the
+      # create-vm and upgrade-opsman commands.
+      # set to false if you want to create
+      # the new opsman VM with an unmanaged
+      # disk (not recommended). default - true
+      # storage_sku: Premium_LRS        # this sets the SKU of the storage account
+      # for the disk
+      # Allowed values: Standard_LRS, Premium_LRS,
+      # StandardSSD_LRS, UltraSSD_LRS
+      # vm_size: Standard_DS1_v2        # the size of the Ops Manager VM
+      # default - Standard_DS2_v2
+    # Allowed values: https://docs.microsoft.com/en-us/azure/virtual-machines/linux/sizes-general
+    # vpc_subnet: /subscriptions/...  # DEPRECATED - use subnet_id
+    # use_unmanaged_disk: false       # DEPRECATED - use use_managed_disk
