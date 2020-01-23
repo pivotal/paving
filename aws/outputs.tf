@@ -24,7 +24,6 @@ locals {
     ops_manager_ssh_private_key           = tls_private_key.ops-manager.private_key_pem
     ops_manager_bucket                    = aws_s3_bucket.ops-manager-bucket.bucket
 
-
     security_group_ops_manager_id    = aws_security_group.ops-manager.id
     security_group_ops_manager_name  = aws_security_group.ops-manager.name
     security_group_platform_id       = aws_security_group.platform.id

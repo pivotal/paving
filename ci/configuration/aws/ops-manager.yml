@@ -1,34 +1,14 @@
-### Operations Manager 2.8.0
-
-### Ref: https://docs.pivotal.io/platform-automation/v4.2/inputs-outputs.html
 ---
 opsman-configuration:
   aws:
-    region: ((aws.region))
-    vpc_subnet_id: ((aws.vpc_subnet_id))
-    security_group_ids: ((aws.security_group_ids))
-    key_pair_name: ((aws.key_pair_name))  # ops-manager-key  # used to ssh to VM
-    iam_instance_profile_name: ((aws.iam_instance_profile_name)) # env_ops_manager
-
-    # At least one IP address (public or private) needs to be assigned to the
-    # VM. It is also permissible to assign both.
-    public_ip: ((aws.operations_manger_ip))      # Reserved Elastic IP
-      # private_ip: 10.0.0.2
-
-    # Optional
-    vm_name: ops-manager-vm-us-west-2     # default - OpsManager-vm
-    boot_disk_size: 100                   # default - 200 (GB)
-    instance_type: m5.xlarge              # default - m5.large
-      # NOTE - not all regions support m5.large
-      # assume_role: "arn:aws:iam::..." # necessary if a role is needed to authorize
-      # the OpsMan VM instance profile
-
-      # Omit if using instance profiles
-    # And instance profile OR access_key/secret_access_key is required
-    access_key_id: ((aws.access_key_id))
-    secret_access_key: ((aws.secret_access_key))
-
-      # security_group_id: sg-123  # DEPRECATED - use security_group_ids
-      # use_instance_profile: true # DEPRECATED - will use instance profile for
-      # execution VM if access_key_id and
-    # secret_access_key are not set
+    access_key_id: ((access_key_id))
+    secret_access_key: ((secret_key))
+    region: ((region))
+    vpc_subnet_id: ((vpc_subnet_id))
+    security_group_ids: ((security_group_ids))
+    key_pair_name: ((key_pair_name))
+    iam_instance_profile_name: ((iam_instance_profile_name))
+    public_ip: ((public_ip))
+    vm_name: ops-manager-vm
+    boot_disk_size: 100
+    instance_type: m5.large
