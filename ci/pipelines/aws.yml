@@ -28,7 +28,7 @@ resources:
       region: us-east-2
       access_key: ((Shared-Paving Terraform/ci/aws_access_key_id/Notes))
       secret_key: ((Shared-Paving Terraform/ci/aws_secret_access_key/Notes))
-      availability_zones: ["us-east-2a", "us-east-2c", "us-east-2d"]
+      availability_zones: ["us-east-2a", "us-east-2b", "us-east-2c"]
       hosted_zone: aws.infrastructure.cf-app.com
     env:
       AWS_ACCESS_KEY_ID: ((Shared-Paving Terraform/ci/aws_access_key_id/Notes))
