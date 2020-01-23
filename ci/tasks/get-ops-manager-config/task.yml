@@ -14,7 +14,7 @@ outputs:
 - name: env-state
 
 run:
-  path: paving-ci/ci/tasks/get-ops-manager-config/task
+  path: paving/ci/tasks/get-ops-manager-config/task
 
 params:
   IAAS:
