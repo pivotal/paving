@@ -62,7 +62,8 @@ jobs:
     - task: create-opsman-config
       file: paving-ci/ci/tasks/get-ops-manager-config/task.yml
       input_mapping:
-        env-state: env-state-gcp
+        env-state: env-state-aws
+        config: paving-ci
       params:
         IAAS: aws
         AWS_ACCESS_KEY: ((Shared-Paving Terraform/ci/aws_access_key_id/Notes))

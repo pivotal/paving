@@ -4,10 +4,11 @@ main() {
   om -v
 
   metadata="${PWD}/env-state/metadata"
+
+  config="${PWD}/config/ci/configuration/${IAAS}/ops-manager.yml"
   updated_config="${PWD}/env-state/ops-manager.yml"
 
   if [ "${IAAS}" == "gcp" ]; then 
-    config="${PWD}/ci/configuration/gcp/ops-manager.yml"
     bosh interpolate "${config}" \
       --var gcp_service_account_key="${GCP_SERVICE_ACCOUNT_KEY}" \
       --var project="$(cat "${metadata}" | yq -r .stable_config | jq -r .project)" \
@@ -19,7 +20,6 @@ main() {
   fi 
 
   if [ "${IAAS}" == "aws" ]; then 
-    config="${PWD}/ci/configuration/aws/ops-manager.yml"
     bosh interpolate "${config}" \
       --var access_key="${AWS_ACCESS_KEY}" \
       --var secret_key="${AWS_SECRET_KEY}" \
@@ -32,6 +32,21 @@ main() {
       --var iam_instance_profile_name="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_iam_instance_profile_name)" \
       > "${updated_config}"
   fi 
+
+  # if [ "${IAAS}" == "azure" ]; then 
+  #   bosh interpolate "${config}" \
+  #     --var tenant_id="" \
+  #     --var subscription_id="" \
+  #     --var client_id="" \
+  #     --var client_secret="" \
+  #     --var location="" \
+  #     --var resource_group="" \
+  #     --var storage_account="" \
+  #     --var ssh_public_key="" \
+  #     --var subnet_id="" \
+  #     --var public_ip="" \
+  #     > "${updated_config}"
+  # fi 
 }
 
 main "$@"

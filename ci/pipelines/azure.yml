@@ -33,6 +33,7 @@ resources:
       prefix: azure
       credentials: ((Shared-Paving Terraform/ci/cf_infra_gcp_service_account_key/Notes))
     vars:
+      environment_name: paving-azure
       subscription_id: ((Shared-Paving Terraform/ci/azure_subscription_id/Notes))
       tenant_id: ((Shared-Paving Terraform/ci/azure_tenant_id/Notes))
       client_id: ((Shared-Paving Terraform/ci/azure_client_id/Notes))

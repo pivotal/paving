@@ -51,7 +51,6 @@ locals {
     subnet_services_cidr    = azurerm_subnet.services.address_prefix
     subnet_services_gateway = cidrhost(azurerm_subnet.services.address_prefix, 1)
 
-
     lb_web       = azurerm_lb.web.name
     lb_diego_ssh = azurerm_lb.diego-ssh.name
     lb_mysql     = azurerm_lb.mysql.name
@@ -67,7 +66,6 @@ locals {
     dns_mysql      = "${azurerm_dns_a_record.mysql.name}.${azurerm_dns_a_record.mysql.zone_name}"
 
     pks_as = azurerm_availability_set.pks_as.name
-
   }
 }
 
