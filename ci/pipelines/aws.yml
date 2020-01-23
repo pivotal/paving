@@ -49,6 +49,16 @@ jobs:
         env_name: paving-aws
         terraform_source: paving/aws
         delete_on_failure: true
+    - task: create-opsman-config
+      file: paving-ci/ci/tasks/get-ops-manager-config/task.yml
+      input_mapping:
+        env-state: env-state-gcp
+      params:
+        IAAS: aws
+        AWS_ACCESS_KEY: ((Shared-Paving Terraform/ci/aws_access_key_id/Notes))
+        AWS_SECRET_KEY: ((Shared-Paving Terraform/ci/aws_secret_access_key/Notes))
+      output_mapping:
+        env-state: config
     - put: env-state-aws
       params:
         terraform_source: paving/aws

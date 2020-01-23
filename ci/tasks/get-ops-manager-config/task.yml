@@ -18,4 +18,8 @@ run:
 
 params:
   IAAS:
+
   GCP_SERVICE_ACCOUNT_KEY:
+
+  AWS_ACCESS_KEY:
+  AWS_SECRET_KEY:
