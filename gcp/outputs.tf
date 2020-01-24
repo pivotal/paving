@@ -12,9 +12,10 @@ locals {
     management_subnet_cidr    = google_compute_subnetwork.management.ip_cidr_range
     management_subnet_gateway = google_compute_subnetwork.management.gateway_address
 
-    ops_manager_service_account_key = google_service_account_key.ops-manager.private_key
-    ops_manager_public_ip           = google_compute_address.ops-manager.address
+    ops_manager_bucket              = google_storage_bucket.ops-manager.name
     ops_manager_dns                 = google_dns_record_set.ops-manager.name
+    ops_manager_public_ip           = google_compute_address.ops-manager.address
+    ops_manager_service_account_key = google_service_account_key.ops-manager.private_key
     ops_manager_ssh_public_key      = tls_private_key.ops-manager.public_key_openssh
     ops_manager_ssh_private_key     = tls_private_key.ops-manager.private_key_pem
 
@@ -22,10 +23,16 @@ locals {
     pas_subnet_cidr    = google_compute_subnetwork.pas.ip_cidr_range
     pas_subnet_gateway = google_compute_subnetwork.pas.gateway_address
 
-    http_backend_service = google_compute_backend_service.http-lb.name
-    ssh_target_pool      = google_compute_target_pool.ssh-lb.name
-    tcp_target_pool      = google_compute_target_pool.tcp-lb.name
-    web_target_pool      = google_compute_target_pool.websocket-lb.name
+    buildpacks_bucket_name = google_storage_bucket.buildpacks.name
+    droplets_bucket_name   = google_storage_bucket.droplets.name
+    packages_bucket_name   = google_storage_bucket.packages.name
+    resources_bucket_name  = google_storage_bucket.resources.name
+    backup_bucket_name     = google_storage_bucket.backup.name
+
+    http_backend_service_name = google_compute_backend_service.http-lb.name
+    ssh_target_pool_name      = google_compute_target_pool.ssh-lb.name
+    tcp_target_pool_name      = google_compute_target_pool.tcp-lb.name
+    web_target_pool_name      = google_compute_target_pool.websocket-lb.name
 
     sys_dns         = google_dns_record_set.wildcard-sys.name
     apps_dns        = google_dns_record_set.wildcard-apps.name
