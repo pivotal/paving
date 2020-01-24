@@ -38,8 +38,8 @@ resources:
       tenant_id: ((Shared-Paving Terraform/ci/azure_tenant_id/Notes))
       client_id: ((Shared-Paving Terraform/ci/azure_client_id/Notes))
       client_secret: ((Shared-Paving Terraform/ci/azure_client_secret/Notes))
-      location: "East US"
-      hosted_zone: azure.infrastructure.cf-app.com
+      location: ((Shared-Paving Terraform/ci/azure_location/Notes))
+      hosted_zone: ((Shared-Paving Terraform/ci/azure_hosted_zone/Notes))
 
 jobs:
 - name: deploy-azure
