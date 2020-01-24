@@ -8,7 +8,7 @@ main() {
   config="${PWD}/paving/ci/configuration/${IAAS}/ops-manager.yml"
   updated_config="${PWD}/env-state/ops-manager.yml"
 
-  if [ "${IAAS}" == "gcp" ]; then 
+  if [ "${IAAS}" == "gcp" ]; then
     key="${PWD}/env-state/key"
     echo "${GCP_SERVICE_ACCOUNT_KEY}" > "${key}"
 
