@@ -13,13 +13,13 @@ locals {
 
     bosh_storage_account_name = azurerm_storage_account.bosh.name
 
-    opsmanager_security_group_name  = azurerm_network_security_group.ops-manager.name
-    opsmanager_private_key          = tls_private_key.ops_manager.private_key_pem
-    opsmanager_public_key           = tls_private_key.ops_manager.public_key_openssh
-    opsmanager_public_ip            = azurerm_public_ip.ops-manager.ip_address
-    opsmanager_container_name       = azurerm_storage_container.ops-manager.name
-    opsmanager_dns                  = "${azurerm_dns_a_record.opsmanager.name}.${azurerm_dns_a_record.opsmanager.zone_name}"
-    opsmanager_storage_account_name = azurerm_storage_account.ops-manager.name
+    ops_manager_security_group_name  = azurerm_network_security_group.ops-manager.name
+    ops_manager_private_key          = tls_private_key.ops_manager.private_key_pem
+    ops_manager_public_key           = tls_private_key.ops_manager.public_key_openssh
+    ops_manager_public_ip            = azurerm_public_ip.ops-manager.ip_address
+    ops_manager_container_name       = azurerm_storage_container.ops-manager.name
+    ops_manager_dns                  = "${azurerm_dns_a_record.ops-manager.name}.${azurerm_dns_a_record.ops-manager.zone_name}"
+    ops_manager_storage_account_name = azurerm_storage_account.ops-manager.name
 
     platform_vms_security_group_name = azurerm_network_security_group.platform-vms.name
 
