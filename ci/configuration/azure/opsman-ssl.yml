@@ -1,0 +1,2 @@
+certificate-pem: ((ssl_cert_public))
+private-key-pem: ((ssl_cert_private))
