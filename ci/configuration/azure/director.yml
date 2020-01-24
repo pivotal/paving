@@ -45,7 +45,7 @@ networks-configuration:
     service_network: false
     subnets:
     - iaas_identifier: ((network_name))/((pas_subnet_name))
-      cidr: ((subnet_pas_cidr))
+      cidr: ((pas_subnet_cidr))
       reserved_ip_ranges: ((pas_subnet_gateway))-((pas_subnet_range))
       dns: 168.63.129.16
       gateway: ((pas_subnet_gateway))
@@ -53,7 +53,7 @@ networks-configuration:
     service_network: false
     subnets:
     - iaas_identifier: ((network_name))/((pks_subnet_name))
-      cidr: ((subnet_pks_cidr))
+      cidr: ((pks_subnet_cidr))
       reserved_ip_ranges: ((pks_subnet_gateway))-((pks_subnet_range))
       dns: 168.63.129.16
       gateway: ((pks_subnet_gateway))
@@ -61,7 +61,7 @@ networks-configuration:
     service_network: false
     subnets:
     - iaas_identifier: ((network_name))/((services_subnet_name))
-      cidr: ((subnet_services_cidr))
+      cidr: ((services_subnet_cidr))
       reserved_ip_ranges: ((services_subnet_gateway))-((services_subnet_range))
       dns: 168.63.129.16
       gateway: ((services_subnet_gateway))
