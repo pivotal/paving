@@ -9,8 +9,11 @@ main() {
   updated_config="${PWD}/env-state/ops-manager.yml"
 
   if [ "${IAAS}" == "gcp" ]; then 
+    key="${PWD}/env-state/key"
+    echo "${GCP_SERVICE_ACCOUNT_KEY}" > "${key}"
+
     bosh interpolate "${config}" \
-      --var gcp_service_account_key="${GCP_SERVICE_ACCOUNT_KEY}" \
+      --var-file gcp_service_account_key="${key}" \
       --var project="$(cat "${metadata}" | yq -r .stable_config | jq -r .project)" \
       --var region="$(cat "${metadata}" | yq -r .stable_config | jq -r .region)" \
       --var zone="$(cat "${metadata}" | yq -r .stable_config | jq -r .availability_zones[0])" \
