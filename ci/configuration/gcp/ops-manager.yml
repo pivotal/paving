@@ -5,7 +5,7 @@ opsman-configuration:
     project: ((project))
     region: ((region))
     zone: ((zone))
-    vm_name: "OpsManager-vm"
+    vm_name: "ops-manager-vm"
     vpc_subnet: ((vpc_subnet))
     tags: ""
     custom_cpu: 4
