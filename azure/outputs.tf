@@ -39,11 +39,11 @@ locals {
     mysql_lb_name = azurerm_lb.mysql.name
     tcp_lb_name   = azurerm_lb.tcp.name
 
-    apps_dns  = "${azurerm_dns_a_record.apps.name}.${azurerm_dns_a_record.apps.zone_name}"
-    ssh_dns   = "${azurerm_dns_a_record.ssh.name}.${azurerm_dns_a_record.ssh.zone_name}"
-    sys_dns   = "${azurerm_dns_a_record.sys.name}.${azurerm_dns_a_record.sys.zone_name}"
-    tcp_dns   = "${azurerm_dns_a_record.tcp.name}.${azurerm_dns_a_record.tcp.zone_name}"
-    mysql_dns = "${azurerm_dns_a_record.mysql.name}.${azurerm_dns_a_record.mysql.zone_name}"
+    apps_dns_domain = "${replace(azurerm_dns_a_record.apps.name, "*.", "")}.${azurerm_dns_a_record.apps.zone_name}"
+    sys_dns_domain  = "${replace(azurerm_dns_a_record.sys.name, "*.", "")}.${azurerm_dns_a_record.sys.zone_name}"
+    ssh_dns         = "${azurerm_dns_a_record.ssh.name}.${azurerm_dns_a_record.ssh.zone_name}"
+    tcp_dns         = "${azurerm_dns_a_record.tcp.name}.${azurerm_dns_a_record.tcp.zone_name}"
+    mysql_dns       = "${azurerm_dns_a_record.mysql.name}.${azurerm_dns_a_record.mysql.zone_name}"
 
     pks_as_name                                = azurerm_availability_set.pks_as.name
     pks_lb_name                                = azurerm_lb.pks.name
