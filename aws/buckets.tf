@@ -1,44 +1,49 @@
+resource "random_integer" "bucket_suffix" {
+  min = 1
+  max = 100000
+}
+
 resource "aws_s3_bucket" "ops-manager-bucket" {
-  bucket = "${var.environment_name}-ops-manager-bucket"
+  bucket = "${var.environment_name}-ops-manager-bucket-${random_integer.bucket_suffix.result}"
 
   tags = merge(
     var.tags,
-    { "Name" = "${var.environment_name}-ops-manager-bucket" },
+    { "Name" = "${var.environment_name}-ops-manager-bucket-${random_integer.bucket_suffix.result}" },
   )
 }
 
 resource "aws_s3_bucket" "buildpacks-bucket" {
-  bucket = "${var.environment_name}-buildpacks-bucket"
+  bucket = "${var.environment_name}-buildpacks-bucket-${random_integer.bucket_suffix.result}"
 
   tags = merge(
     var.tags,
-    { "Name" = "${var.environment_name}-buildpacks-bucket" },
+    { "Name" = "${var.environment_name}-buildpacks-bucket-${random_integer.bucket_suffix.result}" },
   )
 }
 
 resource "aws_s3_bucket" "packages-bucket" {
-  bucket = "${var.environment_name}-packages-bucket"
+  bucket = "${var.environment_name}-packages-bucket-${random_integer.bucket_suffix.result}"
 
   tags = merge(
     var.tags,
-    { "Name" = "${var.environment_name}-packages-bucket" },
+    { "Name" = "${var.environment_name}-packages-bucket-${random_integer.bucket_suffix.result}" },
   )
 }
 
 resource "aws_s3_bucket" "resources-bucket" {
-  bucket = "${var.environment_name}-resources-bucket"
+  bucket = "${var.environment_name}-resources-bucket-${random_integer.bucket_suffix.result}"
 
   tags = merge(
     var.tags,
-    { "Name" = "${var.environment_name}-resources-bucket" },
+    { "Name" = "${var.environment_name}-resources-bucket-${random_integer.bucket_suffix.result}" },
   )
 }
 
 resource "aws_s3_bucket" "droplets-bucket" {
-  bucket = "${var.environment_name}-droplets-bucket"
+  bucket = "${var.environment_name}-droplets-bucket-${random_integer.bucket_suffix.result}"
 
   tags = merge(
     var.tags,
-    { "Name" = "${var.environment_name}-droplets-bucket" },
+    { "Name" = "${var.environment_name}-droplets-bucket-${random_integer.bucket_suffix.result}" },
   )
 }
