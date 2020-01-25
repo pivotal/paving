@@ -13,7 +13,7 @@ locals {
     management_subnet_gateway = google_compute_subnetwork.management.gateway_address
 
     ops_manager_bucket              = google_storage_bucket.ops-manager.name
-    ops_manager_dns                 = google_dns_record_set.ops-manager.name
+    ops_manager_dns                 = replace(google_dns_record_set.ops-manager.name, "/\\.$/", "")
     ops_manager_public_ip           = google_compute_address.ops-manager.address
     ops_manager_service_account_key = google_service_account_key.ops-manager.private_key
     ops_manager_ssh_public_key      = tls_private_key.ops-manager.public_key_openssh
@@ -34,12 +34,12 @@ locals {
     tcp_target_pool_name      = google_compute_target_pool.tcp-lb.name
     web_target_pool_name      = google_compute_target_pool.websocket-lb.name
 
-    sys_dns         = google_dns_record_set.wildcard-sys.name
-    apps_dns        = google_dns_record_set.wildcard-apps.name
-    doppler_dns     = google_dns_record_set.doppler-sys.name
-    loggregator_dns = google_dns_record_set.loggregator-sys.name
-    ssh_dns         = google_dns_record_set.ssh.name
-    tcp_dns         = google_dns_record_set.tcp.name
+    sys_dns         = replace(google_dns_record_set.wildcard-sys.name, "/\\.$/", "")
+    apps_dns        = replace(google_dns_record_set.wildcard-apps.name, "/\\.$/", "")
+    doppler_dns     = replace(google_dns_record_set.doppler-sys.name, "/\\.$/", "")
+    loggregator_dns = replace(google_dns_record_set.loggregator-sys.name, "/\\.$/", "")
+    ssh_dns         = replace(google_dns_record_set.ssh.name, "/\\.$/", "")
+    tcp_dns         = replace(google_dns_record_set.tcp.name, "/\\.$/", "")
 
     pks_subnet_name               = google_compute_subnetwork.pks.name
     pks_subnet_cidr               = google_compute_subnetwork.pks.ip_cidr_range
