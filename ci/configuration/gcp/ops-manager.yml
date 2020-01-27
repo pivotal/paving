@@ -4,11 +4,11 @@ opsman-configuration:
     gcp_service_account: ((gcp_service_account_key))
     project: ((project))
     region: ((region))
-    zone: ((zone))
+    zone: ((availability_zones.0))
     vm_name: "ops-manager-vm"
-    vpc_subnet: ((vpc_subnet))
-    tags: ((tags)) 
+    vpc_subnet: ((management_subnet_name))
+    tags: ((ops_manager_tags))
     custom_cpu: 4
     custom_memory: 16
     boot_disk_size: 100
-    public_ip: ((public_ip))
+    public_ip: ((ops_manager_public_ip))

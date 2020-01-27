@@ -1,14 +1,14 @@
 ---
 opsman-configuration:
   aws:
-    access_key_id: ((access_key_id))
+    access_key_id: ((access_key))
     secret_access_key: ((secret_key))
     region: ((region))
-    vpc_subnet_id: ((vpc_subnet_id))
-    security_group_ids: ((security_group_ids))
-    key_pair_name: ((key_pair_name))
-    iam_instance_profile_name: ((iam_instance_profile_name))
-    public_ip: ((public_ip))
-    vm_name: ops-manager-vm
+    vpc_subnet_id: ((ops_manager_subnet_id))
+    security_group_ids: ((ops_manager_security_group_id))
+    key_pair_name: ((ops_manager_key_pair_name))
+    iam_instance_profile_name: ((ops_manager_iam_instance_profile_name))
+    public_ip: ((ops_manager_public_ip))
+    vm_name: ((environment_name))-ops-manager-vm
     boot_disk_size: 100
     instance_type: m5.large
