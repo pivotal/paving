@@ -16,13 +16,14 @@ function main() {
   stemcell="$(ls -1 "${cwd}"/stemcell/*.tgz)"
 
   metadata="${PWD}/env-state/metadata"
-
-  ops_manager_dns=$(jq -r .ops_manager_dns < "${metadata}") || true
+  vars_file="${PWD}/env-state/vars-file"
+  updated_config="${PWD}/env-state/${PRODUCT_NAME}.yml"
 
   # generate-config
   bosh interpolate "${PRODUCT_YML}" --vars-file "${vars_file}" > "${updated_config}"
 
   # upload and stage product
+  ops_manager_dns=$(jq -r .ops_manager_dns < "${metadata}") || true
   om -t "https://${ops_manager_dns}" -k upload-stemcell --stemcell "${stemcell}"
   om --request-timeout 7200 -t "https://${ops_manager_dns}" -k upload-product --product "${product}"
   om -t "https://${ops_manager_dns}" -k stage-product --product-name "${PRODUCT_NAME}" --product-version "${version}"
