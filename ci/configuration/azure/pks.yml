@@ -4,32 +4,11 @@ product-properties:
     value:
       cert_pem: ((ssl_cert_public))
       private_key_pem: ((ssl_cert_private))
-  .properties.bosh-metric-sink-etcd:
-    value: true
-  .properties.bosh-metric-sink-kube-apiserver:
-    value: false
-  .properties.bosh-metric-sink-kube-controller-manager:
-    value: false
-  .properties.bosh-metric-sink-kubelet:
-    value: false
-  .properties.bosh-metric-sink-node-exporter-master:
-    value: false
-  .properties.bosh-metric-sink-node-exporter-pks-api:
-    value: false
-  .properties.bosh-metric-sink-node-exporter-worker:
-    value: false
   .properties.bosh-metric-sink-outputs:
     value: |
       [[outputs.discard]]
-  .properties.cloud_provider:
-    selected_option: azure
-    value: Azure
   .properties.cloud_provider.azure.azure_cloud_name:
-    value: AzureUSGovernmentCloud
-  .properties.cloud_provider.azure.azure_master_managed_identity:
-    value: ((pks_master_managed_identity))
-  .properties.cloud_provider.azure.azure_worker_managed_identity:
-    value: ((pks_worker_managed_identity))
+    value: ((cloud_name))
   .properties.cloud_provider.azure.default_security_group:
     value: ((platform_vms_security_group_name))
   .properties.cloud_provider.azure.location:
@@ -57,41 +36,11 @@ product-properties:
     value: 10.200.0.0/16
   .properties.network_selector.flannel.service_cluster_cidr:
     value: 10.100.200.0/24
-  .properties.node_exporter_deploy:
-    value: false
-  .properties.oidc_selector:
-    selected_option: disabled
-    value: disabled
-  .properties.pks-vrli:
-    selected_option: disabled
-    value: disabled
-  .properties.pks-vrops:
-    selected_option: disabled
-    value: disabled
   .properties.pks_api_hostname:
     value: ((pks_dns))
   .properties.plan1_selector:
     selected_option: active
     value: Plan Active
-  .properties.plan1_selector.active.admission_plugins:
-    value: []
-  .properties.plan1_selector.active.allow_privileged_containers:
-    value: true
-  .properties.plan1_selector.active.description:
-    value: 'Example: This plan will configure a lightweight kubernetes cluster. Not
-      recommended for production workloads.'
-  .properties.plan1_selector.active.kubelet_drain_delete_local_data:
-    value: true
-  .properties.plan1_selector.active.kubelet_drain_force:
-    value: true
-  .properties.plan1_selector.active.kubelet_drain_force_node:
-    value: false
-  .properties.plan1_selector.active.kubelet_drain_grace_period:
-    value: 10
-  .properties.plan1_selector.active.kubelet_drain_ignore_daemonsets:
-    value: true
-  .properties.plan1_selector.active.kubelet_drain_timeout:
-    value: 0
   .properties.plan1_selector.active.master_az_placement:
     value:
     - Availability Sets
@@ -106,108 +55,6 @@ product-properties:
     - Availability Sets
   .properties.plan1_selector.active.worker_instances:
     value: 3
-  .properties.plan2_selector:
-    selected_option: inactive
-    value: Plan Inactive
-  .properties.plan3_selector:
-    selected_option: inactive
-    value: Plan Inactive
-  .properties.plan4_selector:
-    selected_option: inactive
-    value: Plan Inactive
-  .properties.plan5_selector:
-    selected_option: inactive
-    value: Plan Inactive
-  .properties.plan6_selector:
-    selected_option: inactive
-    value: Plan Inactive
-  .properties.plan7_selector:
-    selected_option: inactive
-    value: Plan Inactive
-  .properties.plan8_selector:
-    selected_option: inactive
-    value: Plan Inactive
-  .properties.plan9_selector:
-    selected_option: inactive
-    value: Plan Inactive
-  .properties.plan10_selector:
-    selected_option: active
-    value: Plan Active
-  .properties.plan10_selector.active.admission_plugins:
-    value: []
-  .properties.plan10_selector.active.allow_privileged_containers:
-    value: true
-  .properties.plan10_selector.active.description:
-    value: This is a plan reserved for the Concourse Control Plane that is powering
-      this installation and others that it can access
-  .properties.plan10_selector.active.kubelet_drain_delete_local_data:
-    value: true
-  .properties.plan10_selector.active.kubelet_drain_force:
-    value: true
-  .properties.plan10_selector.active.kubelet_drain_force_node:
-    value: false
-  .properties.plan10_selector.active.kubelet_drain_grace_period:
-    value: 10
-  .properties.plan10_selector.active.kubelet_drain_ignore_daemonsets:
-    value: true
-  .properties.plan10_selector.active.kubelet_drain_timeout:
-    value: 0
-  .properties.plan10_selector.active.master_az_placement:
-    value:
-    - Availability Sets
-  .properties.plan10_selector.active.master_instances:
-    value: 3
-  .properties.plan10_selector.active.max_worker_instances:
-    value: 50
-  .properties.plan10_selector.active.name:
-    value: control-plane
-  .properties.plan10_selector.active.worker_az_placement:
-    value:
-    - Availability Sets
-  .properties.plan10_selector.active.worker_instances:
-    value: 3
-  .properties.plan10_selector.active.worker_vm_type:
-    value: Standard_F8s
-  .properties.plan11_selector:
-    selected_option: inactive
-    value: Plan Inactive
-  .properties.plan12_selector:
-    selected_option: inactive
-    value: Plan Inactive
-  .properties.plan13_selector:
-    selected_option: inactive
-    value: Plan Inactive
-  .properties.proxy_selector:
-    selected_option: disabled
-    value: Disabled
-  .properties.syslog_selector:
-    selected_option: disabled
-    value: disabled
-  .properties.telemetry_installation_purpose_selector:
-    selected_option: not_provided
-    value: not_provided
-  .properties.telemetry_selector:
-    selected_option: disabled
-    value: disabled
-  .properties.tmc:
-    selected_option: disabled
-    value: disabled
-  .properties.uaa:
-    selected_option: internal
-    value: internal
-  .properties.uaa_pks_cli_access_token_lifetime:
-    value: 600
-  .properties.uaa_pks_cli_refresh_token_lifetime:
-    value: 21600
-  .properties.uaa_pks_cluster_client_access_token_lifetime:
-    value: 600
-  .properties.uaa_pks_cluster_client_refresh_token_lifetime:
-    value: 21600
-  .properties.wavefront:
-    selected_option: disabled
-    value: disabled
-  .properties.worker_max_in_flight:
-    value: 5
 network-properties:
   network:
     name: pks
@@ -219,30 +66,7 @@ network-properties:
     name: Availability Sets
 resource-config:
   pivotal-container-service:
-    max_in_flight: 1
-    additional_networks: []
     additional_vm_extensions:
     - pks-api-lb-security-groups
     elb_names:
     - ((pks_lb_name))
-    instance_type:
-      id: automatic
-    instances: automatic
-    internet_connected: false
-    persistent_disk:
-      size_mb: automatic
-    swap_as_percent_of_memory_size: automatic
-errand-config:
-  delete-all-clusters:
-    pre-delete-state: true
-  pks-nsx-t-precheck:
-    post-deploy-state: false
-  smoke-tests:
-    post-deploy-state: false
-  upgrade-all-service-instances:
-    post-deploy-state: false
-  wavefront-alert-creation:
-    post-deploy-state: false
-  wavefront-alert-deletion:
-    pre-delete-state: false
-

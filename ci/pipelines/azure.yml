@@ -71,6 +71,14 @@ resources:
     product_version: ^\d+\.\d+\.\d+
     sort_by: semver
 
+- name: pks
+  type: pivnet
+  source:
+    api_token: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
+    product_slug: pivotal-container-service
+    product_version: ^\d+\.\d+\.\d+
+    sort_by: semver
+
 - name: opsman-image
   type: pivnet
   source:
@@ -116,6 +124,10 @@ jobs:
       params:
         globs:
         - srt-*.pivotal
+    - get: pks
+      params:
+        globs:
+        - pks-*.pivotal
     - get: platform-automation-image
       params:
         unpack: true
@@ -181,6 +193,17 @@ jobs:
       input_mapping:
         env-state: env-state-azure
         product: srt
+        product-config-repo: paving-ci
+
+    - task: upload-configure-stage-pks
+      file: paving-ci/ci/tasks/upload-configure-stage/task.yml
+      params:
+        <<: *om-creds
+        PRODUCT_NAME: pivotal-container-service
+        PRODUCT_YML: paving-ci/ci/configuration/azure/pks.yml
+      input_mapping:
+        env-state: env-state-azure
+        product: pivotal-container-service
         product-config-repo: paving-ci
 
     - task: apply-changes
