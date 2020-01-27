@@ -63,7 +63,7 @@ locals {
     services_subnet_reserved_ip_ranges = "${cidrhost(google_compute_subnetwork.services.ip_cidr_range, 1)}-${cidrhost(google_compute_subnetwork.services.ip_cidr_range, 9)}"
 
     ssl_certificate = var.ssl_certificate
-    ssl_private_key = var.private_key
+    ssl_private_key = var.ssl_private_key
   }
 }
 
