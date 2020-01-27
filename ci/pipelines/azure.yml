@@ -11,6 +11,11 @@ resource_types:
     repository: pivotalcf/pivnet-resource
     tag: latest-final
 
+shared:
+- params: &om-creds
+    OM_USERNAME: ((Shared-Paving Terraform/ci/om/Notes/username))
+    OM_PASSWORD: ((Shared-Paving Terraform/ci/om/Notes/password))
+
 resources:
 - name: paving
   type: git
@@ -99,7 +104,8 @@ jobs:
         env_name: paving-azure
         terraform_source: paving/azure
         delete_on_failure: true
-    - task: create-opsman-config
+
+    - task: get-ops-manager-config
       file: paving-ci/ci/tasks/get-ops-manager-config/task.yml
       input_mapping:
         env-state: env-state-azure
@@ -112,6 +118,7 @@ jobs:
         AZURE_CLIENT_SECRET: ((Shared-Paving Terraform/ci/azure_client_secret/Notes))
       output_mapping:
         env-state: env-state-azure
+
     - task: create-vm
       image: platform-automation-image
       file: platform-automation-tasks/tasks/create-vm.yml
@@ -121,6 +128,37 @@ jobs:
         state: env-state-azure
       params:
         OPSMAN_CONFIG_FILE: ops-manager.yml
+
+    - task: configure-authentication
+      file: paving-ci/ci/tasks/configure-authentication/task.yml
+      params:
+        <<: *om-creds
+      input_mapping:
+        env-state: env-state-azure
+
+    - task: get-director-config
+      file: paving-ci/ci/tasks/get-director-config/task.yml
+      input_mapping:
+        env-state: env-state-azure
+        paving: paving-ci
+      params:
+        IAAS: azure
+        AZURE_SUBSCRIPTION_ID: ((Shared-Paving Terraform/ci/azure_subscription_id/Notes))
+        AZURE_TENANT_ID: ((Shared-Paving Terraform/ci/azure_tenant_id/Notes))
+        AZURE_CLIENT_ID: ((Shared-Paving Terraform/ci/azure_client_id/Notes))
+        AZURE_CLIENT_SECRET: ((Shared-Paving Terraform/ci/azure_client_secret/Notes))
+      output_mapping:
+        env-state: env-state-azure
+
+    - task: configure-director
+      file: paving-ci/ci/tasks/configure-director/task.yml
+      params:
+        <<: *om-creds
+        TEMPLATE_PATH: director-config-template/ci/configuration/azure/director.yml
+      input_mapping:
+        env-state: env-state-azure
+        director-config-template: paving-ci
+
     # - put: env-state-azure
     #   params:
     #     terraform_source: paving/azure
@@ -129,3 +167,4 @@ jobs:
     #     action: destroy
     #   get_params:
     #     action: destroy
+
