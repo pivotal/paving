@@ -38,21 +38,10 @@ main() {
       > "${updated_config}"
 
   elif [ "${IAAS}" == "azure" ]; then
-    bosh interpolate "${config}" \
-      --var tenant_id="${AZURE_TENANT_ID}" \
-      --var subscription_id="${AZURE_SUBSCRIPTION_ID}" \
-      --var client_id="${AZURE_CLIENT_ID}" \
-      --var client_secret="${AZURE_CLIENT_SECRET}" \
-      --var location="$(cat "${metadata}" | yq -r .stable_config | jq -r .location)" \
-      --var resource_group_name="$(cat "${metadata}" | yq -r .stable_config | jq -r .resource_group_name)" \
-      --var management_subnet_id="$(cat "${metadata}" | yq -r .stable_config | jq -r .management_subnet_id)" \
-      --var ops_manager_public_key="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_public_key)"  \
-      --var ops_manager_public_ip="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_public_ip)"  \
-      --var ops_manager_security_group_name="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_security_group_name)" \
-      --var ops_manager_container_name="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_public_ip)" \
-      --var ops_manager_storage_account_name="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_storage_account_name)" \
-      --var ops_manager_container_name="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_container_name)" \
-      > "${updated_config}"
+    vars_file="${PWD}/env-state/vars-file"
+    cat "${metadata}" | yq -r .stable_config | jq -r . > "${vars_file}"
+
+    bosh interpolate "${config}" --vars-file "${vars_file}" > "${updated_config}"
   fi
 }
 
