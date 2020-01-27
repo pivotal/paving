@@ -1,8 +1,8 @@
 ---
 az-configuration:
-- name: ((availability_zones))[0]
-- name: ((availability_zones))[1]
-- name: ((availability_zones))[2]
+- name: ((availability_zones.0))
+- name: ((availability_zones.1))
+- name: ((availability_zones.2))
 properties-configuration:
   iaas_configuration:
     project: ((project))
@@ -18,7 +18,10 @@ networks-configuration:
   networks:
   - name: management
     subnets:
-    - availability_zone_names: ((availability_zones))
+    - availability_zone_names:
+      - ((availability_zones.0))
+      - ((availability_zones.1))
+      - ((availability_zones.2))
       cidr: ((management_subnet_cidr))
       dns: 169.254.169.254
       gateway: ((management_subnet_gateway))
@@ -26,7 +29,10 @@ networks-configuration:
       reserved_ip_ranges: ((management_subnet_reserved_ip_ranges))
   - name: pas
     subnets:
-    - availability_zone_names: ((availability_zones))
+    - availability_zone_names:
+      - ((availability_zones.0))
+      - ((availability_zones.1))
+      - ((availability_zones.2))
       cidr: ((pas_subnet_cidr))
       dns: 169.254.169.254
       gateway: ((pas_subnet_gateway))
@@ -34,7 +40,10 @@ networks-configuration:
       reserved_ip_ranges: ((pas_subnet_reserved_ip_ranges))
   - name: services
     subnets:
-    - availability_zone_names: ((availability_zones))
+    - availability_zone_names:
+      - ((availability_zones.0))
+      - ((availability_zones.1))
+      - ((availability_zones.2))
       cidr: ((services_subnet_cidr))
       dns: 169.254.169.254
       gateway: ((services_subnet_gateway))
@@ -42,7 +51,10 @@ networks-configuration:
       reserved_ip_ranges: ((services_subnet_reserved_ip_ranges))
   - name: pks
     subnets:
-    - availability_zone_names: ((availability_zones))
+    - availability_zone_names:
+      - ((availability_zones.0))
+      - ((availability_zones.1))
+      - ((availability_zones.2))
       cidr: ((pks_subnet_cidr))
       dns: 168.63.129.16
       gateway: ((pks_subnet_gateway))
