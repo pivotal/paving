@@ -136,28 +136,12 @@ jobs:
       input_mapping:
         env-state: env-state-azure
 
-    - task: get-director-config
-      file: paving-ci/ci/tasks/get-director-config/task.yml
-      input_mapping:
-        env-state: env-state-azure
-        paving: paving-ci
-      params:
-        IAAS: azure
-        AZURE_SUBSCRIPTION_ID: ((Shared-Paving Terraform/ci/azure_subscription_id/Notes))
-        AZURE_TENANT_ID: ((Shared-Paving Terraform/ci/azure_tenant_id/Notes))
-        AZURE_CLIENT_ID: ((Shared-Paving Terraform/ci/azure_client_id/Notes))
-        AZURE_CLIENT_SECRET: ((Shared-Paving Terraform/ci/azure_client_secret/Notes))
-      output_mapping:
-        env-state: env-state-azure
-
     - task: configure-director
       file: paving-ci/ci/tasks/configure-director/task.yml
       params:
         <<: *om-creds
-        TEMPLATE_PATH: director-config-template/ci/configuration/azure/director.yml
       input_mapping:
         env-state: env-state-azure
-        director-config-template: paving-ci
 
     # - put: env-state-azure
     #   params:
