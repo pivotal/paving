@@ -17,7 +17,7 @@ main() {
       --var project="$(cat "${metadata}" | yq -r .stable_config | jq -r .project)" \
       --var region="$(cat "${metadata}" | yq -r .stable_config | jq -r .region)" \
       --var zone="$(cat "${metadata}" | yq -r .stable_config | jq -r .availability_zones[0])" \
-      --var vpc_subnet="$(cat "${metadata}" | yq -r .stable_config | jq -r .management_subnet_name)" \
+      --var vpc_subnet="$(cat "${metadata}" | yq -r .stable_config | jq -r .public_subnet_name)" \
       --var public_ip="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_public_ip)" \
       > "${updated_config}"
 
