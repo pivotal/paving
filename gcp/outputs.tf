@@ -1,5 +1,6 @@
 locals {
   stable_config = {
+    environment_name   = var.environment_name
     project            = var.project
     region             = var.region
     availability_zones = var.availability_zones
