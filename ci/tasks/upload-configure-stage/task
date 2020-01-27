@@ -1,16 +1,5 @@
 #!/bin/bash -exu
 
-function set_opsman_dns() {
-  metadata="${PWD}/env-state/metadata"
-
-  opsman_dns=$(jq -r .ops_manager_dns < "${metadata}") || true
-
-  # if yq failed then it means we might be setting dns for vsphere
-  if [ -z "${opsman_dns}" ] || [ "${opsman_dns}" == "null" ]; then
-    opsman_dns=$(yq -r .opsman.hostname < "${metadata}")
-  fi
-}
-
 function main() {
   if [ -n "${USE_VPN:-}" ] && [ "$USE_VPN" == "true" ] ; then
     source ./cp-ci/ci/tasks/configure-vpn
@@ -26,18 +15,20 @@ function main() {
   product="$(ls -1 "${cwd}"/product/*.pivotal)"
   stemcell="$(ls -1 "${cwd}"/stemcell/*.tgz)"
 
-  set_opsman_dns
+  metadata="${PWD}/env-state/metadata"
+
+  ops_manager_dns=$(jq -r .ops_manager_dns < "${metadata}") || true
 
   # generate-config
-  texplate execute "${cwd}/product-config-repo/${PRODUCT_CONFIG_TEMPLATE}" -f "${cwd}/env-state/metadata" -o yaml > "${cwd}/product-config.yml"
+  bosh interpolate "${PRODUCT_YML}" --vars-file "${vars_file}" > "${updated_config}"
 
   # upload and stage product
-  om -t "https://${opsman_dns}" -k upload-stemcell --stemcell "${stemcell}"
-  om --request-timeout 7200 -t "https://${opsman_dns}" -k upload-product --product "${product}"
-  om -t "https://${opsman_dns}" -k stage-product --product-name "${PRODUCT_NAME}" --product-version "${version}"
+  om -t "https://${ops_manager_dns}" -k upload-stemcell --stemcell "${stemcell}"
+  om --request-timeout 7200 -t "https://${ops_manager_dns}" -k upload-product --product "${product}"
+  om -t "https://${ops_manager_dns}" -k stage-product --product-name "${PRODUCT_NAME}" --product-version "${version}"
 
   # configure-product
-  om -t "https://${opsman_dns}" -k configure-product --config "${cwd}/product-config.yml"
+  om -t "https://${ops_manager_dns}" -k configure-product --config "${updated_config}"
 }
 
 main "$@"
