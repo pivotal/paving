@@ -17,24 +17,6 @@ shared:
     OM_PASSWORD: ((Shared-Paving Terraform/ci/om/Notes/password))
 
 resources:
-- name: paving
-  type: git
-  source:
-    branch: master
-    uri: git@github.com:pivotal/paving.git
-    private_key: ((Shared-Paving Terraform/ci/paving_pas_deploy_key/Notes/private_key))
-    ignore_paths:
-    - "ci/*"
-
-- name: paving-ci
-  type: git
-  source:
-    branch: master
-    uri: git@github.com:pivotal/paving.git
-    private_key: ((Shared-Paving Terraform/ci/paving_pas_deploy_key/Notes/private_key))
-    paths:
-    - "ci/*"
-
 - name: env-state-gcp
   type: terraform
   source:
@@ -52,6 +34,26 @@ resources:
       service_account_key: ((Shared-Paving Terraform/ci/cf_infra_2_gcp_service_account_key/Notes))
       ssl_certificate: ((Shared-Paving Terraform/ci/terraforming-gcp/Notes/certificate))
       ssl_private_key: ((Shared-Paving Terraform/ci/terraforming-gcp/Notes/private_key))
+
+- name: paving
+  type: git
+  source:
+    branch: master
+    uri: git@github.com:pivotal/paving.git
+    private_key: ((Shared-Paving Terraform/ci/paving_pas_deploy_key/Notes/private_key))
+    # paths:
+    # - "gcp/*"
+    ignore_paths:
+    - "ci/*"
+
+- name: paving-ci
+  type: git
+  source:
+    branch: master
+    uri: git@github.com:pivotal/paving.git
+    private_key: ((Shared-Paving Terraform/ci/paving_pas_deploy_key/Notes/private_key))
+    paths:
+    - "ci/*"
 
 - name: pcf-releng-ci
   type: git
@@ -105,8 +107,6 @@ jobs:
     - get: paving
       trigger: true
     - get: paving-ci
-    - get: ops-manager-config
-      resource: paving-ci
     - get: pcf-releng-ci
     - get: srt
       params:
@@ -139,7 +139,7 @@ jobs:
         terraform_source: paving/gcp
         delete_on_failure: true
 
-    - task: create-opsman-config
+    - task: get-ops-manager-config
       file: paving-ci/ci/tasks/get-ops-manager-config/task.yml
       input_mapping:
         env-state: env-state-gcp
@@ -173,50 +173,43 @@ jobs:
         <<: *om-creds
       input_mapping:
         env-state: env-state-gcp
-      on_failure:
-        do:
-        - put: env-state-gcp
-          params:
-            terraform_source: paving/gcp
-            env_name_file: env-state-gcp/name
-            delete_on_failure: true
 
     - task: configure-director
       file: paving-ci/ci/tasks/configure-director/task.yml
       params:
         <<: *om-creds
-        TEMPLATE_PATH: director-config-template/ci/assets/gcp/director-config.yml
+        DIRECTOR_YML: paving-ci/ci/configuration/gcp/director.yml
       input_mapping:
         env-state: env-state-gcp
-        director-config-template: paving-ci
-      on_failure:
-        do:
-        - put: env-state-gcp
-          params:
-            terraform_source: paving/gcp
-            env_name_file: env-state-gcp/name
-            delete_on_failure: true
 
     - task: upload-configure-stage-pas
       file: paving-ci/ci/tasks/upload-configure-stage/task.yml
       params:
         <<: *om-creds
         PRODUCT_NAME: cf
-        PRODUCT_CONFIG_TEMPLATE: paving-ci/assets/gcp/srt-config.yml
+        PRODUCT_YML: paving-ci/ci/configuration/gcp/srt.yml
       input_mapping:
         env-state: env-state-gcp
         product: srt
         product-config-repo: paving-ci
-      on_failure:
-        do:
-        - put: env-state-gcp
-          params:
-            terraform_source: paving/gcp
-            env_name_file: env-state-gcp/name
-            delete_on_failure: true
-            action: destroy
-          get_params:
-            action: destroy
+
+    # - task: upload-configure-stage-pks
+    #   file: paving-ci/ci/tasks/upload-configure-stage/task.yml
+    #   params:
+    #     <<: *om-creds
+    #     PRODUCT_NAME: pks
+    #     PRODUCT_CONFIG_TEMPLATE: paving-ci/assets/gcp/pks-config.yml
+    #   input_mapping:
+    #     env-state: env-state-gcp
+    #     product: pks
+    #     product-config-repo: paving-ci
+    #   on_failure:
+    #     do:
+    #     - put: env-state-gcp
+    #       params:
+    #         terraform_source: paving/gcp
+    #         env_name_file: env-state-gcp/name
+    #         delete_on_failure: true
 
     - task: apply-changes
       attempts: 3
@@ -225,21 +218,21 @@ jobs:
         <<: *om-creds
       input_mapping:
         env-state: env-state-gcp
-      ensure:
-        do:
-        - task: delete-installation
-          file: pcf-releng-ci/tasks/environment/delete-installation/task.yml
-          params:
-            OPSMAN_USERNAME: ((Shared-Paving Terraform/ci/om/Notes/username))
-            OPSMAN_PASSWORD: ((Shared-Paving Terraform/ci/om/Notes/password))
-            OPSMAN_URL_SUFFIX: paving-gcp.tfsti.cf-app.com
-          input_mapping:
-            environment: env-state-gcp
-        - put: env-state-gcp
-          params:
-            terraform_source: paving/gcp
-            env_name_file: env-state-gcp/name
-            delete_on_failure: true
-            action: destroy
-          get_params:
-            action: destroy
+      # ensure:
+      #   do:
+      #   - task: delete-installation
+      #     file: pcf-releng-ci/tasks/environment/delete-installation/task.yml
+      #     params:
+      #       OPSMAN_USERNAME: ((Shared-Paving Terraform/ci/om/Notes/username))
+      #       OPSMAN_PASSWORD: ((Shared-Paving Terraform/ci/om/Notes/password))
+      #       OPSMAN_URL_SUFFIX: paving-gcp.tfsti.cf-app.com
+      #     input_mapping:
+      #       environment: env-state-gcp
+      #   - put: env-state-gcp
+      #     params:
+      #       terraform_source: paving/gcp
+      #       env_name_file: env-state-gcp/name
+      #       delete_on_failure: true
+      #       action: destroy
+      #     get_params:
+      #       action: destroy
