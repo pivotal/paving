@@ -60,6 +60,7 @@ jobs:
       file: paving-ci/ci/tasks/get-ops-manager-config/task.yml
       input_mapping:
         env-state: env-state-azure
+        paving: paving-ci
       params:
         IAAS: azure
         AZURE_SUBSCRIPTION_ID: ((Shared-Paving Terraform/ci/azure_subscription_id/Notes))
@@ -68,11 +69,11 @@ jobs:
         AZURE_CLIENT_SECRET: ((Shared-Paving Terraform/ci/azure_client_secret/Notes))
       output_mapping:
         env-state: config
-    - put: env-state-azure
-      params:
-        terraform_source: paving/azure
-        env_name_file: env-state-azure/name
-        delete_on_failure: true
-        action: destroy
-      get_params:
-        action: destroy
+    # - put: env-state-azure
+    #   params:
+    #     terraform_source: paving/azure
+    #     env_name_file: env-state-azure/name
+    #     delete_on_failure: true
+    #     action: destroy
+    #   get_params:
+    #     action: destroy

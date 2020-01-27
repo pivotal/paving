@@ -14,8 +14,6 @@ locals {
 
     bosh_storage_account_name = azurerm_storage_account.bosh.name
 
-
-
     ops_manager_security_group_name  = azurerm_network_security_group.ops-manager.name
     ops_manager_private_key          = tls_private_key.ops_manager.private_key_pem
     ops_manager_private_ip           = cidrhost(azurerm_subnet.management.address_prefix, 5)
