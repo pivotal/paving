@@ -19,6 +19,7 @@ main() {
       --var zone="$(cat "${metadata}" | yq -r .stable_config | jq -r .availability_zones[0])" \
       --var vpc_subnet="$(cat "${metadata}" | yq -r .stable_config | jq -r .public_subnet_name)" \
       --var public_ip="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_public_ip)" \
+      --var tags="$(cat "${metadata}" | yq -r .stable_config | jq -r .environment_name)-ops-manager" \
       > "${updated_config}"
 
     rm "${key}"
