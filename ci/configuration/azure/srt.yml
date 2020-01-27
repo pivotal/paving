@@ -8,6 +8,12 @@ product-properties:
     value: example@example.com
   .nfs_server.blobstore_internal_access_rules:
     value: allow 10.0.0.0/8;,allow 172.16.0.0/12;,allow 192.168.0.0/16;
+  .properties.credhub_internal_provider_keys:
+    value:
+    - key:
+        secret: 1a2b3c4d5e6f7g8h9i0j
+      name: Key
+      primary: true
   .properties.haproxy_forward_tls:
     value: disable
   .properties.networking_poe_ssl_certs:
@@ -21,6 +27,8 @@ product-properties:
   .properties.system_blobstore:
     selected_option: external_azure
     value: external_azure
+  .properties.security_acknowledgement:
+    value: X
   .properties.system_blobstore.external_azure.access_key:
     value:
       secret: ((pas_storage_account_access_key))
