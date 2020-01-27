@@ -14,6 +14,5 @@ run:
   path: paving-ci/ci/tasks/apply-changes/task
 
 params:
-  OM_USERNAME: ""
-  OM_PASSWORD: ""
-  IGNORE_WARNINGS: false
+  OM_USERNAME:
+  OM_PASSWORD:
