@@ -32,9 +32,9 @@ product-properties:
     value:
     - certificate:
         cert_pem: |
-          ((.ssl_certificate))
+          ((ssl_certificate))
         private_key_pem: |
-          ((.ssl_private_key))
+          ((ssl_private_key))
       name: Certificate
   .properties.security_acknowledgement:
     value: X
