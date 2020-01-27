@@ -1,0 +1,51 @@
+#!/bin/bash -eu
+
+main() {
+  om -v
+
+  metadata="${PWD}/env-state/metadata"
+
+  config="${PWD}/paving/ci/configuration/${IAAS}/director.yml"
+  updated_config="${PWD}/env-state/director.yml"
+
+ if [ "${IAAS}" == "azure" ]; then
+    bosh interpolate "${config}" \
+      --var tenant_id="${AZURE_TENANT_ID}" \
+      --var subscription_id="${AZURE_SUBSCRIPTION_ID}" \
+      --var client_id="${AZURE_CLIENT_ID}" \
+      --var client_secret="${AZURE_CLIENT_SECRET}" \
+      --var location="$(cat "${metadata}" | yq -r .stable_config | jq -r .location)" \
+      --var resource_group_name="$(cat "${metadata}" | yq -r .stable_config | jq -r .resource_group_name)" \
+      --var network_name="$(cat "${metadata}" | yq -r .stable_config | jq -r .network_name)" \
+
+      --var bosh_storage_account_name="$(cat "${metadata}" | yq -r .stable_config | jq -r .bosh_storage_account_name)" \
+      --var ops_manager_public_key="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_public_key)"  \
+      --var ops_manager_private_key="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_private_key)"  \
+
+      --var management_subnet_name="$(cat "${metadata}" | yq -r .stable_config | jq -r .management_subnet_name)" \
+      --var management_subnet_cidr="$(cat "${metadata}" | yq -r .stable_config | jq -r .management_subnet_cidr)" \
+      --var management_subnet_gateway="$(cat "${metadata}" | yq -r .stable_config | jq -r .management_subnet_gateway)" \
+      --var management_subnet_range="$(cat "${metadata}" | yq -r .stable_config | jq -r .management_subnet_range)" \
+
+      --var pas_subnet_name="$(cat "${metadata}" | yq -r .stable_config | jq -r .pas_subnet_name)" \
+      --var pas_subnet_cidr="$(cat "${metadata}" | yq -r .stable_config | jq -r .pas_subnet_cidr)" \
+      --var pas_subnet_gateway="$(cat "${metadata}" | yq -r .stable_config | jq -r .pas_subnet_gateway)" \
+      --var pas_subnet_range="$(cat "${metadata}" | yq -r .stable_config | jq -r .pas_subnet_range)" \
+
+      --var pks_subnet_name="$(cat "${metadata}" | yq -r .stable_config | jq -r .pks_subnet_name)" \
+      --var pks_subnet_cidr="$(cat "${metadata}" | yq -r .stable_config | jq -r .pks_subnet_cidr)" \
+      --var pks_subnet_gateway="$(cat "${metadata}" | yq -r .stable_config | jq -r .pks_subnet_gateway)" \
+      --var pks_subnet_range="$(cat "${metadata}" | yq -r .stable_config | jq -r .pks_subnet_range)" \
+
+      --var services_subnet_name="$(cat "${metadata}" | yq -r .stable_config | jq -r .services_subnet_name)" \
+      --var services_subnet_cidr="$(cat "${metadata}" | yq -r .stable_config | jq -r .services_subnet_cidr)" \
+      --var services_subnet_gateway="$(cat "${metadata}" | yq -r .stable_config | jq -r .services_subnet_gateway)" \
+      --var services_subnet_range="$(cat "${metadata}" | yq -r .stable_config | jq -r .services_subnet_range)" \
+
+      --var pks_api_network_security_group_name="$(cat "${metadata}" | yq -r .stable_config | jq -r .pks_api_network_security_group_name)" \
+
+      > "${updated_config}"
+  fi
+}
+
+main "$@"
