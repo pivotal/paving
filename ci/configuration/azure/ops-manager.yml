@@ -1,6 +1,6 @@
 opsman-configuration:
   azure:
-    vm_name: "opsman-((environment_name))"
+    vm_name: "((resource_group_name))-ops-manager"
     subscription_id: ((subscription_id))
     resource_group: ((resource_group_name))
     tenant_id: ((tenant_id))
@@ -8,7 +8,6 @@ opsman-configuration:
     client_secret: ((client_secret))
     location: ((location))
     public_ip: ((ops_manager_public_ip))
-    private_ip: ((ops_manager_private_ip))
     container: ((ops_manager_container_name))
     boot_disk_size: "100"
     use_managed_disk: "true"
@@ -18,4 +17,3 @@ opsman-configuration:
     ssh_public_key: ((ops_manager_public_key))
     vm_size: "Standard_DS2_v2"
     storage_sku: "Premium_LRS"
-    cloud_name: ((cloud_name))

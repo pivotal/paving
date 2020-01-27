@@ -44,10 +44,12 @@ main() {
       --var client_secret="${AZURE_CLIENT_SECRET}" \
       --var location="$(cat "${metadata}" | yq -r .stable_config | jq -r .location)" \
       --var resource_group="$(cat "${metadata}" | yq -r .stable_config | jq -r .resource_group_name)" \
-      --var storage_account="$(cat "${metadata}" | yq -r .stable_config | jq -r .container_opsmanager_image)" \
-      --var ssh_public_key="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_public_key)"  \
-      --var subnet_id="$(cat "${metadata}" | yq -r .stable_config | jq -r .subnet_management_id)" \
-      --var public_ip="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_public_ip)"  \
+      --var ops_manager_public_key="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_public_key)"  \
+      --var management_subnet_id="$(cat "${metadata}" | yq -r .stable_config | jq -r .management_ubsnet_id)" \
+      --var ops_manager_public_ip="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_public_ip)"  \
+      --var ops_manager_container_name="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_public_ip)" \
+      --var ops_manager_storage_account_name="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_storage_account_name)" \
+      --var ops_manager_container_name="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_container_name)" \
       > "${updated_config}"
   fi
 }
