@@ -212,7 +212,7 @@ jobs:
     #         delete_on_failure: true
 
     - task: apply-changes
-      attempts: 3
+      attempts: 2
       file: paving-ci/ci/tasks/apply-changes/task.yml
       params:
         <<: *om-creds

@@ -183,6 +183,14 @@ jobs:
         product: srt
         product-config-repo: paving-ci
 
+    - task: apply-changes
+      attempts: 2
+      file: paving-ci/ci/tasks/apply-changes/task.yml
+      params:
+        <<: *om-creds
+      input_mapping:
+        env-state: env-state-azure
+
     # - put: env-state-azure
     #   params:
     #     terraform_source: paving/azure
