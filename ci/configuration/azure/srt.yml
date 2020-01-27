@@ -1,0 +1,151 @@
+product-name: cf
+product-properties:
+  .cloud_controller.apps_domain:
+    value: ((apps_dns_domain))
+  .cloud_controller.system_domain:
+    value: ((sys_dns_domain))
+  .mysql_monitor.recipient_email:
+    value: example@example.com
+  .nfs_server.blobstore_internal_access_rules:
+    value: allow 10.0.0.0/8;,allow 172.16.0.0/12;,allow 192.168.0.0/16;
+  .properties.haproxy_forward_tls.enable.backend_ca:
+    value: ((ssl_cert_public))
+  .properties.routing_custom_ca_certificates:
+    value: ((ssl_cert_public))
+  .properties.system_blobstore:
+    selected_option: external_azure
+    value: external_azure
+  .properties.system_blobstore.external_azure.access_key:
+    value:
+      secret: ((pas_storage_account_access_key))
+  .properties.system_blobstore.external_azure.account_name:
+    value: ((pas_storage_account_name))
+  .properties.system_blobstore.external_azure.buildpacks_container:
+    value: ((pas_buildpacks_container_name))
+  .properties.system_blobstore.external_azure.droplets_container:
+    value: ((pas_droplets_container_name))
+  .properties.system_blobstore.external_azure.enable_bbr:
+    value: true
+  .properties.system_blobstore.external_azure.environment:
+    value: ((cloud_name))
+  .properties.system_blobstore.external_azure.packages_container:
+    value: ((pas_packages_container_name))
+  .properties.system_blobstore.external_azure.resources_container:
+    value: ((pas_resources_container_name))
+  .properties.system_blobstore.external_azure.restore_from_access_key:
+    value: {}
+  .properties.system_blobstore_backup_level:
+    selected_option: all
+    value: all
+  .properties.system_blobstore_ccdroplet_max_staged_droplets_stored:
+    value: 2
+  .properties.system_blobstore_ccpackage_max_valid_packages_stored:
+    value: 2
+  .properties.system_database:
+    selected_option: internal_pxc
+    value: internal_pxc
+  .properties.tcp_routing:
+    selected_option: disable
+    value: disable
+  .properties.uaa:
+    selected_option: internal
+    value: internal
+network-properties:
+  network:
+    name: pas
+  other_availability_zones:
+  - name: Availability Sets
+  singleton_availability_zone:
+    name: Availability Sets
+resource-config:
+  backup_restore:
+    max_in_flight: 1
+    additional_networks: []
+    additional_vm_extensions: []
+    elb_names: []
+    instance_type:
+      id: automatic
+    instances: automatic
+    internet_connected: false
+    persistent_disk:
+      size_mb: automatic
+    swap_as_percent_of_memory_size: automatic
+  blobstore:
+    max_in_flight: 1
+    additional_networks: []
+    additional_vm_extensions: []
+    elb_names: []
+    instance_type:
+      id: automatic
+    instances: 0
+    internet_connected: false
+    persistent_disk:
+      size_mb: automatic
+    swap_as_percent_of_memory_size: automatic
+  compute:
+    max_in_flight: 4%
+    additional_networks: []
+    additional_vm_extensions: []
+    elb_names: []
+    instance_type:
+      id: automatic
+    instances: automatic
+    internet_connected: false
+    swap_as_percent_of_memory_size: automatic
+  control:
+    max_in_flight: 1
+    additional_networks: []
+    additional_vm_extensions: []
+    elb_names:
+    - ((ssh_lb_name))
+    instance_type:
+      id: automatic
+    instances: automatic
+    internet_connected: false
+    swap_as_percent_of_memory_size: automatic
+  database:
+    max_in_flight: 1
+    additional_networks: []
+    additional_vm_extensions: []
+    elb_names:
+    - ((mysql_lb_name))
+    instance_type:
+      id: automatic
+    instances: automatic
+    internet_connected: false
+    persistent_disk:
+      size_mb: automatic
+    swap_as_percent_of_memory_size: automatic
+  ha_proxy:
+    max_in_flight: 1
+    additional_networks: []
+    additional_vm_extensions: []
+    elb_names: []
+    instance_type:
+      id: automatic
+    instances: automatic
+    internet_connected: false
+    swap_as_percent_of_memory_size: automatic
+  router:
+    max_in_flight: 1
+    additional_networks: []
+    additional_vm_extensions: []
+    elb_names:
+    - ((web_lb_name))
+    instance_type:
+      id: automatic
+    instances: automatic
+    internet_connected: false
+    swap_as_percent_of_memory_size: automatic
+  tcp_router:
+    max_in_flight: 1
+    additional_networks: []
+    additional_vm_extensions: []
+    elb_names: []
+    instance_type:
+      id: automatic
+    instances: 0
+    internet_connected: false
+    persistent_disk:
+      size_mb: automatic
+    swap_as_percent_of_memory_size: automatic
