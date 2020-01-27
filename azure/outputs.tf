@@ -6,6 +6,7 @@ locals {
     client_secret    = var.client_secret
     location         = var.location
     environment_name = var.environment_name
+    cloud_name       = var.cloud_name
 
     network_name        = azurerm_virtual_network.platform.name
     resource_group_name = azurerm_resource_group.platform.name
