@@ -1,3 +1,9 @@
+groups:
+- name: gcp
+  jobs:
+  - deploy-gcp
+  - teardown-gcp
+
 resource_types:
 - name: terraform
   type: docker-image
@@ -101,6 +107,7 @@ resources:
 jobs:
 - name: deploy-gcp
   serial: true
+  serial_groups: [gcp]
   public: false
   plan:
   - in_parallel:
@@ -214,13 +221,13 @@ jobs:
 
 - name: teardown-gcp
   serial: true
+  serial_groups: [gcp]
   public: false
   plan:
   - in_parallel:
     - get: paving
     - get: pcf-releng-ci
-  plan:
-  _ do:
+  - do:
     - task: delete-installation
       file: pcf-releng-ci/tasks/environment/delete-installation/task.yml
       params:
