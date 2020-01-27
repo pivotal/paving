@@ -5,6 +5,12 @@ resource_types:
     repository: ljfranklin/terraform-resource
     tag: latest
 
+- name: pivnet
+  type: docker-image
+  source:
+    repository: pivotalcf/pivnet-resource
+    tag: latest-final
+
 resources:
 - name: paving
   type: git
@@ -41,6 +47,32 @@ resources:
       location: ((Shared-Paving Terraform/ci/azure_location/Notes))
       hosted_zone: ((Shared-Paving Terraform/ci/azure_hosted_zone/Notes))
 
+- name: opsman-image
+  type: pivnet
+  source:
+    product_slug: ops-manager
+    api_token: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
+    product_version: ^\d+\.\d+\.\d+
+    sort_by: semver
+
+- name: platform-automation-tasks
+  type: s3
+  source:
+    access_key_id: ((Shared-Paving Terraform/ci/aws_access_key_id/Notes))
+    secret_access_key: ((Shared-Paving Terraform/ci/aws_secret_access_key/Notes))
+    bucket: ((Shared-Paving Terraform/ci/s3_platform_automation_bucket/Notes))
+    region_name: ((Shared-Paving Terraform/ci/s3_platform_automation_bucket_region/Notes))
+    regexp: platform-automation-tasks-(.*).zip
+
+- name: platform-automation-image
+  type: s3
+  source:
+    access_key_id: ((Shared-Paving Terraform/ci/aws_access_key_id/Notes))
+    secret_access_key: ((Shared-Paving Terraform/ci/aws_secret_access_key/Notes))
+    bucket: ((Shared-Paving Terraform/ci/s3_platform_automation_bucket/Notes))
+    region_name: ((Shared-Paving Terraform/ci/s3_platform_automation_bucket_region/Notes))
+    regexp: platform-automation-image-(.*).tgz
+
 jobs:
 - name: deploy-azure
   serial: true
@@ -50,6 +82,17 @@ jobs:
     - get: paving
       trigger: true
     - get: paving-ci
+    - get: opsman-image
+      trigger: true
+      params:
+        globs:
+        - '*azure*.yml'
+    - get: platform-automation-image
+      params:
+        unpack: true
+    - get: platform-automation-tasks
+      params:
+        unpack: true
   - do:
     - put: env-state-azure
       params:
@@ -68,7 +111,16 @@ jobs:
         AZURE_CLIENT_ID: ((Shared-Paving Terraform/ci/azure_client_id/Notes))
         AZURE_CLIENT_SECRET: ((Shared-Paving Terraform/ci/azure_client_secret/Notes))
       output_mapping:
-        env-state: config
+        env-state: env-state-azure
+    - task: create-vm
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/create-vm.yml
+      input_mapping:
+        image: opsman-image
+        config: env-state-azure
+        state: env-state-azure
+      params:
+        OPSMAN_CONFIG_FILE: ops-manager.yml
     # - put: env-state-azure
     #   params:
     #     terraform_source: paving/azure

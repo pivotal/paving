@@ -44,7 +44,7 @@ main() {
       --var client_secret="${AZURE_CLIENT_SECRET}" \
       --var location="$(cat "${metadata}" | yq -r .stable_config | jq -r .location)" \
       --var resource_group_name="$(cat "${metadata}" | yq -r .stable_config | jq -r .resource_group_name)" \
-      --var management_subnet_id="$(cat "${metadata}" | yq -r .stable_config | jq -r .management_ubsnet_id)" \
+      --var management_subnet_id="$(cat "${metadata}" | yq -r .stable_config | jq -r .management_subnet_id)" \
       --var ops_manager_public_key="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_public_key)"  \
       --var ops_manager_public_ip="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_public_ip)"  \
       --var ops_manager_security_group_name="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_security_group_name)" \
