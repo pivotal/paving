@@ -19,6 +19,7 @@ locals {
     ops_manager_service_account_key = google_service_account_key.ops-manager.private_key
     ops_manager_ssh_public_key      = tls_private_key.ops-manager.public_key_openssh
     ops_manager_ssh_private_key     = tls_private_key.ops-manager.private_key_pem
+    ops_manager_tags                = "${var.environment_name}-ops-manager"
 
     pas_subnet_name    = google_compute_subnetwork.pas.name
     pas_subnet_cidr    = google_compute_subnetwork.pas.ip_cidr_range
