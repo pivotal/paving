@@ -23,7 +23,7 @@ function main() {
   bosh interpolate "${PRODUCT_YML}" --vars-file "${vars_file}" > "${updated_config}"
 
   # upload and stage product
-  ops_manager_dns=$(jq -r .ops_manager_dns < "${metadata}") || true
+  ops_manager_dns=$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_dns)
   om -t "https://${ops_manager_dns}" -k upload-stemcell --stemcell "${stemcell}"
   om --request-timeout 7200 -t "https://${ops_manager_dns}" -k upload-product --product "${product}"
   om -t "https://${ops_manager_dns}" -k stage-product --product-name "${PRODUCT_NAME}" --product-version "${version}"
