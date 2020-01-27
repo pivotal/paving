@@ -9,13 +9,10 @@ image_resource:
 inputs:
 - name: env-state
 - name: paving-ci
-- name: director-config-template
 
 run:
   path: paving-ci/ci/tasks/configure-director/task
 
 params:
-  TEMPLATE_PATH:
   OM_USERNAME:
   OM_PASSWORD:
-  CA_CERT:
