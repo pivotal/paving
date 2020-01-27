@@ -13,9 +13,9 @@ network-properties:
     name: ((availability_zones.0))
 product-properties:
   .cloud_controller.apps_domain:
-    value: ((apps_dns))
+    value: ((apps_dns_domain))
   .cloud_controller.system_domain:
-    value: ((sys_dns))
+    value: ((sys_dns_domain))
   .ha_proxy.skip_cert_verify:
     value: true
   .mysql_monitor.recipient_email:
