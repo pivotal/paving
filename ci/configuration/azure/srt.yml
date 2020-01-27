@@ -8,10 +8,16 @@ product-properties:
     value: example@example.com
   .nfs_server.blobstore_internal_access_rules:
     value: allow 10.0.0.0/8;,allow 172.16.0.0/12;,allow 192.168.0.0/16;
-  .properties.haproxy_forward_tls.enable.backend_ca:
-    value: ((ssl_certificate))
-  .properties.routing_custom_ca_certificates:
-    value: ((ssl_certificate))
+  .properties.haproxy_forward_tls:
+    value: disable
+  .properties.networking_poe_ssl_certs:
+    value:
+    - certificate:
+        cert_pem: |
+          ((ssl_certificate))
+        private_key_pem: |
+          ((ssl_private_key))
+      name: Certificate
   .properties.system_blobstore:
     selected_option: external_azure
     value: external_azure
