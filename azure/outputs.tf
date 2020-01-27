@@ -71,6 +71,9 @@ locals {
     services_subnet_cidr    = azurerm_subnet.services.address_prefix
     services_subnet_gateway = cidrhost(azurerm_subnet.services.address_prefix, 1)
     services_subnet_range   = cidrhost(azurerm_subnet.services.address_prefix, 10)
+
+    ssl_certificate = var.ssl_certificate
+    ssl_private_key = var.ssl_private_key
   }
 }
 

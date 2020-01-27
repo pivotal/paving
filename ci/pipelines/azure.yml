@@ -33,6 +33,8 @@ resources:
       client_secret: ((Shared-Paving Terraform/ci/azure_client_secret/Notes))
       location: ((Shared-Paving Terraform/ci/azure_location/Notes))
       hosted_zone: ((Shared-Paving Terraform/ci/azure_hosted_zone/Notes))
+      ssl_certificate: ((Shared-Paving Terraform/ci/terraforming-azure/Notes/certificate))
+      ssl_private_key: ((Shared-Paving Terraform/ci/terraforming-azure/Notes/private_key))
 
 - name: paving
   type: git

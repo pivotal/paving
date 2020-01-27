@@ -22,6 +22,16 @@ variable "location" {
   type = string
 }
 
+variable "ssl_certificate" {
+  default = ""
+  type    = string
+}
+
+variable "ssl_private_key" {
+  default = ""
+  type    = string
+}
+
 variable "hosted_zone" {
   description = "Hosted zone name (e.g. foo.example.com)"
   type        = string
