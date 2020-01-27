@@ -13,6 +13,10 @@ locals {
 
     management_subnet_ids   = aws_subnet.management-subnet[*].id
     management_subnet_cidrs = aws_subnet.management-subnet[*].cidr_block
+    management_subnet_gateways = [
+      for i in range(length(var.availability_zones)) :
+      cidrhost(aws_subnet.management-subnet[i].cidr_block, 1)
+    ]
     management_subnet_reserved_ip_ranges = [
       for i in range(length(var.availability_zones)) :
       "${cidrhost(aws_subnet.management-subnet[i].cidr_block, 1)}-${cidrhost(aws_subnet.management-subnet[i].cidr_block, 9)}"
@@ -36,6 +40,10 @@ locals {
 
     pas_subnet_ids   = aws_subnet.pas-subnet[*].id
     pas_subnet_cidrs = aws_subnet.pas-subnet[*].cidr_block
+    pas_subnet_gateways = [
+      for i in range(length(var.availability_zones)) :
+      cidrhost(aws_subnet.pas-subnet[i].cidr_block, 1)
+    ]
     pas_subnet_reserved_ip_ranges = [
       for i in range(length(var.availability_zones)) :
       "${cidrhost(aws_subnet.pas-subnet[i].cidr_block, 1)}-${cidrhost(aws_subnet.pas-subnet[i].cidr_block, 9)}"
@@ -72,6 +80,10 @@ locals {
     pks_api_dns      = aws_route53_record.pks-api.name
     pks_subnet_ids   = aws_subnet.pks-subnet[*].id
     pks_subnet_cidrs = aws_subnet.pks-subnet[*].cidr_block
+    pks_subnet_gateways = [
+      for i in range(length(var.availability_zones)) :
+      cidrhost(aws_subnet.pks-subnet[i].cidr_block, 1)
+    ]
     pks_subnet_reserved_ip_ranges = [
       for i in range(length(var.availability_zones)) :
       "${cidrhost(aws_subnet.pks-subnet[i].cidr_block, 1)}-${cidrhost(aws_subnet.pks-subnet[i].cidr_block, 9)}"
@@ -84,6 +96,10 @@ locals {
 
     services_subnet_ids   = aws_subnet.services-subnet[*].id
     services_subnet_cidrs = aws_subnet.services-subnet[*].cidr_block
+    services_subnet_gateways = [
+      for i in range(length(var.availability_zones)) :
+      cidrhost(aws_subnet.services-subnet[i].cidr_block, 1)
+    ]
     services_subnet_reserved_ip_ranges = [
       for i in range(length(var.availability_zones)) :
       "${cidrhost(aws_subnet.services-subnet[i].cidr_block, 1)}-${cidrhost(aws_subnet.services-subnet[i].cidr_block, 9)}"
