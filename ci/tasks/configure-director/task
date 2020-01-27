@@ -4,18 +4,20 @@ main() {
   om -v
 
   metadata="${PWD}/env-state/metadata"
-  opsman_dns=$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_dns)
 
-  if [[ "${opsman_dns}" == "null" ]]; then
-    echo "missing ops manager dns, exiting"
-    exit 1
-  fi
+  vars_file="${PWD}/env-state/vars-file"
+  cat "${metadata}" | yq -r .stable_config | jq -r . > "${vars_file}"
+  config="${PWD}/paving-ci/ci/configuration/${IAAS}/director.yml"
+  updated_config="${PWD}/env-state/director.yml"
+  bosh interpolate "${config}" --vars-file "${vars_file}" > "${updated_config}"
+
+  ops_manager_dns=$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_dns)
 
   set +x
-    om -t "https://${opsman_dns}" -k -o 30 configure-authentication -dp "${OM_PASSWORD}"
+    om -t "https://${ops_manager_dns}" -k -o 30 configure-authentication -dp "${OM_PASSWORD}"
   set -x
 
-  om -t "https://${opsman_dns}" -k configure-director --config "${PWD}/env-state/director.yml"
+  om -t "https://${ops_manager_dns}" -k configure-director --config "${updated_config}"
 }
 
 main "$@"
