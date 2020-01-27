@@ -40,16 +40,16 @@ resources:
   source:
     backend_type: gcs
     backend_config:
-      bucket: infra-tf-states
+      bucket: infra-2-tf-states
       prefix: gcp
-      credentials: ((Shared-Paving Terraform/ci/cf_infra_gcp_service_account_key/Notes))
+      credentials: ((Shared-Paving Terraform/ci/cf_infra_2_gcp_service_account_key/Notes))
     vars:
       environment_name: paving-gcp
-      project: ((Shared-Paving Terraform/ci/cf_infra_gcp_project_id/Notes))
+      project: ((Shared-Paving Terraform/ci/cf_infra_2_gcp_project_id/Notes))
       region: us-east1
       availability_zones: ["us-east1-b", "us-east1-c",  "us-east1-d"]
-      hosted_zone: ((Shared-Paving Terraform/ci/terraforming-gcp-root-zone-name/Notes))
-      service_account_key: ((Shared-Paving Terraform/ci/cf_infra_gcp_service_account_key/Notes))
+      hosted_zone: ((Shared-Paving Terraform/ci/cf_infra_2_hosted_zone/Notes))
+      service_account_key: ((Shared-Paving Terraform/ci/cf_infra_2_gcp_service_account_key/Notes))
       ssl_certificate: ((Shared-Paving Terraform/ci/terraforming-gcp/Notes/certificate))
       ssl_private_key: ((Shared-Paving Terraform/ci/terraforming-gcp/Notes/private_key))
 
@@ -77,12 +77,6 @@ resources:
     api_token: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
     product_version: ^\d+\.\d+\.\d+
     sort_by: semver
-
-# - name: platform-automation
-#   type: pivnet
-#   source:
-#     product_slug: platform-automation
-#     api_token: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
 
 - name: platform-automation-tasks
   type: s3
@@ -115,7 +109,6 @@ jobs:
       resource: paving-ci
     - get: pcf-releng-ci
     - get: srt
-      trigger: true
       params:
         globs:
         - srt-*.pivotal
@@ -155,7 +148,7 @@ jobs:
         env-state: env-state-gcp
       params:
         IAAS: gcp
-        GCP_SERVICE_ACCOUNT_KEY: ((Shared-Paving Terraform/ci/cf_infra_gcp_service_account_key/Notes))
+        GCP_SERVICE_ACCOUNT_KEY: ((Shared-Paving Terraform/ci/cf_infra_2_gcp_service_account_key/Notes))
 
     - task: create-vm
       image: platform-automation-image
@@ -173,9 +166,6 @@ jobs:
             terraform_source: paving/gcp
             env_name_file: env-state-gcp/name
             delete_on_failure: true
-            action: destroy
-          get_params:
-            action: destroy
 
     - task: configure-authentication
       file: paving-ci/ci/tasks/configure-authentication/task.yml
@@ -190,9 +180,6 @@ jobs:
             terraform_source: paving/gcp
             env_name_file: env-state-gcp/name
             delete_on_failure: true
-            action: destroy
-          get_params:
-            action: destroy
 
     - task: configure-director
       file: paving-ci/ci/tasks/configure-director/task.yml
@@ -209,9 +196,6 @@ jobs:
             terraform_source: paving/gcp
             env_name_file: env-state-gcp/name
             delete_on_failure: true
-            action: destroy
-          get_params:
-            action: destroy
 
     - task: upload-configure-stage-pas
       file: paving-ci/ci/tasks/upload-configure-stage/task.yml
@@ -248,7 +232,7 @@ jobs:
           params:
             OPSMAN_USERNAME: ((Shared-Paving Terraform/ci/om/Notes/username))
             OPSMAN_PASSWORD: ((Shared-Paving Terraform/ci/om/Notes/password))
-            OPSMAN_URL_SUFFIX: gcp.infrastructure.cf-app.com
+            OPSMAN_URL_SUFFIX: paving-gcp.tfsti.cf-app.com
           input_mapping:
             environment: env-state-gcp
         - put: env-state-gcp
