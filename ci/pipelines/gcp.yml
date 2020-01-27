@@ -159,13 +159,6 @@ jobs:
         state: env-state-gcp
       params:
         OPSMAN_CONFIG_FILE: ops-manager.yml
-      on_failure:
-        do:
-        - put: env-state-gcp
-          params:
-            terraform_source: paving/gcp
-            env_name_file: env-state-gcp/name
-            delete_on_failure: true
 
     - task: configure-authentication
       file: paving-ci/ci/tasks/configure-authentication/task.yml
@@ -218,21 +211,29 @@ jobs:
         <<: *om-creds
       input_mapping:
         env-state: env-state-gcp
-      # ensure:
-      #   do:
-      #   - task: delete-installation
-      #     file: pcf-releng-ci/tasks/environment/delete-installation/task.yml
-      #     params:
-      #       OPSMAN_USERNAME: ((Shared-Paving Terraform/ci/om/Notes/username))
-      #       OPSMAN_PASSWORD: ((Shared-Paving Terraform/ci/om/Notes/password))
-      #       OPSMAN_URL_SUFFIX: paving-gcp.tfsti.cf-app.com
-      #     input_mapping:
-      #       environment: env-state-gcp
-      #   - put: env-state-gcp
-      #     params:
-      #       terraform_source: paving/gcp
-      #       env_name_file: env-state-gcp/name
-      #       delete_on_failure: true
-      #       action: destroy
-      #     get_params:
-      #       action: destroy
+
+- name: teardown-gcp
+  serial: true
+  public: false
+  plan:
+  - in_parallel:
+    - get: paving
+    - get: pcf-releng-ci
+  plan:
+  _ do:
+    - task: delete-installation
+      file: pcf-releng-ci/tasks/environment/delete-installation/task.yml
+      params:
+        OPSMAN_USERNAME: ((Shared-Paving Terraform/ci/om/Notes/username))
+        OPSMAN_PASSWORD: ((Shared-Paving Terraform/ci/om/Notes/password))
+        OPSMAN_URL_SUFFIX: paving-gcp.tfsti.cf-app.com
+      input_mapping:
+        environment: env-state-gcp
+    - put: env-state-gcp
+      params:
+        terraform_source: paving/gcp
+        env_name_file: env-state-gcp/name
+        delete_on_failure: true
+        action: destroy
+      get_params:
+        action: destroy
