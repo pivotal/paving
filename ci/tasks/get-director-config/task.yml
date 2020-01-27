@@ -15,16 +15,3 @@ outputs:
 
 run:
   path: paving/ci/tasks/get-director-config/task
-
-params:
-  IAAS:
-
-  GCP_SERVICE_ACCOUNT_KEY:
-
-  AWS_ACCESS_KEY:
-  AWS_SECRET_KEY:
-
-  AZURE_TENANT_ID:
-  AZURE_SUBSCRIPTION_ID:
-  AZURE_CLIENT_ID:
-  AZURE_CLIENT_SECRET:
