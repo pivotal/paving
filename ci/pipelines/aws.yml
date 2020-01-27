@@ -11,6 +11,11 @@ resource_types:
     repository: pivotalcf/pivnet-resource
     tag: latest-final
 
+shared:
+- params: &om-creds
+    OM_USERNAME: ((Shared-Paving Terraform/ci/om/Notes/username))
+    OM_PASSWORD: ((Shared-Paving Terraform/ci/om/Notes/password))
+
 resources:
 - name: env-state-aws
   type: terraform
@@ -123,6 +128,21 @@ jobs:
         state: env-state-aws
       params:
         OPSMAN_CONFIG_FILE: ops-manager.yml
+
+    - task: configure-authentication
+      file: paving-ci/ci/tasks/configure-authentication/task.yml
+      params:
+        <<: *om-creds
+      input_mapping:
+        env-state: env-state-aws
+
+    - task: configure-director
+      file: paving-ci/ci/tasks/configure-director/task.yml
+      params:
+        <<: *om-creds
+        DIRECTOR_YML: paving-ci/ci/configuration/aws/director.yml
+      input_mapping:
+        env-state: env-state-aws
 
     # - put: env-state-aws
     #   params:

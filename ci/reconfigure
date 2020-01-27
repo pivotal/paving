@@ -6,9 +6,9 @@ main() {
 
   reconfigure-pipeline --target i --pipeline paving-gcp --config pipelines/gcp.yml --non-interactive
 
-  reconfigure-pipeline --target i --pipeline paving-aws --config pipelines/aws.yml
+  reconfigure-pipeline --target i --pipeline paving-aws --config pipelines/aws.yml --non-interactive
 
-  reconfigure-pipeline --target i --pipeline paving-azure --config pipelines/azure.yml
+  reconfigure-pipeline --target i --pipeline paving-azure --config pipelines/azure.yml --non-interactive
 }
 
 main
