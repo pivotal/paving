@@ -7,7 +7,7 @@ opsman-configuration:
     zone: ((zone))
     vm_name: "ops-manager-vm"
     vpc_subnet: ((vpc_subnet))
-    tags: "paving"
+    tags: ((tags)) 
     custom_cpu: 4
     custom_memory: 16
     boot_disk_size: 100
