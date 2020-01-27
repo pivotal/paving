@@ -64,7 +64,7 @@ network-assignment:
   network:
     name: management
   singleton_availability_zone:
-    name: ((az_1))
+    name: ((availability_zones.0))
 resource-configuration:
   compilation:
     instance_type:
