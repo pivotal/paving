@@ -66,8 +66,6 @@ jobs:
         paving: paving-ci
       params:
         IAAS: aws
-        AWS_ACCESS_KEY: ((Shared-Paving Terraform/ci/aws_access_key_id/Notes))
-        AWS_SECRET_KEY: ((Shared-Paving Terraform/ci/aws_secret_access_key/Notes))
     - put: env-state-aws
       params:
         terraform_source: paving/aws
