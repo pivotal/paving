@@ -2,9 +2,9 @@
 product-name: pivotal-container-service
 network-properties:
   network:
-    name: ((pks_subnet_name))
+    name: pks
   service_network:
-    name: ((services_subnet_name))
+    name: services
   other_availability_zones:
     - name: ((availability_zones.0))
     - name: ((availability_zones.1))
