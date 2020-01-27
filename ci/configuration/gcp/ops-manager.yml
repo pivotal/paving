@@ -1,7 +1,7 @@
 ---
 opsman-configuration:
   gcp:
-    gcp_service_account: ((gcp_service_account_key))
+    gcp_service_account: ((service_account_key))
     project: ((project))
     region: ((region))
     zone: ((availability_zones.0))

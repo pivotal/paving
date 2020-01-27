@@ -14,5 +14,6 @@ run:
   path: paving-ci/ci/tasks/configure-director/task
 
 params:
+  DIRECTOR_YML:
   OM_USERNAME:
   OM_PASSWORD:

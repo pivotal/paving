@@ -7,7 +7,7 @@ main() {
 
   vars_file="${PWD}/env-state/vars-file"
   cat "${metadata}" | yq -r .stable_config | jq -r . > "${vars_file}"
-  config="${PWD}/paving-ci/ci/configuration/${IAAS}/director.yml"
+  config="${DIRECTOR_YML}"
   updated_config="${PWD}/env-state/director.yml"
   bosh interpolate "${config}" --vars-file "${vars_file}" > "${updated_config}"
 
