@@ -11,7 +11,7 @@ properties-configuration:
     iam_instance_profile: ((ops_manager_iam_instance_profile_name))
     vpc_id: ((vpc_id))
     security_group: ((platform_vms_security_group_id))
-    key_pair_name: ((ops_manager_ssh_public_key_name))
+    key_pair_name: ((ops_manager_key_pair_name))
     ssh_private_key: (( toJson .ops_manager_ssh_private_key ))
     region: ((region))
 network-assignment:
@@ -68,6 +68,29 @@ networks-configuration:
       gateway: ((pas_subnet_gateways.2))
       iaas_identifier: ((pas_subnet_ids.2))
       reserved_ip_ranges: ((pas_subnet_reserved_ip_ranges.2))
+  - name: pks
+    subnets:
+    - availability_zone_names:
+      - ((availability_zones.0))
+      cidr: ((pks_subnet_cidrs.0))
+      dns: 169.254.169.253
+      gateway: ((pks_subnet_gateways.0))
+      iaas_identifier: ((pks_subnet_ids.0))
+      reserved_ip_ranges: ((pks_subnet_reserved_ip_ranges.0))
+    - availability_zone_names:
+      - ((availability_zones.1))
+      cidr: ((pks_subnet_cidrs.1))
+      dns: 169.254.169.253
+      gateway: ((pks_subnet_gateways.1))
+      iaas_identifier: ((pks_subnet_ids.1))
+      reserved_ip_ranges: ((pls_subnet_reserved_ip_ranges.1))
+    - availability_zone_names:
+      - ((availability_zones.2))
+      cidr: ((pks_subnet_cidrs.2))
+      dns: 169.254.169.253
+      gateway: ((pks_subnet_gateways.2))
+      iaas_identifier: ((pks_subnet_ids.2))
+      reserved_ip_ranges: ((pks_subnet_reserved_ip_ranges.2))
   - name: services
     subnets:
     - availability_zone_names:
