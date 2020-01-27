@@ -83,7 +83,7 @@ networks-configuration:
       dns: 169.254.169.253
       gateway: ((pks_subnet_gateways.1))
       iaas_identifier: ((pks_subnet_ids.1))
-      reserved_ip_ranges: ((pls_subnet_reserved_ip_ranges.1))
+      reserved_ip_ranges: ((pks_subnet_reserved_ip_ranges.1))
     - availability_zone_names:
       - ((availability_zones.2))
       cidr: ((pks_subnet_cidrs.2))
