@@ -29,6 +29,10 @@ product-properties:
     value: ((network_name))
   .properties.cloud_provider.azure.vnet_resource_group_name:
     value: ((environment_name))
+  .properties.cloud_provider.azure.azure_master_managed_identity:
+    value: ((pks_master_managed_identity))
+  .properties.cloud_provider.azure.azure_worker_managed_identity:
+    value: ((pks_worker_managed_identity))
   .properties.log_sink_resources_deploy:
     value: true
   .properties.metric_sink_resources_deploy:

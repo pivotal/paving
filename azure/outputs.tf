@@ -66,6 +66,8 @@ locals {
     pks_internal_network_security_group_name   = azurerm_network_security_group.pks-internal.name
     pks_master_application_security_group_name = azurerm_application_security_group.pks-master.name
     pks_master_network_security_group_name     = azurerm_network_security_group.pks-master.name
+    pks_master_managed_identity                = azurerm_user_assigned_identity.pks-master.name
+    pks_worker_managed_identity                = azurerm_user_assigned_identity.pks-worker.name
 
     services_subnet_name    = azurerm_subnet.services.name
     services_subnet_id      = azurerm_subnet.services.id
