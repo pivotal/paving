@@ -118,3 +118,24 @@ resource-configuration:
   compilation:
     instance_type:
       id: automatic
+vmextensions-configuration:
+- name: web-lb-security-groups
+  cloud_properties:
+    security_groups:
+    - ((web_lb_security_group_id))
+    - ((platform_vms_security_group_id))
+- name: ssh-lb-security-groups
+  cloud_properties:
+    security_groups:
+    - ((ssh_lb_security_group_id))
+    - ((platform_vms_security_group_id))
+- name: tcp-lb-security-groups
+  cloud_properties:
+    security_groups:
+    - ((tcp_lb_security_group_id))
+    - ((platform_vms_security_group_id))
+- name: pks-api-lb-security-groups
+  cloud_properties:
+    security_groups:
+    - ((pks_api_lb_security_group_id))
+    - ((platform_vms_security_group_id))
