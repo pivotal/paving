@@ -144,6 +144,17 @@ jobs:
       input_mapping:
         env-state: env-state-aws
 
+    - task: upload-configure-stage-pas
+      file: paving-ci/ci/tasks/upload-configure-stage/task.yml
+      params:
+        <<: *om-creds
+        PRODUCT_NAME: cf
+        PRODUCT_YML: paving-ci/ci/configuration/aws/srt.yml
+      input_mapping:
+        env-state: env-state-aws
+        product: srt
+        product-config-repo: paving-ci
+
     # - put: env-state-aws
     #   params:
     #     terraform_source: paving/aws
