@@ -218,6 +218,14 @@ jobs:
         product: pks
         product-config-repo: paving-ci
 
+    - task: apply-changes
+      attempts: 2
+      file: paving-ci/ci/tasks/apply-changes/task.yml
+      params:
+        <<: *om-creds
+      input_mapping:
+        env-state: env-state-aws
+
     # - put: env-state-aws
     #   params:
     #     terraform_source: paving/aws
