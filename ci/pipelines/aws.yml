@@ -55,6 +55,23 @@ resources:
     paths:
     - "ci/*"
 
+- name: pcf-releng-ci
+  type: git
+  source:
+    uri: git@github.com:pivotal-cf/pcf-releng-ci.git
+    private_key: ((Shared-Paving Terraform/ci/cf_infra_bot_github_user/Notes/private_key))
+    ignore_paths:
+    - pipelines
+    - ci_screen
+
+- name: srt
+  type: pivnet
+  source:
+    api_token: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
+    product_slug: elastic-runtime
+    product_version: ^\d+\.\d+\.\d+
+    sort_by: semver
+
 - name: opsman-image
   type: pivnet
   source:
@@ -89,10 +106,13 @@ jobs:
   plan:
   - in_parallel:
     - get: paving
-      trigger: true
     - get: paving-ci
+    - get: pcf-releng-ci
+    - get: srt
+      params:
+        globs:
+        - srt-*.pivotal
     - get: opsman-image
-      trigger: true
       params:
         globs:
         - '*aws*.yml'
@@ -103,6 +123,14 @@ jobs:
       params:
         unpack: true
   - do:
+    - task: download-stemcell
+      file: pcf-releng-ci/tasks/configuration/download-pivnet-stemcell/task.yml
+      input_mapping:
+        ert-product: srt
+      params:
+        IAAS_TYPE: aws
+        PIVNET_TOKEN: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
+
     - put: env-state-aws
       params:
         env_name: paving-aws
