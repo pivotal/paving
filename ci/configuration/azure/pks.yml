@@ -9,8 +9,10 @@ product-properties:
   .properties.bosh-metric-sink-outputs:
     value: |
       [[outputs.discard]]
+  .properties.cloud_provider:
+    value: Azure
   .properties.cloud_provider.azure.azure_cloud_name:
-    value: "AzurePublicCloud"
+    value: AzurePublicCloud
   .properties.cloud_provider.azure.default_security_group:
     value: ((platform_vms_security_group_name))
   .properties.cloud_provider.azure.location:
