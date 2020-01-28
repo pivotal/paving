@@ -72,14 +72,16 @@ locals {
     mysql_security_group_id   = aws_security_group.mysql.id
     mysql_security_group_name = aws_security_group.mysql.name
 
-    sys_dns  = aws_route53_record.wildcard-sys.name
-    apps_dns = aws_route53_record.wildcard-apps.name
+    sys_dns  = replace(aws_route53_record.wildcard-sys.name, "*.", "")
+    apps_dns = replace(aws_route53_record.wildcard-apps.name, "*.", "")
     ssh_dns  = aws_route53_record.ssh.name
     tcp_dns  = aws_route53_record.tcp.name
 
-    pks_api_dns      = aws_route53_record.pks-api.name
-    pks_subnet_ids   = aws_subnet.pks-subnet[*].id
-    pks_subnet_cidrs = aws_subnet.pks-subnet[*].cidr_block
+    pks_master_iam_instance_profile_name = aws_iam_instance_profile.pks-master.name
+    pks_worker_iam_instance_profile_name = aws_iam_instance_profile.pks-worker.name
+    pks_api_dns                          = aws_route53_record.pks-api.name
+    pks_subnet_ids                       = aws_subnet.pks-subnet[*].id
+    pks_subnet_cidrs                     = aws_subnet.pks-subnet[*].cidr_block
     pks_subnet_gateways = [
       for i in range(length(var.availability_zones)) :
       cidrhost(aws_subnet.pks-subnet[i].cidr_block, 1)
