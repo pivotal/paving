@@ -32,6 +32,8 @@ resources:
       secret_key: ((Shared-Paving Terraform/ci/aws_secret_access_key/Notes))
       availability_zones: ["us-east-2a", "us-east-2b", "us-east-2c"]
       hosted_zone: aws.infrastructure.cf-app.com
+      ssl_certificate: ((Shared-Paving Terraform/ci/terraforming-aws/Notes/certificate))
+      ssl_private_key: ((Shared-Paving Terraform/ci/terraforming-aws/Notes/private_key))
     env:
       AWS_ACCESS_KEY_ID: ((Shared-Paving Terraform/ci/aws_access_key_id/Notes))
       AWS_SECRET_ACCESS_KEY: ((Shared-Paving Terraform/ci/aws_secret_access_key/Notes))
@@ -69,6 +71,14 @@ resources:
   source:
     api_token: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
     product_slug: elastic-runtime
+    product_version: ^\d+\.\d+\.\d+
+    sort_by: semver
+
+- name: pks
+  type: pivnet
+  source:
+    api_token: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
+    product_slug: pivotal-container-service
     product_version: ^\d+\.\d+\.\d+
     sort_by: semver
 
@@ -112,6 +122,10 @@ jobs:
       params:
         globs:
         - srt-*.pivotal
+    - get: pks
+      params:
+        globs:
+        - pivotal-container-service-*.pivotal
     - get: opsman-image
       params:
         globs:
@@ -122,11 +136,21 @@ jobs:
     - get: platform-automation-tasks
       params:
         unpack: true
+
   - do:
+
     - task: download-stemcell
       file: pcf-releng-ci/tasks/configuration/download-pivnet-stemcell/task.yml
       input_mapping:
         ert-product: srt
+      params:
+        IAAS_TYPE: aws
+        PIVNET_TOKEN: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
+
+    - task: download-stemcell
+      file: pcf-releng-ci/tasks/configuration/download-pivnet-stemcell/task.yml
+      input_mapping:
+        ert-product: pks
       params:
         IAAS_TYPE: aws
         PIVNET_TOKEN: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
@@ -181,6 +205,17 @@ jobs:
       input_mapping:
         env-state: env-state-aws
         product: srt
+        product-config-repo: paving-ci
+
+    - task: upload-configure-stage-pks
+      file: paving-ci/ci/tasks/upload-configure-stage/task.yml
+      params:
+        <<: *om-creds
+        PRODUCT_NAME: pivotal-container-service
+        PRODUCT_YML: paving-ci/ci/configuration/aws/pks.yml
+      input_mapping:
+        env-state: env-state-aws
+        product: pks
         product-config-repo: paving-ci
 
     # - put: env-state-aws
