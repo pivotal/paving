@@ -1,4 +1,13 @@
 product-name: pivotal-container-service
+network-properties:
+  network:
+    name: pks
+  other_availability_zones:
+  - name: Availability Sets
+  service_network:
+    name: services-1
+  singleton_availability_zone:
+    name: Availability Sets
 product-properties:
   .pivotal-container-service.pks_tls:
     value:
@@ -6,9 +15,6 @@ product-properties:
         ((ssl_certificate))
       private_key_pem: |
         ((ssl_private_key))
-  .properties.bosh-metric-sink-outputs:
-    value: |
-      [[outputs.discard]]
   .properties.cloud_provider:
     value: Azure
   .properties.cloud_provider.azure.azure_cloud_name:
@@ -37,41 +43,22 @@ product-properties:
     value: true
   .properties.metric_sink_resources_deploy:
     value: true
-  .properties.network_selector:
-    selected_option: flannel
-    value: flannel
-  .properties.network_selector.flannel.pod_network_cidr:
-    value: 10.200.0.0/16
-  .properties.network_selector.flannel.service_cluster_cidr:
-    value: 10.100.200.0/24
   .properties.pks_api_hostname:
     value: ((pks_dns))
-  .properties.plan1_selector:
-    selected_option: active
-    value: Plan Active
   .properties.plan1_selector.active.master_az_placement:
     value:
     - Availability Sets
-  .properties.plan1_selector.active.master_instances:
-    value: 1
-  .properties.plan1_selector.active.max_worker_instances:
-    value: 50
-  .properties.plan1_selector.active.name:
-    value: small
   .properties.plan1_selector.active.worker_az_placement:
     value:
     - Availability Sets
   .properties.plan1_selector.active.worker_instances:
     value: 3
-network-properties:
-  network:
-    name: pks
-  other_availability_zones:
-  - name: Availability Sets
-  service_network:
-    name: services-1
-  singleton_availability_zone:
-    name: Availability Sets
+  .properties.oidc_selector:
+    value: disabled
+  .properties.telemetry_selector:
+    value: disabled
+  .properties.telemetry_installation_purpose_selector:
+    value: not_provided
 resource-config:
   pivotal-container-service:
     additional_vm_extensions:
