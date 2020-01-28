@@ -81,13 +81,6 @@ resource "aws_iam_user_policy" "ops-manager" {
 
 data "aws_iam_policy_document" "ops-manager" {
   statement {
-    sid       = "OpsMgrIAMPermissions"
-    effect    = "Deny"
-    actions   = ["iam:*"]
-    resources = ["*"]
-  }
-
-  statement {
     sid       = "OpsMgrInfoAboutCurrentInstanceProfile"
     effect    = "Allow"
     actions   = ["iam:GetInstanceProfile"]
