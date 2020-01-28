@@ -72,6 +72,6 @@ resource-config:
     - alb:((tcp_target_group_names.1))
     - alb:((tcp_target_group_names.2))
     - alb:((tcp_target_group_names.3))
-    - alb:((tcp_target_group_names.5))
+    - alb:((tcp_target_group_names.4))
     additional_vm_extensions:
     - tcp-lb-security-groups
