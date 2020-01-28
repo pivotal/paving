@@ -112,11 +112,9 @@ jobs:
   plan:
   - in_parallel:
     - get: paving
-      trigger: true
     - get: paving-ci
     - get: pcf-releng-ci
     - get: opsman-image
-      trigger: true
       params:
         globs:
         - '*azure*.yml'

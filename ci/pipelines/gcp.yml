@@ -120,7 +120,6 @@ jobs:
   plan:
   - in_parallel:
     - get: paving
-      trigger: true
     - get: paving-ci
     - get: pcf-releng-ci
     - get: srt
@@ -132,7 +131,6 @@ jobs:
         globs:
         - pivotal-container-service-*.pivotal
     - get: opsman-image
-      trigger: true
       params:
         globs:
         - '*gcp*.yml'
