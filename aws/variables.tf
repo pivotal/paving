@@ -24,6 +24,16 @@ variable "availability_zones" {
   type        = list
 }
 
+variable "ssl_certificate" {
+  default = ""
+  type    = string
+}
+
+variable "ssl_private_key" {
+  default = ""
+  type    = string
+}
+
 variable "public_subnet_cidrs" {
   default     = ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24"]
   description = "The list of CIDRs for the Public subnet. Number of CIDRs MUST match the number of AZs."

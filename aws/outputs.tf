@@ -63,7 +63,7 @@ locals {
 
     tcp_security_group_id   = aws_security_group.tcp-lb.id
     tcp_security_group_name = aws_security_group.tcp-lb.name
-    tcp_target_groups       = aws_lb_target_group.tcp[*].name
+    tcp_target_group_names  = aws_lb_target_group.tcp[*].name
 
     web_security_group_id   = aws_security_group.web-lb.id
     web_security_group_name = aws_security_group.web-lb.name
@@ -72,10 +72,10 @@ locals {
     mysql_security_group_id   = aws_security_group.mysql.id
     mysql_security_group_name = aws_security_group.mysql.name
 
-    sys_dns  = replace(aws_route53_record.wildcard-sys.name, "*.", "")
-    apps_dns = replace(aws_route53_record.wildcard-apps.name, "*.", "")
-    ssh_dns  = aws_route53_record.ssh.name
-    tcp_dns  = aws_route53_record.tcp.name
+    sys_dns_domain  = replace(aws_route53_record.wildcard-sys.name, "*.", "")
+    apps_dns_domain = replace(aws_route53_record.wildcard-apps.name, "*.", "")
+    ssh_dns         = aws_route53_record.ssh.name
+    tcp_dns         = aws_route53_record.tcp.name
 
     pks_master_iam_instance_profile_name = aws_iam_instance_profile.pks-master.name
     pks_worker_iam_instance_profile_name = aws_iam_instance_profile.pks-worker.name
@@ -106,6 +106,9 @@ locals {
       for i in range(length(var.availability_zones)) :
       "${cidrhost(aws_subnet.services-subnet[i].cidr_block, 1)}-${cidrhost(aws_subnet.services-subnet[i].cidr_block, 9)}"
     ]
+
+    ssl_certificate = var.ssl_certificate
+    ssl_private_key = var.ssl_private_key
   }
 }
 
