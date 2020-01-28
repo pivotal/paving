@@ -76,7 +76,3 @@ vmextensions-configuration:
     cloud_properties:
       security_group: ((pks_api_network_security_group_name))
       application_security_groups: ["((pks_api_application_security_group_name))"]
-  # - name: harbor-api-lb-security-groups
-  #   cloud_properties:
-  #     security_group: ((harbor_api_security_group_name))
-  #     application_security_groups: ["((harbor_api_application_security_group_name))"]

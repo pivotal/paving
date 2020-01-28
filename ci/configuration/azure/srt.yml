@@ -1,4 +1,11 @@
 product-name: cf
+network-properties:
+  network:
+    name: pas
+  other_availability_zones:
+  - name: Availability Sets
+  singleton_availability_zone:
+    name: Availability Sets
 product-properties:
   .cloud_controller.apps_domain:
     value: ((apps_dns_domain))
@@ -8,6 +15,8 @@ product-properties:
     value: example@example.com
   .nfs_server.blobstore_internal_access_rules:
     value: allow 10.0.0.0/8;,allow 172.16.0.0/12;,allow 192.168.0.0/16;
+  .properties.cf_networking_search_domains:
+    value: apps.internal
   .properties.credhub_internal_provider_keys:
     value:
     - key:
@@ -16,6 +25,8 @@ product-properties:
       primary: true
   .properties.haproxy_forward_tls:
     value: disable
+  .ha_proxy.skip_cert_verify:
+    value: true
   .properties.networking_poe_ssl_certs:
     value:
     - certificate:
@@ -59,8 +70,9 @@ product-properties:
     selected_option: internal_pxc
     value: internal_pxc
   .properties.tcp_routing:
-    selected_option: disable
-    value: disable
+    value: enable
+  .properties.tcp_routing.enable.reservable_ports:
+    value: 1024-1029
   .properties.uaa:
     selected_option: internal
     value: internal
@@ -70,102 +82,19 @@ product-properties:
         ((ssl_certificate))
       private_key_pem: |
         ((ssl_private_key))
-network-properties:
-  network:
-    name: pas
-  other_availability_zones:
-  - name: Availability Sets
-  singleton_availability_zone:
-    name: Availability Sets
 resource-config:
-  backup_restore:
-    max_in_flight: 1
-    additional_networks: []
-    additional_vm_extensions: []
-    elb_names: []
-    instance_type:
-      id: automatic
-    instances: automatic
-    internet_connected: false
-    persistent_disk:
-      size_mb: automatic
-    swap_as_percent_of_memory_size: automatic
-  blobstore:
-    max_in_flight: 1
-    additional_networks: []
-    additional_vm_extensions: []
-    elb_names: []
-    instance_type:
-      id: automatic
-    instances: 0
-    internet_connected: false
-    persistent_disk:
-      size_mb: automatic
-    swap_as_percent_of_memory_size: automatic
   compute:
-    max_in_flight: 4%
-    additional_networks: []
-    additional_vm_extensions: []
-    elb_names: []
-    instance_type:
-      id: automatic
-    instances: automatic
-    internet_connected: false
-    swap_as_percent_of_memory_size: automatic
+    instances: 1
   control:
-    max_in_flight: 1
-    additional_networks: []
-    additional_vm_extensions: []
     elb_names:
     - ((ssh_lb_name))
-    instance_type:
-      id: automatic
-    instances: automatic
-    internet_connected: false
-    swap_as_percent_of_memory_size: automatic
   database:
-    max_in_flight: 1
-    additional_networks: []
-    additional_vm_extensions: []
     elb_names:
     - ((mysql_lb_name))
-    instance_type:
-      id: automatic
-    instances: automatic
-    internet_connected: false
-    persistent_disk:
-      size_mb: automatic
-    swap_as_percent_of_memory_size: automatic
-  ha_proxy:
-    max_in_flight: 1
-    additional_networks: []
-    additional_vm_extensions: []
-    elb_names: []
-    instance_type:
-      id: automatic
-    instances: automatic
-    internet_connected: false
-    swap_as_percent_of_memory_size: automatic
   router:
-    max_in_flight: 1
-    additional_networks: []
-    additional_vm_extensions: []
     elb_names:
     - ((web_lb_name))
-    instance_type:
-      id: automatic
-    instances: automatic
-    internet_connected: false
-    swap_as_percent_of_memory_size: automatic
+    instances: 1
   tcp_router:
-    max_in_flight: 1
-    additional_networks: []
-    additional_vm_extensions: []
-    elb_names: []
-    instance_type:
-      id: automatic
-    instances: 0
-    internet_connected: false
-    persistent_disk:
-      size_mb: automatic
-    swap_as_percent_of_memory_size: automatic
+    elb_names:
+    - ((tcp_lb_name))
