@@ -12,7 +12,7 @@ properties-configuration:
     vpc_id: ((vpc_id))
     security_group: ((platform_vms_security_group_id))
     key_pair_name: ((ops_manager_key_pair_name))
-    ssh_private_key: (( .ops_manager_ssh_private_key ))
+    ssh_private_key: ((ops_manager_ssh_private_key))
     region: ((region))
 network-assignment:
   network:
