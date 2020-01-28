@@ -92,7 +92,7 @@ resource "aws_lb" "tcp" {
 }
 
 locals {
-  tcp_port_count = 10
+  tcp_port_count = 5
 }
 
 resource "aws_lb_listener" "tcp" {

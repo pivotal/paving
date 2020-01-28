@@ -1,0 +1,77 @@
+product-name: cf
+network-properties:
+  network:
+    name: pas
+  service_network:
+    name: services
+  other_availability_zones:
+    - name: ((availability_zones.0))
+    - name: ((availability_zones.1))
+    - name: ((availability_zones.2))
+  singleton_availability_zone:
+    name: ((availability_zones.0))
+product-properties:
+  .cloud_controller.apps_domain:
+    value: ((apps_dns_domain))
+  .cloud_controller.system_domain:
+    value: ((sys_dns_domain))
+  .properties.cf_networking_search_domains:
+    value: apps.internal
+  .ha_proxy.skip_cert_verify:
+    value: true
+  .mysql_monitor.recipient_email:
+    value: cf-infra@pivotal.io
+  .properties.credhub_internal_provider_keys:
+    value:
+    - key:
+        secret: 1a2b3c4d5e6f7g8h9i0j
+      name: Key
+      primary: true
+  .properties.haproxy_forward_tls:
+    value: disable
+  .properties.networking_poe_ssl_certs:
+    value:
+    - certificate:
+        cert_pem: |
+          ((ssl_certificate))
+        private_key_pem: |
+          ((ssl_private_key))
+      name: Certificate
+  .properties.security_acknowledgement:
+    value: X
+  .properties.system_blobstore:
+    value: internal
+  .properties.tcp_routing:
+    value: enable
+  .properties.tcp_routing.enable.reservable_ports:
+    value: 1024-1033
+  .uaa.service_provider_key_credentials:
+    value:
+      cert_pem: |
+        ((ssl_certificate))
+      private_key_pem: |
+        ((ssl_private_key))
+resource-config:
+  compute:
+    instances: 1
+  control:
+    elb_names:
+    - alb:((ssh_target_group_name))
+    additional_vm_extensions:
+    - ssh-lb-security-groups
+  router:
+    elb_names:
+    - alb:((web_target_group_names.0))
+    - alb:((web_target_group_names.1))
+    additional_vm_extensions:
+    - web-lb-security-groups
+    instances: 1
+  tcp_router:
+    elb_names:
+    - alb:((tcp_target_group_names.0))
+    - alb:((tcp_target_group_names.1))
+    - alb:((tcp_target_group_names.2))
+    - alb:((tcp_target_group_names.3))
+    - alb:((tcp_target_group_names.5))
+    additional_vm_extensions:
+    - tcp-lb-security-groups
