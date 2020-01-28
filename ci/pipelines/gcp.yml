@@ -47,8 +47,6 @@ resources:
     branch: master
     uri: git@github.com:pivotal/paving.git
     private_key: ((Shared-Paving Terraform/ci/paving_pas_deploy_key/Notes/private_key))
-    # paths:
-    # - "gcp/*"
     ignore_paths:
     - "ci/*"
 
