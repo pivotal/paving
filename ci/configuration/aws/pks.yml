@@ -1,0 +1,57 @@
+product-name: pivotal-container-service
+network-properties:
+  network:
+    name: pks
+  service_network:
+    name: services
+  other_availability_zones:
+    - name: ((availability_zones.0))
+    - name: ((availability_zones.1))
+    - name: ((availability_zones.2))
+  singleton_availability_zone:
+    name: ((availability_zones.0))
+product-properties:
+  .pivotal-container-service.pks_tls:
+    value:
+      cert_pem: |
+        ((ssl_certificate))
+      private_key_pem: |
+        ((ssl_private_key))
+  .properties.pks_api_hostname:
+    value: ((pks_api_dns))
+  .properties.plan1_selector:
+    value: "Plan Active"
+  .properties.plan1_selector.active.master_az_placement:
+    value:
+    - ((availability_zones.0))
+  .properties.plan1_selector.active.worker_az_placement:
+    value:
+    - ((availability_zones.0))
+    - ((availability_zones.1))
+    - ((availability_zones.2))
+  .properties.plan2_selector:
+    value: "Plan Inactive"
+  .properties.plan3_selector:
+    value: "Plan Inactive"
+  .properties.cloud_provider:
+    value: AWS
+  .properties.cloud_provider.aws.iam_instance_profile_master:
+    value: ((pks_master_iam_instance_profile_name))
+  .properties.cloud_provider.aws.iam_instance_profile_worker:
+    value: ((pks_worker_iam_instance_profile_name))
+  .properties.oidc_selector:
+    value: disabled
+  .properties.telemetry_selector:
+    value: disabled
+  .properties.telemetry_installation_purpose_selector:
+    value: not_provided
+resource-config:
+  pivotal-container-service:
+    elb_names:
+    - alb:((pks_api_target_groups.0))
+    - alb:((pks_api_target_groups.1))
+    additional_vm_extensions:
+    - pks-api-lb-security-groups
+errand-config:
+  smoke-tests:
+    post-deploy-state: true
