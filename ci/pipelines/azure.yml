@@ -127,7 +127,7 @@ jobs:
     - get: pks
       params:
         globs:
-        - pks-*.pivotal
+        - pivotal-container-service-*.pivotal
     - get: platform-automation-image
       params:
         unpack: true
@@ -135,10 +135,19 @@ jobs:
       params:
         unpack: true
   - do:
+
     - task: download-stemcell
       file: pcf-releng-ci/tasks/configuration/download-pivnet-stemcell/task.yml
       input_mapping:
         ert-product: srt
+      params:
+        IAAS_TYPE: azure
+        PIVNET_TOKEN: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
+
+    - task: download-stemcell
+      file: pcf-releng-ci/tasks/configuration/download-pivnet-stemcell/task.yml
+      input_mapping:
+        ert-product: pks
       params:
         IAAS_TYPE: azure
         PIVNET_TOKEN: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
@@ -203,7 +212,7 @@ jobs:
         PRODUCT_YML: paving-ci/ci/configuration/azure/pks.yml
       input_mapping:
         env-state: env-state-azure
-        product: pivotal-container-service
+        product: pks
         product-config-repo: paving-ci
 
     - task: apply-changes
