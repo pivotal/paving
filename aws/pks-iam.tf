@@ -96,7 +96,7 @@ resource "aws_iam_instance_profile" "pks-master" {
   }
 }
 
-data "aws_iam_policy_document" "pks-work-policy" {
+data "aws_iam_policy_document" "pks-worker-policy" {
   statement {
     sid = "PksWorkerPolicy"
 
@@ -122,7 +122,7 @@ data "aws_iam_policy_document" "pks-work-policy" {
 
 resource "aws_iam_policy" "pks-worker" {
   name   = "${var.environment_name}-pks-worker-policy"
-  policy = data.aws_iam_policy_document.pks-work-policy.json
+  policy = data.aws_iam_policy_document.pks-worker-policy.json
 }
 
 data "aws_iam_policy_document" "assume-role-policy" {

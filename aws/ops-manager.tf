@@ -91,7 +91,7 @@ data "aws_iam_policy_document" "ops-manager" {
     sid       = "OpsMgrCreateInstanceWithCurrentInstanceProfile"
     effect    = "Allow"
     actions   = ["iam:PassRole"]
-    resources = [aws_iam_role.ops-manager.arn]
+    resources = "*"
   }
 
   statement {
