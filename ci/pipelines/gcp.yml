@@ -148,6 +148,8 @@ jobs:
         file: pcf-releng-ci/tasks/configuration/download-pivnet-stemcell/task.yml
         input_mapping:
           ert-product: srt
+        output_mapping:
+          stemcell: stemcell-srt
         params:
           IAAS_TYPE: gcp
           PIVNET_TOKEN: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
@@ -156,6 +158,8 @@ jobs:
         file: pcf-releng-ci/tasks/configuration/download-pivnet-stemcell/task.yml
         input_mapping:
           ert-product: pks
+        output_mapping:
+          stemcell: stemcell-pks
         params:
           IAAS_TYPE: gcp
           PIVNET_TOKEN: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
@@ -212,6 +216,7 @@ jobs:
         env-state: env-state-gcp
         product: srt
         product-config-repo: paving-ci
+        stemcell: stemcell-srt
 
     - task: upload-configure-stage-pks
       file: paving-ci/ci/tasks/upload-configure-stage/task.yml
@@ -223,9 +228,9 @@ jobs:
         env-state: env-state-gcp
         product: pks
         product-config-repo: paving-ci
+        stemcell: stemcell-pks
 
     - task: apply-changes
-      attempts: 2
       file: paving-ci/ci/tasks/apply-changes/task.yml
       params:
         <<: *om-creds
