@@ -20,8 +20,6 @@ product-properties:
         ((ssl_private_key))
   .properties.pks_api_hostname:
     value: ((pks_api_dns))
-  .properties.plan1_selector:
-    value: "Plan Active"
   .properties.plan1_selector.active.master_az_placement:
     value:
     - ((availability_zones.0))

@@ -134,21 +134,22 @@ jobs:
         unpack: true
   - do:
 
-    - task: download-stemcell
-      file: pcf-releng-ci/tasks/configuration/download-pivnet-stemcell/task.yml
-      input_mapping:
-        ert-product: srt
-      params:
-        IAAS_TYPE: azure
-        PIVNET_TOKEN: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
+    - in_parallel:
+      - task: download-srt-stemcell
+        file: pcf-releng-ci/tasks/configuration/download-pivnet-stemcell/task.yml
+        input_mapping:
+          ert-product: srt
+        params:
+          IAAS_TYPE: azure
+          PIVNET_TOKEN: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
 
-    - task: download-stemcell
-      file: pcf-releng-ci/tasks/configuration/download-pivnet-stemcell/task.yml
-      input_mapping:
-        ert-product: pks
-      params:
-        IAAS_TYPE: azure
-        PIVNET_TOKEN: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
+      - task: download-pks-stemcell
+        file: pcf-releng-ci/tasks/configuration/download-pivnet-stemcell/task.yml
+        input_mapping:
+          ert-product: pks
+        params:
+          IAAS_TYPE: azure
+          PIVNET_TOKEN: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
 
     - put: env-state-azure
       params:
@@ -214,7 +215,6 @@ jobs:
         product-config-repo: paving-ci
 
     - task: apply-changes
-      attempts: 2
       file: paving-ci/ci/tasks/apply-changes/task.yml
       params:
         <<: *om-creds
@@ -229,4 +229,3 @@ jobs:
     #     action: destroy
     #   get_params:
     #     action: destroy
-

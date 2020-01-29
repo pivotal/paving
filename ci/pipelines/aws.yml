@@ -219,7 +219,6 @@ jobs:
         product-config-repo: paving-ci
 
     - task: apply-changes
-      attempts: 2
       file: paving-ci/ci/tasks/apply-changes/task.yml
       params:
         <<: *om-creds
