@@ -20,6 +20,7 @@ params:
 
   AUTH_CONFIG_FILE:
   ENV_YML:
+  DIRECTOR_CONFIG_PATH:
 
 run:
   path: paving-ci/ci/tasks/write-om-files/task
