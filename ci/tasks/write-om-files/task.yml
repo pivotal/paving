@@ -12,6 +12,14 @@ inputs:
 
 outputs:
 - name: env
+- name: config
+
+params:
+  OM_USERNAME:
+  OM_PASSWORD:
+
+  AUTH_CONFIG_FILE:
+  ENV_YML:
 
 run:
   path: paving-ci/ci/tasks/write-env-yml/task
