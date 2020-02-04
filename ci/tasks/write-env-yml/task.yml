@@ -8,10 +8,10 @@ image_resource:
 
 inputs:
 - name: env-state
-- name: paving
+- name: paving-ci
 
 outputs:
 - name: env
 
 run:
-  path: paving/ci/tasks/write-env-yml/task
+  path: paving-ci/ci/tasks/write-env-yml/task
