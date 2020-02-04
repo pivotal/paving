@@ -4,7 +4,9 @@ main() {
   om -v
 
   metadata="${PWD}/env-state/metadata"
-  om_target="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_dns)"
+  vars_file="${PWD}/env-state/vars-file"
+  cat "${metadata}" | yq -r .stable_config | jq -r . > "${vars_file}"
+  om_target="$(cat "${vars_file}" | jq -r .ops_manager_dns)"
 
   updated_env_yml="${PWD}/env/env.yml"
   updated_auth_config_file="${PWD}/config/auth.yml"
