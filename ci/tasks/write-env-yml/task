@@ -1,0 +1,18 @@
+#!/bin/bash -eu
+
+main() {
+  om -v
+
+  metadata="${PWD}/env-state/metadata"
+  om_target="$(cat "${metadata}" | yq -r .stable_config | jq -r .ops_manager_dns)"
+
+  updated_config="${PWD}/env/env.yml"
+
+  bosh interpolate "${ENV_YML}" \
+    --var om_username="${OM_USERNAME}" \
+    --var om_password="${OM_PASSWORD}" \
+    --var om_target="${om_target}" \
+    > "${updated_config}"
+}
+
+main "$@"
