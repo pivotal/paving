@@ -22,4 +22,4 @@ params:
   ENV_YML:
 
 run:
-  path: paving-ci/ci/tasks/write-env-yml/task
+  path: paving-ci/ci/tasks/write-om-files/task
