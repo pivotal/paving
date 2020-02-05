@@ -12,6 +12,7 @@ main() {
   updated_auth_config_file="${PWD}/config/auth.yml"
   updated_director_config_path="${PWD}/config/director.yml"
   updated_srt_config_file="${PWD}/config/srt.yml"
+  updated_pks_config_file="${PWD}/config/pks.yml"
 
   bosh interpolate "${ENV_YML}" \
     --var om_username="${OM_USERNAME}" \
@@ -32,6 +33,10 @@ main() {
   bosh interpolate "${SRT_CONFIG_FILE}" \
     --vars-file "${vars_file}" \
     > "${updated_srt_config_file}"
+
+  bosh interpolate "${PKS_CONFIG_FILE}" \
+    --vars-file "${vars_file}" \
+    > "${updated_pks_config_file}"
 }
 
 main "$@"

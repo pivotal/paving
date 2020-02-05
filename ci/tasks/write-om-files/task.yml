@@ -21,6 +21,8 @@ params:
   AUTH_CONFIG_FILE:
   ENV_YML:
   DIRECTOR_CONFIG_PATH:
+  SRT_CONFIG_FILE:
+  PKS_CONFIG_FILE:
 
 run:
   path: paving-ci/ci/tasks/write-om-files/task
