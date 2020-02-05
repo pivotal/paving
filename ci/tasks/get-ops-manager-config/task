@@ -21,7 +21,7 @@ main() {
 
     rm "${key}"
 
-  elif [ "${IAAS}" == "aws" ] || [ "${IAAS}" == "azure" ]; then
+  else
     bosh interpolate "${config}" --vars-file "${vars_file}" > "${updated_config}"
   fi
 }
