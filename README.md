@@ -11,7 +11,7 @@ The templates support AWS, vSphere, Azure, and GCP.
 
 ## Usage
 
-### configuration
+### Configuration
 
 In each IaaS directory, there is a `terraform.tfvars.example` you can copy
 and modify with your configuration choices and credentials.
