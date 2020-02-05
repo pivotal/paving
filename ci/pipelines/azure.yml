@@ -173,61 +173,80 @@ jobs:
       output_mapping:
         env-state: env-state-azure
 
-    - task: create-vm
-      image: platform-automation-image
-      file: platform-automation-tasks/tasks/create-vm.yml
+    # - task: create-vm
+    #   image: platform-automation-image
+    #   file: platform-automation-tasks/tasks/create-vm.yml
+    #   input_mapping:
+    #     image: opsman-image
+    #     config: env-state-azure
+    #     state: env-state-azure
+    #   params:
+    #     OPSMAN_CONFIG_FILE: ops-manager.yml
+    #
+    - task: write-om-files
+      file: paving-ci/ci/tasks/write-om-files/task.yml
       input_mapping:
-        image: opsman-image
-        config: env-state-azure
-        state: env-state-azure
+        env-state: env-state-azure
       params:
-        OPSMAN_CONFIG_FILE: ops-manager.yml
+        <<: *om-creds
+        AUTH_CONFIG_FILE: paving-ci/ci/configuration/auth.yml
+        ENV_YML: paving-ci/ci/configuration/env.yml
+        DIRECTOR_CONFIG_PATH: paving-ci/ci/configuration/azure/director.yml
+        SRT_CONFIG_FILE: paving-ci/ci/configuration/azure/srt.yml
+        PKS_CONFIG_FILE: paving-ci/ci/configuration/azure/pks.yml
 
     - task: configure-authentication
-      file: paving-ci/ci/tasks/configure-authentication/task.yml
-      params:
-        <<: *om-creds
-      input_mapping:
-        env-state: env-state-azure
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/configure-authentication.yml
 
     - task: configure-director
-      file: paving-ci/ci/tasks/configure-director/task.yml
-      params:
-        <<: *om-creds
-        DIRECTOR_YML: paving-ci/ci/configuration/azure/director.yml
-      input_mapping:
-        env-state: env-state-azure
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/configure-director.yml
 
-    - task: upload-configure-stage-pas
-      file: paving-ci/ci/tasks/upload-configure-stage/task.yml
-      params:
-        <<: *om-creds
-        PRODUCT_NAME: cf
-        PRODUCT_YML: paving-ci/ci/configuration/azure/srt.yml
+    - task: upload-srt-stemcell
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/upload-stemcell.yml
       input_mapping:
-        env-state: env-state-azure
-        product: srt
-        product-config-repo: paving-ci
         stemcell: stemcell-srt
 
-    - task: upload-configure-stage-pks
-      file: paving-ci/ci/tasks/upload-configure-stage/task.yml
-      params:
-        <<: *om-creds
-        PRODUCT_NAME: pivotal-container-service
-        PRODUCT_YML: paving-ci/ci/configuration/azure/pks.yml
+    - task: upload-and-stage-srt
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/upload-and-stage-product.yml
       input_mapping:
-        env-state: env-state-azure
-        product: pks
-        product-config-repo: paving-ci
+        product: srt
+
+    - task: configure-srt
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/configure-product.yml
+      params:
+        CONFIG_FILE: srt.yml
+      input_mapping:
+        product: srt
+
+    - task: upload-pks-stemcell
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/upload-stemcell.yml
+      input_mapping:
         stemcell: stemcell-pks
 
-    - task: apply-changes
-      file: paving-ci/ci/tasks/apply-changes/task.yml
-      params:
-        <<: *om-creds
+    - task: upload-and-stage-pks
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/upload-and-stage-product.yml
       input_mapping:
-        env-state: env-state-azure
+        product: pks
+
+    - task: configure-pks
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/configure-product.yml
+      params:
+        CONFIG_FILE: pks.yml
+      input_mapping:
+        product: pks
+
+    - task: apply-changes
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/apply-changes.yml
+
 
     # - put: env-state-azure
     #   params:
