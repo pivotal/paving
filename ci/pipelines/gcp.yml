@@ -1,9 +1,3 @@
-groups:
-- name: gcp
-  jobs:
-  - deploy-gcp
-  - teardown-gcp
-
 resource_types:
 - name: terraform
   type: docker-image
@@ -113,7 +107,8 @@ resources:
     regexp: platform-automation-image-(.*).tgz
 
 jobs:
-- name: deploy-gcp
+- name: paving-gcp
+  old_name: deploy-gcp
   serial: true
   serial_groups: [gcp]
   public: false
@@ -144,7 +139,7 @@ jobs:
   - do:
 
     - in_parallel:
-      - task: download-stemcell
+      - task: download-srt-stemcell
         file: pcf-releng-ci/tasks/configuration/download-pivnet-stemcell/task.yml
         input_mapping:
           ert-product: srt
@@ -154,7 +149,7 @@ jobs:
           IAAS_TYPE: gcp
           PIVNET_TOKEN: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
 
-      - task: download-stemcell
+      - task: download-pks-stemcell
         file: pcf-releng-ci/tasks/configuration/download-pivnet-stemcell/task.yml
         input_mapping:
           ert-product: pks
@@ -191,74 +186,82 @@ jobs:
       params:
         OPSMAN_CONFIG_FILE: ops-manager.yml
 
-    - task: configure-authentication
-      file: paving-ci/ci/tasks/configure-authentication/task.yml
-      params:
-        <<: *om-creds
+    - task: write-om-files
+      file: paving-ci/ci/tasks/write-om-files/task.yml
       input_mapping:
         env-state: env-state-gcp
+      params:
+        <<: *om-creds
+        AUTH_CONFIG_FILE: paving-ci/ci/configuration/auth.yml
+        ENV_YML: paving-ci/ci/configuration/env.yml
+        DIRECTOR_CONFIG_PATH: paving-ci/ci/configuration/gcp/director.yml
+        SRT_CONFIG_FILE: paving-ci/ci/configuration/gcp/srt.yml
+        PKS_CONFIG_FILE: paving-ci/ci/configuration/gcp/pks.yml
+
+    - task: configure-authentication
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/configure-authentication.yml
 
     - task: configure-director
-      file: paving-ci/ci/tasks/configure-director/task.yml
-      params:
-        <<: *om-creds
-        DIRECTOR_YML: paving-ci/ci/configuration/gcp/director.yml
-      input_mapping:
-        env-state: env-state-gcp
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/configure-director.yml
 
-    - task: upload-configure-stage-pas
-      file: paving-ci/ci/tasks/upload-configure-stage/task.yml
-      params:
-        <<: *om-creds
-        PRODUCT_NAME: cf
-        PRODUCT_YML: paving-ci/ci/configuration/gcp/srt.yml
+    - task: upload-srt-stemcell
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/upload-stemcell.yml
       input_mapping:
-        env-state: env-state-gcp
-        product: srt
-        product-config-repo: paving-ci
         stemcell: stemcell-srt
 
-    - task: upload-configure-stage-pks
-      file: paving-ci/ci/tasks/upload-configure-stage/task.yml
-      params:
-        <<: *om-creds
-        PRODUCT_NAME: pivotal-container-service
-        PRODUCT_YML: paving-ci/ci/configuration/gcp/pks.yml
+    - task: upload-and-stage-srt
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/upload-and-stage-product.yml
       input_mapping:
-        env-state: env-state-gcp
-        product: pks
-        product-config-repo: paving-ci
+        product: srt
+
+    - task: configure-srt
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/configure-product.yml
+      params:
+        CONFIG_FILE: srt.yml
+      input_mapping:
+        product: srt
+
+    - task: upload-pks-stemcell
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/upload-stemcell.yml
+      input_mapping:
         stemcell: stemcell-pks
 
-    - task: apply-changes
-      file: paving-ci/ci/tasks/apply-changes/task.yml
-      params:
-        <<: *om-creds
+    - task: upload-and-stage-pks
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/upload-and-stage-product.yml
       input_mapping:
-        env-state: env-state-gcp
+        product: pks
 
-- name: teardown-gcp
-  serial: true
-  serial_groups: [gcp]
-  public: false
-  plan:
-  - in_parallel:
-    - get: paving
-    - get: pcf-releng-ci
-  - do:
-    - task: delete-installation
-      file: pcf-releng-ci/tasks/environment/delete-installation/task.yml
+    - task: configure-pks
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/configure-product.yml
       params:
-        OPSMAN_USERNAME: ((Shared-Paving Terraform/ci/om/Notes/username))
-        OPSMAN_PASSWORD: ((Shared-Paving Terraform/ci/om/Notes/password))
-        OPSMAN_URL_SUFFIX: paving-gcp.tfsti.cf-app.com
+        CONFIG_FILE: pks.yml
       input_mapping:
-        environment: env-state-gcp
-    - put: env-state-gcp
-      params:
-        terraform_source: paving/gcp
-        env_name_file: env-state-gcp/name
-        delete_on_failure: true
-        action: destroy
-      get_params:
-        action: destroy
+        product: pks
+
+    - task: apply-changes
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/apply-changes.yml
+
+
+    # - task: delete-installation
+    #   image: platform-automation-image
+    #   file: platform-automation-tasks/tasks/delete-installation.yml
+    # - task: delete-vm
+    #   image: platform-automation-image
+    #   file: platform-automation-tasks/tasks/delete-vm.yml
+    # - put: env-state-gcp
+    #   params:
+    #     terraform_source: paving/gcp
+    #     env_name_file: env-state-gcp/name
+    #     delete_on_failure: true
+    #     action: destroy
+    #   get_params:
+    #     action: destroy
