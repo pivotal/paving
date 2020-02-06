@@ -5,8 +5,7 @@ provider "azurerm" {
   tenant_id       = var.tenant_id
   environment     = var.cloud_name
 
-  # Pinned to 1.33.0 due to this bug: https://github.com/terraform-providers/terraform-provider-azurerm/issues/3780
-  version = "= 1.33.0"
+  version = "~> 1.43"
 }
 
 terraform {
