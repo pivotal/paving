@@ -184,6 +184,14 @@ jobs:
         state: env-state-gcp
       params:
         OPSMAN_CONFIG_FILE: ops-manager.yml
+      on_failure:
+        task: delete-vm
+        image: platform-automation-image
+        file: platform-automation-tasks/tasks/delete-vm.yml
+        input_mapping:
+          state: generated-state
+        params:
+          OPSMAN_CONFIG_FILE: ops-manager.yml
 
     - task: write-om-files
       file: paving-ci/ci/tasks/write-om-files/task.yml
