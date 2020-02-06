@@ -181,8 +181,9 @@ jobs:
       file: platform-automation-tasks/tasks/create-vm.yml
       input_mapping:
         image: opsman-image
-        config: env-state-gcp
         state: env-state-gcp
+      output_mapping:
+        generated-state: env-state-gcp
       params:
         OPSMAN_CONFIG_FILE: ops-manager.yml
 
@@ -250,18 +251,23 @@ jobs:
       image: platform-automation-image
       file: platform-automation-tasks/tasks/apply-changes.yml
 
+    - task: delete-installation
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/delete-installation.yml
 
-    # - task: delete-installation
-    #   image: platform-automation-image
-    #   file: platform-automation-tasks/tasks/delete-installation.yml
-    # - task: delete-vm
-    #   image: platform-automation-image
-    #   file: platform-automation-tasks/tasks/delete-vm.yml
-    # - put: env-state-gcp
-    #   params:
-    #     terraform_source: paving/gcp
-    #     env_name_file: env-state-gcp/name
-    #     delete_on_failure: true
-    #     action: destroy
-    #   get_params:
-    #     action: destroy
+    - task: delete-vm
+      image: platform-automation-image
+      file: platform-automation-tasks/tasks/delete-vm.yml
+      input_mapping:
+        state: env-state-gcp
+      params:
+        OPSMAN_CONFIG_FILE: ops-manager.yml
+
+    - put: env-state-gcp
+      params:
+        terraform_source: paving/gcp
+        env_name_file: env-state-gcp/name
+        delete_on_failure: true
+        action: destroy
+      get_params:
+        action: destroy
