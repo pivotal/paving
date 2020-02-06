@@ -73,3 +73,8 @@ variable "services_subnet_cidr" {
   default = "10.0.4.0/22"
   type    = string
 }
+
+variable "iaas_configuration_environment_azurecloud" {
+  default = "AzureCloud"
+  type    = string
+}

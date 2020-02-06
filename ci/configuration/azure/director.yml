@@ -12,6 +12,7 @@ properties-configuration:
     ssh_private_key: ((ops_manager_private_key))
     cloud_storage_type: managed_disks
     storage_account_type: Standard_LRS
+    environment: ((iaas_configuration_environment_azurecloud))
     availability_mode: availability_sets
   director_configuration:
     ntp_servers_string: 0.pool.ntp.org
