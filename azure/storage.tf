@@ -5,12 +5,15 @@ resource "random_string" "ops-manager" {
 }
 
 resource "azurerm_storage_account" "ops-manager" {
-  name                     = random_string.ops-manager.result
-  resource_group_name      = azurerm_resource_group.platform.name
-  location                 = var.location
-  account_tier             = "Standard"
-  account_kind             = "StorageV2"
-  account_replication_type = "LRS"
+  name                      = random_string.ops-manager.result
+  resource_group_name       = azurerm_resource_group.platform.name
+  location                  = var.location
+  account_tier              = "Standard"
+  account_kind              = "StorageV2"
+  account_replication_type  = "LRS"
+  enable_https_traffic_only = true
+
+  enable_advanced_threat_protection = false
 
   tags = merge(
     var.tags,
@@ -34,12 +37,15 @@ resource "random_string" "pas" {
 }
 
 resource "azurerm_storage_account" "pas" {
-  name                     = random_string.pas.result
-  resource_group_name      = azurerm_resource_group.platform.name
-  location                 = var.location
-  account_tier             = "Standard"
-  account_kind             = "StorageV2"
-  account_replication_type = "LRS"
+  name                      = random_string.pas.result
+  resource_group_name       = azurerm_resource_group.platform.name
+  location                  = var.location
+  account_tier              = "Standard"
+  account_kind              = "StorageV2"
+  account_replication_type  = "LRS"
+  enable_https_traffic_only = true
+
+  enable_advanced_threat_protection = false
 
   tags = merge(
     var.tags,
@@ -81,12 +87,15 @@ resource random_string "bosh" {
 }
 
 resource "azurerm_storage_account" "bosh" {
-  name                     = random_string.bosh.result
-  location                 = var.location
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
-  account_kind             = "StorageV2"
-  resource_group_name      = azurerm_resource_group.platform.name
+  name                      = random_string.bosh.result
+  location                  = var.location
+  account_tier              = "Standard"
+  account_replication_type  = "LRS"
+  account_kind              = "StorageV2"
+  resource_group_name       = azurerm_resource_group.platform.name
+  enable_https_traffic_only = true
+
+  enable_advanced_threat_protection = false
 
   tags = merge(
     var.tags,

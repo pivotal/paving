@@ -5,6 +5,7 @@ resource "azurerm_network_security_group" "platform-vms" {
 
   security_rule {
     name                       = "internal-anything"
+    description                = "Allow internal traffic within the network"
     priority                   = 100
     direction                  = "Inbound"
     access                     = "Allow"
@@ -17,6 +18,7 @@ resource "azurerm_network_security_group" "platform-vms" {
 
   security_rule {
     name                       = "ssh"
+    description                = "Allow SSH to VMs in the network"
     priority                   = 200
     direction                  = "Inbound"
     access                     = "Allow"
@@ -29,6 +31,7 @@ resource "azurerm_network_security_group" "platform-vms" {
 
   security_rule {
     name                       = "bosh-agent"
+    description                = "Access to the bosh agent VM"
     priority                   = 201
     direction                  = "Inbound"
     access                     = "Allow"
@@ -41,6 +44,7 @@ resource "azurerm_network_security_group" "platform-vms" {
 
   security_rule {
     name                       = "bosh-director"
+    description                = "Allow access to the bosh director"
     priority                   = 202
     direction                  = "Inbound"
     access                     = "Allow"
@@ -53,6 +57,7 @@ resource "azurerm_network_security_group" "platform-vms" {
 
   security_rule {
     name                       = "dns"
+    description                = "Allow inbound DNS resolution"
     priority                   = 203
     direction                  = "Inbound"
     access                     = "Allow"
@@ -65,6 +70,7 @@ resource "azurerm_network_security_group" "platform-vms" {
 
   security_rule {
     name                       = "http"
+    description                = "Allow inbound HTTP traffic from Internet"
     priority                   = 204
     direction                  = "Inbound"
     access                     = "Allow"
@@ -77,6 +83,7 @@ resource "azurerm_network_security_group" "platform-vms" {
 
   security_rule {
     name                       = "https"
+    description                = "Allow inbound HTTPS traffic from Internet"
     priority                   = 205
     direction                  = "Inbound"
     access                     = "Allow"
@@ -89,6 +96,7 @@ resource "azurerm_network_security_group" "platform-vms" {
 
   security_rule {
     name                       = "loggregator"
+    description                = "Allow inbound loggregator traffic from Internet"
     priority                   = 206
     direction                  = "Inbound"
     access                     = "Allow"
@@ -101,6 +109,7 @@ resource "azurerm_network_security_group" "platform-vms" {
 
   security_rule {
     name                       = "diego-ssh"
+    description                = "Allow inbound diego ssh (different port) traffic from Internet"
     priority                   = 209
     direction                  = "Inbound"
     access                     = "Allow"
@@ -113,6 +122,7 @@ resource "azurerm_network_security_group" "platform-vms" {
 
   security_rule {
     name                       = "tcp"
+    description                = "Please explain this port range"
     priority                   = 210
     direction                  = "Inbound"
     access                     = "Allow"
