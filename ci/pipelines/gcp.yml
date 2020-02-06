@@ -182,8 +182,6 @@ jobs:
       input_mapping:
         image: opsman-image
         state: env-state-gcp
-      output_mapping:
-        generated-state: env-state-gcp
       params:
         OPSMAN_CONFIG_FILE: ops-manager.yml
 
@@ -259,7 +257,7 @@ jobs:
       image: platform-automation-image
       file: platform-automation-tasks/tasks/delete-vm.yml
       input_mapping:
-        state: env-state-gcp
+        state: generated-state
       params:
         OPSMAN_CONFIG_FILE: ops-manager.yml
 
