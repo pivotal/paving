@@ -28,6 +28,8 @@ locals {
     ops_manager_dns                  = "${azurerm_dns_a_record.ops-manager.name}.${azurerm_dns_a_record.ops-manager.zone_name}"
     ops_manager_storage_account_name = azurerm_storage_account.ops-manager.name
 
+    iaas_configuration_environment_azurecloud = var.iaas_configuration_environment_azurecloud
+
     platform_vms_security_group_name = azurerm_network_security_group.platform-vms.name
 
     pas_subnet_name                = azurerm_subnet.pas.name
