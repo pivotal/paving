@@ -12,6 +12,7 @@ inputs:
 
 outputs:
 - name: env-state
+- name: config
 
 run:
   path: paving/ci/tasks/get-ops-manager-config/task

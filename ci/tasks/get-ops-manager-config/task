@@ -8,7 +8,7 @@ main() {
   cat "${metadata}" | yq -r .stable_config | jq -r . > "${vars_file}"
 
   config="${PWD}/paving/ci/configuration/${IAAS}/ops-manager.yml"
-  updated_config="${PWD}/env-state/ops-manager.yml"
+  updated_config="${PWD}/config/ops-manager.yml"
 
   if [ "${IAAS}" == "gcp" ]; then
     key="${PWD}/env-state/key"
