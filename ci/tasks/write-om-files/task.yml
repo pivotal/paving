@@ -9,6 +9,7 @@ image_resource:
 inputs:
 - name: env-state
 - name: paving-ci
+- name: config
 
 outputs:
 - name: env
