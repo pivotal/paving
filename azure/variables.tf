@@ -49,6 +49,11 @@ variable "tags" {
   type        = map(string)
 }
 
+variable "vnet_cidr" {
+  default = "10.0.0.0/16"
+  type    = string
+}
+
 variable "management_subnet_cidr" {
   default = "10.0.8.0/26"
   type    = string

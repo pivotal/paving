@@ -11,6 +11,11 @@ resource "azurerm_subnet" "management" {
 resource "azurerm_subnet_network_security_group_association" "ops-manager" {
   subnet_id                 = azurerm_subnet.management.id
   network_security_group_id = azurerm_network_security_group.ops-manager.id
+
+  depends_on = [
+    azurerm_subnet.management,
+    azurerm_network_security_group.ops-manager
+  ]
 }
 
 resource "azurerm_subnet" "pas" {
@@ -26,6 +31,11 @@ resource "azurerm_subnet" "pas" {
 resource "azurerm_subnet_network_security_group_association" "pas" {
   subnet_id                 = azurerm_subnet.pas.id
   network_security_group_id = azurerm_network_security_group.platform-vms.id
+
+  depends_on = [
+    azurerm_subnet.pas,
+    azurerm_network_security_group.platform-vms
+  ]
 }
 
 resource "azurerm_subnet" "services" {
@@ -41,6 +51,11 @@ resource "azurerm_subnet" "services" {
 resource "azurerm_subnet_network_security_group_association" "services" {
   subnet_id                 = azurerm_subnet.services.id
   network_security_group_id = azurerm_network_security_group.platform-vms.id
+
+  depends_on = [
+    azurerm_subnet.services,
+    azurerm_network_security_group.platform-vms
+  ]
 }
 
 resource "azurerm_subnet" "pks" {
@@ -56,4 +71,9 @@ resource "azurerm_subnet" "pks" {
 resource "azurerm_subnet_network_security_group_association" "pks" {
   subnet_id                 = azurerm_subnet.pks.id
   network_security_group_id = azurerm_network_security_group.platform-vms.id
+
+  depends_on = [
+    azurerm_subnet.pks,
+    azurerm_network_security_group.platform-vms
+  ]
 }
