@@ -71,7 +71,7 @@ resources:
   source:
     api_token: ((Shared-Paving Terraform/ci/pivnet_token/Notes))
     product_slug: elastic-runtime
-    product_version: 2.8.2
+    product_version: 2.8.\d+
     sort_by: semver
 
 - name: srt-stemcell
