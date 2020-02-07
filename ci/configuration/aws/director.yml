@@ -22,7 +22,7 @@ network-assignment:
 networks-configuration:
   icmp_checks_enabled: false
   networks:
-  - name: ops-manager
+  - name: management
     subnets:
     - availability_zone_names:
       - ((availability_zones.0))
