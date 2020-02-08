@@ -277,3 +277,27 @@ jobs:
         action: destroy
       get_params:
         action: destroy
+
+- name: cleanup-gcp
+  serial: true
+  public: false
+  plan:
+  - in_parallel:
+    - get: paving-ci
+    - get: paving
+    - get: env-state-gcp
+  - do:
+    - task: leftovers
+      file: paving-ci/ci/tasks/leftovers/task.yml
+      input_mapping:
+        env-state: env-state-gcp
+      params:
+        IAAS: gcp
+    - put: env-state-gcp
+      params:
+        terraform_source: paving/gcp
+        env_name_file: env-state-gcp/name
+        delete_on_failure: true
+        action: destroy
+      get_params:
+        action: destroy

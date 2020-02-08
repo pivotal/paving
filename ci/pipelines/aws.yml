@@ -289,3 +289,27 @@ jobs:
         action: destroy
       get_params:
         action: destroy
+
+- name: cleanup-aws
+  serial: true
+  public: false
+  plan:
+  - in_parallel:
+    - get: paving-ci
+    - get: paving
+    - get: env-state-aws
+  - do:
+    - task: leftovers
+      file: paving-ci/ci/tasks/leftovers/task.yml
+      input_mapping:
+        env-state: env-state-aws
+      params:
+        IAAS: aws
+    - put: env-state-aws
+      params:
+        terraform_source: paving/aws
+        env_name_file: env-state-aws/name
+        delete_on_failure: true
+        action: destroy
+      get_params:
+        action: destroy
