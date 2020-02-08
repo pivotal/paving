@@ -9,7 +9,7 @@ main() {
   metadata="${PWD}/env-state/metadata"
   vars_file="${PWD}/env-state/vars-file"
   cat "${metadata}" | yq -r .stable_config | jq -r . > "${vars_file}"
-  environment=$(${vars_file} | jq -r .environment_name)
+  environment=$(cat ${vars_file} | jq -r .environment_name)
 
   if [ "${environment}" == "" ]; then
     echo "Environment name is required as filter."

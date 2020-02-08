@@ -11,15 +11,13 @@ main() {
   updated_config="${PWD}/config/ops-manager.yml"
 
   if [ "${IAAS}" == "gcp" ]; then
-    key="${PWD}/env-state/key"
+    key="$(mktemp)"
     echo "${GCP_SERVICE_ACCOUNT_KEY}" > "${key}"
 
     bosh interpolate "${config}" \
       --var-file gcp_service_account_key="${key}" \
       --vars-file "${vars_file}" \
       > "${updated_config}"
-
-    rm "${key}"
 
   else
     bosh interpolate "${config}" --vars-file "${vars_file}" > "${updated_config}"
