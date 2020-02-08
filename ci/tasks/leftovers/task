@@ -1,0 +1,39 @@
+#!/bin/bash -eu
+
+main() {
+  if [ "$IAAS" == "" ]; then
+    echo "IAAS is required"
+    exit 1
+  fi
+
+  metadata="${PWD}/env-state/metadata"
+  vars_file="${PWD}/env-state/vars-file"
+  cat "${metadata}" | yq -r .stable_config | jq -r . > "${vars_file}"
+  environment=$(${vars_file} | jq -r .environment_name)
+
+  if [ "${environment}" == "" ]; then
+    echo "Environment name is required as filter."
+    exit 1
+  fi
+
+  if [ "$IAAS" == "gcp" ]; then
+    file=$(mktemp)
+    echo "$(cat ${vars_file} | jq -r .service_account_key)" > $file
+    export BBL_GCP_SERVICE_ACCOUNT_KEY="$file"
+  elif [ "$IAAS" == "aws" ]; then
+    export BBL_AZURE_CLIENT_ID="$(cat ${vars_file} | jq -r .client_id)"
+    export BBL_AZURE_CLIENT_ID="$(cat ${vars_file} | jq -r .client_secret)"
+    export BBL_AZURE_CLIENT_ID="$(cat ${vars_file} | jq -r .tenant_id)"
+    export BBL_AZURE_CLIENT_ID="$(cat ${vars_file} | jq -r .subscription_id)"
+  elif [ "$IAAS" == "azure" ]; then
+    export BBL_AWS_ACCESS_KEY_ID="$(cat ${vars_file} | jq -r .access_key)"
+    export BBL_AWS_SECRET_ACCESS_KEY="$(cat ${vars_file} | jq -r .secret_key)"
+    export BBL_AWS_REGION="$(cat ${vars_file} | jq -r .region)"
+  fi
+
+  set -x
+
+  leftovers --no-confirm --filter ${environment} --iaas ${IAAS}
+}
+
+main "$@"
