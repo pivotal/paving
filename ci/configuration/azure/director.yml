@@ -1,35 +1,11 @@
 ---
-properties-configuration:
-  iaas_configuration:
-    subscription_id: ((subscription_id))
-    tenant_id: ((tenant_id))
-    client_id: ((client_id))
-    client_secret: ((client_secret))
-    resource_group_name: ((resource_group_name))
-    bosh_storage_account_name: ((bosh_storage_account_name))
-    default_security_group: ((platform_vms_security_group_name))
-    ssh_public_key: ((ops_manager_public_key))
-    ssh_private_key: ((ops_manager_private_key))
-    cloud_storage_type: managed_disks
-    storage_account_type: Standard_LRS
-    environment: ((iaas_configuration_environment_azurecloud))
-    availability_mode: availability_sets
-  director_configuration:
-    ntp_servers_string: 0.pool.ntp.org
-    metrics_ip: ''
-    resurrector_enabled: true
-    post_deploy_enabled: false
-    bosh_recreate_on_next_deploy: false
-    retry_bosh_deploys: true
-    hm_pager_duty_options:
-      enabled: false
-    hm_emailer_options:
-      enabled: false
-    blobstore_type: local
-    database_type: internal
-  security_configuration:
-    trusted_certificates: ''
-    generate_vm_passwords: true
+network-assignment:
+  network:
+    name: management
+  singleton_availability_zone:
+    name: 'zone-1'
+  other_availability_zones:
+    name: 'zone-2'
 networks-configuration:
   icmp_checks_enabled: false
   networks:
@@ -65,13 +41,37 @@ networks-configuration:
       reserved_ip_ranges: ((services_subnet_gateway))-((services_subnet_range))
       dns: 168.63.129.16
       gateway: ((services_subnet_gateway))
-network-assignment:
-  network:
-    name: management
-  singleton_availability_zone:
-    name: 'zone-1'
-  other_availability_zones:
-    name: 'zone-2'
+properties-configuration:
+  iaas_configuration:
+    subscription_id: ((subscription_id))
+    tenant_id: ((tenant_id))
+    client_id: ((client_id))
+    client_secret: ((client_secret))
+    resource_group_name: ((resource_group_name))
+    bosh_storage_account_name: ((bosh_storage_account_name))
+    default_security_group: ((platform_vms_security_group_name))
+    ssh_public_key: ((ops_manager_public_key))
+    ssh_private_key: ((ops_manager_private_key))
+    cloud_storage_type: managed_disks
+    storage_account_type: Standard_LRS
+    environment: ((iaas_configuration_environment_azurecloud))
+    availability_mode: availability_sets
+  director_configuration:
+    ntp_servers_string: 0.pool.ntp.org
+    metrics_ip: ''
+    resurrector_enabled: true
+    post_deploy_enabled: false
+    bosh_recreate_on_next_deploy: false
+    retry_bosh_deploys: true
+    hm_pager_duty_options:
+      enabled: false
+    hm_emailer_options:
+      enabled: false
+    blobstore_type: local
+    database_type: internal
+  security_configuration:
+    trusted_certificates: ''
+    generate_vm_passwords: true
 vmextensions-configuration:
   - name: pks-api-lb-security-groups
     cloud_properties:
