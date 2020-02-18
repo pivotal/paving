@@ -8,6 +8,7 @@ opsman-configuration:
     project: ((project))
     public_ip: ((ops_manager_public_ip))
     region: ((region))
+    ssh_public_key: ((ops_manager_ssh_public_key))
     tags: ((ops_manager_tags))
     vm_name: ((environment_name))-ops-manager-vm
     vpc_subnet: ((management_subnet_name))
