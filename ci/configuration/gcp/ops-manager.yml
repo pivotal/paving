@@ -9,6 +9,6 @@ opsman-configuration:
     public_ip: ((ops_manager_public_ip))
     region: ((region))
     tags: ((ops_manager_tags))
-    vm_name: "ops-manager-vm"
+    vm_name: ((environment_name))-ops-manager-vm
     vpc_subnet: ((management_subnet_name))
     zone: ((availability_zones.0))
