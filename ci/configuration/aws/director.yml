@@ -5,7 +5,7 @@ az-configuration:
 - name: ((availability_zones.2))
 network-assignment:
   network:
-    name: ops-manager
+    name: management
   singleton_availability_zone:
     name: ((availability_zones.0))
 networks-configuration:
