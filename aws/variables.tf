@@ -41,7 +41,7 @@ variable "public_subnet_cidrs" {
 }
 
 variable "management_subnet_cidrs" {
-  default     = ["10.0.16.0/28", "10.0.16.16/28", "10.0.16.32/28"]
+  default     = ["10.0.16.0/24", "10.0.17.0/24", "10.0.18.0/24"]
   description = "The list of CIDRs for the Management subnet. Number of CIDRs MUST match the number of AZs."
   type        = list
 }
