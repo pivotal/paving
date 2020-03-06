@@ -50,8 +50,8 @@ properties-configuration:
     resource_group_name: ((resource_group_name))
     bosh_storage_account_name: ((bosh_storage_account_name))
     default_security_group: ((platform_vms_security_group_name))
-    ssh_public_key: ((ops_manager_public_key))
-    ssh_private_key: ((ops_manager_private_key))
+    ssh_public_key: ((ops_manager_ssh_public_key))
+    ssh_private_key: ((ops_manager_ssh_private_key))
     cloud_storage_type: managed_disks
     storage_account_type: Standard_LRS
     environment: ((iaas_configuration_environment_azurecloud))

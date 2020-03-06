@@ -20,9 +20,9 @@ locals {
     bosh_storage_account_name = azurerm_storage_account.bosh.name
 
     ops_manager_security_group_name  = azurerm_network_security_group.ops-manager.name
-    ops_manager_private_key          = tls_private_key.ops_manager.private_key_pem
+    ops_manager_ssh_private_key          = tls_private_key.ops_manager.private_key_pem
+    ops_manager_ssh_public_key           = tls_private_key.ops_manager.public_key_openssh
     ops_manager_private_ip           = cidrhost(azurerm_subnet.management.address_prefix, 5)
-    ops_manager_public_key           = tls_private_key.ops_manager.public_key_openssh
     ops_manager_public_ip            = azurerm_public_ip.ops-manager.ip_address
     ops_manager_container_name       = azurerm_storage_container.ops-manager.name
     ops_manager_dns                  = "${azurerm_dns_a_record.ops-manager.name}.${azurerm_dns_a_record.ops-manager.zone_name}"
