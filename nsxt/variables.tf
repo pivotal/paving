@@ -60,7 +60,7 @@ variable "nat_gateway_ip" {
   type        = string
 }
 
-variable "om_ip" {
+variable "ops_manager_public_ip" {
   description = "The public IP Address of the Operations Manager. The om's DNS (e.g. `om.system.tld`) should resolve to this IP, e.g. `10.195.74.16`"
   type        = string
 }
@@ -85,3 +85,47 @@ variable "nsxt_lb_ssh_virtual_server_ip_address" {
   type        = string
 }
 
+variable "vcenter_datacenter" {
+  type = string
+}
+
+variable "vcenter_datastore" {
+  type = string
+}
+
+variable "vcenter_host" {
+  type = string
+}
+
+variable "vcenter_username" {
+  type = string
+}
+
+variable "vcenter_password" {
+  type = string
+}
+
+variable "vcenter_resource_pool" {
+  type = string
+}
+
+variable "ops_manager_ntp" {
+  type = string
+}
+
+variable "ops_manager_netmask" {
+  type = string
+}
+
+variable "ops_manager_hostname" {
+  type = string
+}
+
+variable "ops_manager_dns" {
+  type = string
+}
+
+variable "ops_manager_folder" {
+  type = string
+  default = ""
+}

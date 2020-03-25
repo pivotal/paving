@@ -208,7 +208,7 @@ resource "nsxt_nat_rule" "snat_om" {
   nat_pass          = false
 
   match_source_network = "192.168.1.10"
-  translated_network   = var.om_ip
+  translated_network   = var.ops_manager_public_ip
 
   tag {
     scope = "terraform"
@@ -226,7 +226,7 @@ resource "nsxt_nat_rule" "dnat_om" {
   logging           = false
   nat_pass          = false
 
-  match_destination_network = var.om_ip
+  match_destination_network = var.ops_manager_public_ip
   translated_network        = "192.168.1.10"
 
   tag {

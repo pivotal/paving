@@ -1,0 +1,21 @@
+---
+opsman-configuration:
+  vsphere:
+    vcenter:
+      datacenter: ((vcenter_datacenter))
+      datastore: ((vcenter_datastore))
+      folder: ((ops_manager_folder))
+      url: ((vcenter_host))
+      username: ((vcenter_username))
+      password: ((vcenter_password))
+      resource_pool: ((vcenter_resource_pool))
+      insecure: ((allow_unverified_ssl))
+    disk_type: thin
+    dns: ((ops_manager_dns))
+    gateway: ((ops_manager_gateway))
+    hostname: ((ops_manager_hostname))
+    netmask: ((ops_manager_netmask))
+    network: ((management_subnet_name))
+    ntp: ((ops_manager_ntp))
+    private_ip: ((ops_manager_private_ip))
+    ssh_public_key: ((ops_manager_ssh_public_key))
