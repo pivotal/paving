@@ -224,7 +224,7 @@ resource "nsxt_nat_rule" "dnat_om" {
   description       = "DNAT Rule for Operations Manager"
   enabled           = true
   logging           = false
-  nat_pass          = false
+  nat_pass          = true
 
   match_destination_network = var.ops_manager_public_ip
   translated_network        = "192.168.1.10"
