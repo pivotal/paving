@@ -8,7 +8,7 @@ east_west_transport_zone_name = "overlay-tz"
 # Routers
 nsxt_edge_cluster_name = "edge-cluster-1"
 nat_gateway_ip = "10.195.74.251"
-om_ip = "10.195.74.16"
+ops_manager_public_ip = "10.195.74.16"
 
 # Each PAS Org will draw an IP address from this pool; make sure you have enough
 # Your LB Virtual Servers, gateway, NAT gateway, OM should be in the CIDR but not in the available range

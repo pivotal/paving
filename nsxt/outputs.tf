@@ -15,6 +15,9 @@ locals {
     ops_manager_dns = var.ops_manager_dns
     ops_manager_folder = var.ops_manager_folder
     ops_manager_gateway = cidrhost(nsxt_nat_rule.snat_vm.match_source_network, 1)
+    ops_manager_ssh_public_key      = tls_private_key.ops-manager.public_key_openssh
+    ops_manager_ssh_private_key     = tls_private_key.ops-manager.private_key_pem
+    ops_manager_public_ip = var.ops_manager_public_ip
 
     management_subnet_name = nsxt_logical_switch.infrastructure_ls.display_name
 
