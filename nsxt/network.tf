@@ -38,9 +38,12 @@ resource "nsxt_logical_tier1_router" "t1_infrastructure" {
   display_name = "T1-Router-PAS-Infrastructure"
 
   description = "Infrastructure Tier 1 Router."
+  failover_mode   = "NON_PREEMPTIVE"
+  edge_cluster_id = data.nsxt_edge_cluster.edge_cluster.id
 
   enable_router_advertisement = true
   advertise_connected_routes  = true
+  advertise_lb_vip_routes     = true
 
   tag {
     scope = "terraform"
