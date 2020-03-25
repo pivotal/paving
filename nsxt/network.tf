@@ -10,18 +10,6 @@ data "nsxt_logical_tier0_router" "t0_router" {
   display_name = var.nsxt_t0_router_name
 }
 
-resource "nsxt_logical_router_link_port_on_tier0" "t0_to_t1_deployment" {
-  display_name = "T0-to-T1-Deployment"
-
-  description       = "Link Port on Logical Tier 0 Router for connecting to Tier 1 Deployment Router."
-  logical_router_id = data.nsxt_logical_tier0_router.t0_router.id
-
-  tag {
-    scope = "terraform"
-    tag   = var.environment_name
-  }
-}
-
 resource "nsxt_logical_router_link_port_on_tier0" "t0_to_t1_infrastructure" {
   display_name = "T0-to-T1-Infrastructure"
 
@@ -38,13 +26,25 @@ resource "nsxt_logical_tier1_router" "t1_infrastructure" {
   display_name = "T1-Router-PAS-Infrastructure"
 
   description = "Infrastructure Tier 1 Router."
-  failover_mode   = "NON_PREEMPTIVE"
+  failover_mode   = "PREEMPTIVE"
   edge_cluster_id = data.nsxt_edge_cluster.edge_cluster.id
 
   enable_router_advertisement = true
   advertise_connected_routes  = true
   advertise_lb_vip_routes     = true
   advertise_lb_snat_ip_routes = true
+
+  tag {
+    scope = "terraform"
+    tag   = var.environment_name
+  }
+}
+
+resource "nsxt_logical_router_link_port_on_tier0" "t0_to_t1_deployment" {
+  display_name = "T0-to-T1-Deployment"
+
+  description       = "Link Port on Logical Tier 0 Router for connecting to Tier 1 Deployment Router."
+  logical_router_id = data.nsxt_logical_tier0_router.t0_router.id
 
   tag {
     scope = "terraform"
@@ -188,7 +188,7 @@ resource "nsxt_nat_rule" "snat_vm" {
   description       = "SNAT Rule for all VMs in deployment with exception of sockets coming in through LBs"
   enabled           = true
   logging           = false
-  nat_pass          = false
+  nat_pass          = true
 
   match_source_network = "192.168.0.0/16"
   translated_network   = var.nat_gateway_ip
@@ -199,24 +199,24 @@ resource "nsxt_nat_rule" "snat_vm" {
   }
 }
 
-resource "nsxt_nat_rule" "snat_om" {
-  display_name = "snat-om"
-  action       = "SNAT"
+# resource "nsxt_nat_rule" "snat_om" {
+#   display_name = "snat-om"
+#   action       = "SNAT"
 
-  logical_router_id = data.nsxt_logical_tier0_router.t0_router.id
-  description       = "SNAT Rule for Operations Manager"
-  enabled           = true
-  logging           = false
-  nat_pass          = true
+#   logical_router_id = data.nsxt_logical_tier0_router.t0_router.id
+#   description       = "SNAT Rule for Operations Manager"
+#   enabled           = true
+#   logging           = false
+#   nat_pass          = true
 
-  match_source_network = "192.168.1.10"
-  translated_network   = var.ops_manager_public_ip
+#   match_source_network = "192.168.1.10"
+#   translated_network   = var.ops_manager_public_ip
 
-  tag {
-    scope = "terraform"
-    tag   = var.environment_name
-  }
-}
+#   tag {
+#     scope = "terraform"
+#     tag   = var.environment_name
+#   }
+# }
 
 resource "nsxt_nat_rule" "dnat_om" {
   display_name = "dnat-om"
