@@ -11,8 +11,8 @@ locals {
 
     ops_manager_ntp = var.ops_manager_ntp
     ops_manager_netmask = var.ops_manager_netmask
-    ops_manager_hostname = var.ops_manager_hostname
     ops_manager_dns = var.ops_manager_dns
+    ops_manager_dns_servers = var.ops_manager_dns_servers
     ops_manager_folder = var.ops_manager_folder
     ops_manager_gateway = cidrhost(nsxt_nat_rule.snat_vm.match_source_network, 1)
     ops_manager_ssh_public_key      = tls_private_key.ops-manager.public_key_openssh

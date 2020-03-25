@@ -117,11 +117,11 @@ variable "ops_manager_netmask" {
   type = string
 }
 
-variable "ops_manager_hostname" {
+variable "ops_manager_dns" {
   type = string
 }
 
-variable "ops_manager_dns" {
+variable "ops_manager_dns_servers" {
   type = string
 }
 

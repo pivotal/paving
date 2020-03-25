@@ -11,9 +11,9 @@ opsman-configuration:
       resource_pool: ((vcenter_resource_pool))
       insecure: ((allow_unverified_ssl))
     disk_type: thin
-    dns: ((ops_manager_dns))
+    dns: ((ops_manager_dns_servers))
     gateway: ((ops_manager_gateway))
-    hostname: ((ops_manager_hostname))
+    hostname: ((ops_manager_dns))
     netmask: ((ops_manager_netmask))
     network: ((management_subnet_name))
     ntp: ((ops_manager_ntp))
