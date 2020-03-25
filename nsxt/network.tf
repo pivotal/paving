@@ -44,6 +44,7 @@ resource "nsxt_logical_tier1_router" "t1_infrastructure" {
   enable_router_advertisement = true
   advertise_connected_routes  = true
   advertise_lb_vip_routes     = true
+  advertise_lb_snat_ip_routes = true
 
   tag {
     scope = "terraform"
@@ -116,6 +117,7 @@ resource "nsxt_logical_tier1_router" "t1_deployment" {
   enable_router_advertisement = true
   advertise_connected_routes  = true
   advertise_lb_vip_routes     = true
+  advertise_lb_snat_ip_routes = true
 
   tag {
     scope = "terraform"
