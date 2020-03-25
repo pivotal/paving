@@ -205,7 +205,7 @@ resource "nsxt_nat_rule" "snat_om" {
   description       = "SNAT Rule for Operations Manager"
   enabled           = true
   logging           = false
-  nat_pass          = false
+  nat_pass          = true
 
   match_source_network = "192.168.1.10"
   translated_network   = var.ops_manager_public_ip
