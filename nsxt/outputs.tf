@@ -18,8 +18,11 @@ locals {
     ops_manager_ssh_public_key      = tls_private_key.ops-manager.public_key_openssh
     ops_manager_ssh_private_key     = tls_private_key.ops-manager.private_key_pem
     ops_manager_public_ip = var.ops_manager_public_ip
+    ops_manager_private_ip = nsxt_nat_rule.snat_om.match_source_network
 
     management_subnet_name = nsxt_logical_switch.infrastructure_ls.display_name
+
+    allow_unverified_ssl = var.allow_unverified_ssl
 
     lb_pool_web = nsxt_lb_pool.pas-web.display_name
     lb_pool_tcp = nsxt_lb_pool.pas-tcp.display_name
