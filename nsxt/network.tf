@@ -1,15 +1,3 @@
-data "nsxt_edge_cluster" "edge_cluster" {
-  display_name = var.nsxt_edge_cluster_name
-}
-
-data "nsxt_transport_zone" "east-west-overlay" {
-  display_name = var.east_west_transport_zone_name
-}
-
-data "nsxt_logical_tier0_router" "t0_router" {
-  display_name = var.nsxt_t0_router_name
-}
-
 resource "nsxt_logical_router_link_port_on_tier0" "t0_to_t1_infrastructure" {
   display_name = "T0-to-T1-Infrastructure"
 
