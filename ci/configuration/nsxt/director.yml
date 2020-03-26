@@ -1,0 +1,41 @@
+---
+az-configuration:
+  - name: az1
+    clusters:
+      - cluster: ((vcenter_cluster))
+        resource_pool: ((vcenter_resource_pool))
+properties-configuration:
+  director_configuration:
+    ntp_servers_string: ((ops_manager_ntp))
+    retry_bosh_deploys: true
+  iaas_configuration:
+    vcenter_host: ((vcenter_host))
+    vcenter_username: ((vcenter_username))
+    vcenter_password: ((vcenter_password))
+    datacenter: ((vcenter_datastore))
+    disk_type: thin
+    ephemeral_datastores_string: ((vcenter_datastore))
+    persistent_datastores_string: ((vcenter_datastore))
+    nsx_networking_enabled: true
+    nsx_mode: nsx-t
+    nsx_address: ((nsxt_host))
+    nsx_username: ((nsxt_username))
+    nsx_password: ((nsxt_password))
+    ssl_verification_enabled: ((disable_ssl_verification))
+network-assignment:
+  network:
+    name: management
+  singleton_availability_zone:
+    name: az1
+networks-configuration:
+  icmp_checks_enabled: false
+  networks:
+    - name: management
+      subnets:
+        - availability_zone_names:
+            - az1
+          cidr: ((managment_subnet_cidr))
+          dns: ((ops_manager_dns_servers))
+          gateway: ((management_subnet_gateway))
+          reserved_ip_ranges: ((management_subnet_reserved_ip_ranges))
+          iaas_identifier: ((management_subnet_name))

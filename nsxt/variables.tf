@@ -109,6 +109,10 @@ variable "vcenter_resource_pool" {
   type = string
 }
 
+variable "vcenter_cluster" {
+  type = string
+}
+
 variable "ops_manager_ntp" {
   type = string
 }

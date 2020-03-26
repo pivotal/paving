@@ -8,11 +8,11 @@ opsman-configuration:
       url: ((vcenter_host))
       username: ((vcenter_username))
       password: ((vcenter_password))
-      resource_pool: ((vcenter_resource_pool))
+      resource_pool: /((vcenter_datastore))/host/((vcenter_cluster))/Resources/((vcenter_resource_pool))
       insecure: ((allow_unverified_ssl))
     disk_type: thin
     dns: ((ops_manager_dns_servers))
-    gateway: ((ops_manager_gateway))
+    gateway: ((management_subnet_gateway))
     hostname: ((ops_manager_dns))
     netmask: ((ops_manager_netmask))
     network: ((management_subnet_name))
