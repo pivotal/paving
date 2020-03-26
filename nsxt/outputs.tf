@@ -24,9 +24,9 @@ locals {
     ops_manager_private_ip      = nsxt_nat_rule.dnat_om.translated_network
 
     management_subnet_name               = nsxt_logical_switch.infrastructure_ls.display_name
-    management_subnet_cidr               = nsxt_logical_router_downlink_port.infrastructure_dp.ip_address
-    management_subnet_gateway            = cidrhost(nsxt_logical_router_downlink_port.infrastructure_dp.ip_address, 1)
-    management_subnet_reserved_ip_ranges = "${cidrhost(nsxt_logical_router_downlink_port.infrastructure_dp.ip_address, 1)}-${cidrhost(nsxt_logical_router_downlink_port.infrastructure_dp.ip_address, 9)}"
+    management_subnet_cidr               = "192.168.1.0/24"
+    management_subnet_gateway            = "192.168.1.1"
+    management_subnet_reserved_ip_ranges = "192.168.1.1-192.168.1.10"
 
     allow_unverified_ssl      = var.allow_unverified_ssl
     disable_ssl_verification  = !var.allow_unverified_ssl
