@@ -34,7 +34,7 @@ networks-configuration:
       subnets:
         - availability_zone_names:
             - az1
-          cidr: ((managment_subnet_cidr))
+          cidr: ((management_subnet_cidr))
           dns: ((ops_manager_dns_servers))
           gateway: ((management_subnet_gateway))
           reserved_ip_ranges: ((management_subnet_reserved_ip_ranges))
