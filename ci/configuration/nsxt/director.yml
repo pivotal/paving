@@ -21,6 +21,7 @@ properties-configuration:
     nsx_address: ((nsxt_host))
     nsx_username: ((nsxt_username))
     nsx_password: ((nsxt_password))
+    nsx_ca_certificate: ((nsxt_ca_cert))
     ssl_verification_enabled: ((disable_ssl_verification))
 network-assignment:
   network:

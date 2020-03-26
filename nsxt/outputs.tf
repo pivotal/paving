@@ -3,6 +3,7 @@ locals {
     nsxt_host     = var.nsxt_host
     nsxt_username = var.nsxt_username
     nsxt_password = var.nsxt_password
+    nsxt_ca_cert  = var.nsxt_ca_cert
 
     vcenter_datacenter    = var.vcenter_datacenter
     vcenter_datastore     = var.vcenter_datastore
@@ -11,7 +12,6 @@ locals {
     vcenter_password      = var.vcenter_password
     vcenter_resource_pool = var.vcenter_resource_pool
     vcenter_cluster       = var.vcenter_cluster
-
 
     ops_manager_ntp             = var.ops_manager_ntp
     ops_manager_netmask         = var.ops_manager_netmask

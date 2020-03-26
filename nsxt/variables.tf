@@ -13,6 +13,10 @@ variable "nsxt_password" {
   type        = string
 }
 
+variable "nsxt_ca_cert" {
+  type    = string
+}
+
 variable "allow_unverified_ssl" {
   default     = false
   description = "Allow connection to NSX-T manager with self-signed certificates. Set to `true` for POC or development environments"
