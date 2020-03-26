@@ -12,7 +12,7 @@ properties-configuration:
     vcenter_host: ((vcenter_host))
     vcenter_username: ((vcenter_username))
     vcenter_password: ((vcenter_password))
-    datacenter: ((vcenter_datastore))
+    datacenter: ((vcenter_datacenter))
     disk_type: thin
     ephemeral_datastores_string: ((vcenter_datastore))
     persistent_datastores_string: ((vcenter_datastore))
