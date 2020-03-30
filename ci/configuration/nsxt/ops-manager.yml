@@ -8,7 +8,7 @@ opsman-configuration:
       url: ((vcenter_host))
       username: ((vcenter_username))
       password: ((vcenter_password))
-      resource_pool: /((vcenter_datastore))/host/((vcenter_cluster))/Resources/((vcenter_resource_pool))
+      resource_pool: /((vcenter_datacenter))/host/((vcenter_cluster))/Resources/((vcenter_resource_pool))
       insecure: ((allow_unverified_ssl))
     disk_type: thin
     dns: ((ops_manager_dns_servers))
