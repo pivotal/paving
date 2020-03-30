@@ -1,5 +1,7 @@
 locals {
   stable_config = {
+    environment_name = var.environment_name
+    
     nsxt_host     = var.nsxt_host
     nsxt_username = var.nsxt_username
     nsxt_password = var.nsxt_password
