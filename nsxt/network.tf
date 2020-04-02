@@ -87,7 +87,7 @@ resource "nsxt_logical_router_downlink_port" "infrastructure_dp" {
   description                   = "Downlink port connecting PAS-Infrastructure router to its Logical Switch"
   logical_router_id             = nsxt_logical_tier1_router.t1_infrastructure.id
   linked_logical_switch_port_id = nsxt_logical_port.infrastructure_lp.id
-  ip_address                    = "192.168.1.1/24"
+  ip_address                    = "${var.subnet_prefix}.1.1/24"
 
   tag {
     scope = "terraform"
@@ -160,7 +160,7 @@ resource "nsxt_logical_router_downlink_port" "deployment_dp" {
   description                   = "Downlink port connecting PAS-Deployment router to its Logical Switch"
   logical_router_id             = nsxt_logical_tier1_router.t1_deployment.id
   linked_logical_switch_port_id = nsxt_logical_port.deployment_lp.id
-  ip_address                    = "192.168.2.1/24"
+  ip_address                    = "${var.subnet_prefix}.2.1/24"
 
   tag {
     scope = "terraform"
@@ -178,7 +178,7 @@ resource "nsxt_nat_rule" "snat_vm" {
   logging           = false
   nat_pass          = true
 
-  match_source_network = "192.168.0.0/16"
+  match_source_network = "${var.subnet_prefix}.0.0/16"
   translated_network   = var.nat_gateway_ip
 
   tag {
@@ -197,7 +197,7 @@ resource "nsxt_nat_rule" "snat_om" {
   logging           = false
   nat_pass          = true
 
-  match_source_network = "192.168.1.10"
+  match_source_network = "${var.subnet_prefix}.1.10"
   translated_network   = var.ops_manager_public_ip
 
   tag {
@@ -217,7 +217,7 @@ resource "nsxt_nat_rule" "dnat_om" {
   nat_pass          = true
 
   match_destination_network = var.ops_manager_public_ip
-  translated_network        = "192.168.1.10"
+  translated_network        = "${var.subnet_prefix}.1.10"
 
   tag {
     scope = "terraform"

@@ -137,3 +137,8 @@ variable "ops_manager_folder" {
   type = string
   default = ""
 }
+
+variable "subnet_prefix" {
+  type = string
+  default = "192.168"
+}
