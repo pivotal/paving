@@ -91,7 +91,7 @@ resource "nsxt_lb_pool" "pas-ssh" {
 }
 
 resource "nsxt_lb_fast_tcp_application_profile" "pas_lb_tcp_application_profile" {
-  display_name  = "pas-lb-tcp-application-profile"
+  display_name  = "${var.environment_name}-pas-lb-tcp-application-profile"
   close_timeout = "8"
   idle_timeout  = "1800"
 
