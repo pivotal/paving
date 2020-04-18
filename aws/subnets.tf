@@ -8,6 +8,7 @@ resource "aws_subnet" "public-subnet" {
   tags = merge(
     var.tags,
     { Name = "${var.environment_name}-public-subnet-${count.index}" },
+    { "kubernetes.io/role/elb" = "1"}
   )
 }
 
@@ -60,5 +61,6 @@ resource "aws_subnet" "pks-subnet" {
   tags = merge(
     var.tags,
     { Name = "${var.environment_name}-pks-subnet-${count.index}" },
+    { "kubernetes.io/role/internal-elb" = "1" } 
   )
 }
