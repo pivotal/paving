@@ -19,7 +19,8 @@ $ echo '{
                 "ec2:*",
                 "elasticloadbalancing:*",
                 "iam:*",
-                "route53:*"
+                "route53:*",
+                "s3:*"
             ],
             "Resource": "*"
         }
