@@ -53,6 +53,7 @@ locals {
     droplets_bucket_name   = aws_s3_bucket.droplets-bucket.bucket
     packages_bucket_name   = aws_s3_bucket.packages-bucket.bucket
     resources_bucket_name  = aws_s3_bucket.resources-bucket.bucket
+    tas_blobstore_iam_instance_profile_name = aws_iam_instance_profile.tas-blobstore.name
 
     nat_security_group_id   = aws_security_group.nat.id
     nat_security_group_name = aws_security_group.nat.name
