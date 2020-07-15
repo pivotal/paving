@@ -17,6 +17,7 @@ The roles required:
 - Service Account Admin - `iam.serviceAccountAdmin`
 - Service Account Key Admin - `iam.serviceAccountKeyAdmin`
 - Storage Admin - `storage.admin`
+- Compute Image Admin - `compute.imagesAdmin` (used during Platform Automation steps)
 
 For each role, you can run the following command:
 
