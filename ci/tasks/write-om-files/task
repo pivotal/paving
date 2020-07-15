@@ -6,7 +6,7 @@ main() {
   metadata="${PWD}/env-state/metadata"
   vars_file="${PWD}/env-state/vars-file"
   cat "${metadata}" | yq -r .stable_config | jq -r . > "${vars_file}"
-  om_target="$(cat "${vars_file}" | jq -r .ops_manager_dns)"
+  ops_manager_dns="$(cat "${vars_file}" | jq -r .ops_manager_dns)"
 
   updated_env_yml="${PWD}/env/env.yml"
   updated_auth_config_file="${PWD}/config/auth.yml"
@@ -17,7 +17,7 @@ main() {
   bosh interpolate "${ENV_YML}" \
     --var om_username="${OM_USERNAME}" \
     --var om_password="${OM_PASSWORD}" \
-    --var om_target="${om_target}" \
+    --var ops_manager_dns="${om_target}" \
     > "${updated_env_yml}"
 
   bosh interpolate "${AUTH_CONFIG_FILE}" \
