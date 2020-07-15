@@ -17,6 +17,7 @@ The roles required:
 - Service Account Admin - `iam.serviceAccountAdmin`
 - Service Account Key Admin - `iam.serviceAccountKeyAdmin`
 - Storage Admin - `storage.admin`
+- Service Account User - `iam.serviceAccountUser`
 
 For each role, you can run the following command:
 
