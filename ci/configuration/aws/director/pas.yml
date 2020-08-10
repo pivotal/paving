@@ -1,0 +1,50 @@
+- type: replace
+  path: /vmextensions-configuration?/-
+  value:
+    name: web-lb-security-groups
+    cloud_properties:
+      security_groups:
+        - ((web_lb_security_group_id))
+        - ((platform_vms_security_group_id))
+- type: replace
+  path: /vmextensions-configuration?/-
+  value:
+    name: ssh-lb-security-groups
+    cloud_properties:
+      security_groups:
+        - ((ssh_lb_security_group_id))
+        - ((platform_vms_security_group_id))
+- type: replace
+  path: /vmextensions-configuration?/-
+  value:
+    name: tcp-lb-security-groups
+    cloud_properties:
+      security_groups:
+        - ((tcp_lb_security_group_id))
+        - ((platform_vms_security_group_id))
+- type: replace
+  path: /networks-configuration?/networks?/-
+  value:
+    name: pas
+    subnets:
+      - availability_zone_names:
+          - ((availability_zones.0))
+        cidr: ((pas_subnet_cidrs.0))
+        dns: 169.254.169.253
+        gateway: ((pas_subnet_gateways.0))
+        iaas_identifier: ((pas_subnet_ids.0))
+        reserved_ip_ranges: ((pas_subnet_reserved_ip_ranges.0))
+      - availability_zone_names:
+          - ((availability_zones.1))
+        cidr: ((pas_subnet_cidrs.1))
+        dns: 169.254.169.253
+        gateway: ((pas_subnet_gateways.1))
+        iaas_identifier: ((pas_subnet_ids.1))
+        reserved_ip_ranges: ((pas_subnet_reserved_ip_ranges.1))
+      - availability_zone_names:
+          - ((availability_zones.2))
+        cidr: ((pas_subnet_cidrs.2))
+        dns: 169.254.169.253
+        gateway: ((pas_subnet_gateways.2))
+        iaas_identifier: ((pas_subnet_ids.2))
+        reserved_ip_ranges: ((pas_subnet_reserved_ip_ranges.2))
