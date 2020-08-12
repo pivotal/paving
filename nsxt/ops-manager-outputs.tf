@@ -1,5 +1,5 @@
 locals {
-  stable_config = {
+  stable_config_opsmanager = {
     environment_name = var.environment_name
     
     nsxt_host     = var.nsxt_host
@@ -32,14 +32,10 @@ locals {
 
     allow_unverified_ssl      = var.allow_unverified_ssl
     disable_ssl_verification  = !var.allow_unverified_ssl
-
-    lb_pool_web = nsxt_lb_pool.pas-web.display_name
-    lb_pool_tcp = nsxt_lb_pool.pas-tcp.display_name
-    lb_pool_ssh = nsxt_lb_pool.pas-ssh.display_name
   }
 }
 
-output "stable_config" {
-  value     = jsonencode(local.stable_config)
+output "stable_config_opsmanager" {
+  value     = jsonencode(local.stable_config_opsmanager)
   sensitive = true
 }
