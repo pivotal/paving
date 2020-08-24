@@ -1,6 +1,6 @@
-data "aws_iam_policy_document" "tas-blobstore-policy" {
+data "aws_iam_policy_document" "pas-blobstore-policy" {
   statement {
-    sid     = "TasBlobstorePolicy"
+    sid     = "PasBlobstorePolicy"
     effect  = "Allow"
     actions = ["s3:*"]
     resources = [
@@ -16,13 +16,13 @@ data "aws_iam_policy_document" "tas-blobstore-policy" {
   }
 }
 
-resource "aws_iam_policy" "tas-blobstore" {
-  name   = "${var.environment_name}-tas-blobstore-policy"
-  policy = data.aws_iam_policy_document.tas-blobstore-policy.json
+resource "aws_iam_policy" "pas-blobstore" {
+  name   = "${var.environment_name}-pas-blobstore-policy"
+  policy = data.aws_iam_policy_document.pas-blobstore-policy.json
 }
 
-resource "aws_iam_role" "tas-blobstore" {
-  name = "${var.environment_name}-tas-blobstore"
+resource "aws_iam_role" "pas-blobstore" {
+  name = "${var.environment_name}-pas-blobstore"
 
   lifecycle {
     create_before_destroy = true
@@ -48,14 +48,14 @@ resource "aws_iam_role" "tas-blobstore" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "tas-blobstore" {
-  role       = aws_iam_role.tas-blobstore.name
-  policy_arn = aws_iam_policy.tas-blobstore.arn
+resource "aws_iam_role_policy_attachment" "pas-blobstore" {
+  role       = aws_iam_role.pas-blobstore.name
+  policy_arn = aws_iam_policy.pas-blobstore.arn
 }
 
-resource "aws_iam_instance_profile" "tas-blobstore" {
-  name = "${var.environment_name}-tas-blobstore"
-  role = aws_iam_role.tas-blobstore.name
+resource "aws_iam_instance_profile" "pas-blobstore" {
+  name = "${var.environment_name}-pas-blobstore"
+  role = aws_iam_role.pas-blobstore.name
 
   lifecycle {
     ignore_changes = [name]

@@ -93,7 +93,7 @@ data "aws_iam_policy_document" "ops-manager" {
     actions = ["iam:PassRole"]
     resources = [
       aws_iam_role.ops-manager.arn,
-      aws_iam_role.tas-blobstore.arn,
+      aws_iam_role.pas-blobstore.arn,
       aws_iam_role.pks-master.arn,
       aws_iam_role.pks-worker.arn,
     ]
