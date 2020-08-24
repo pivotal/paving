@@ -1,0 +1,18 @@
+- type: replace
+  path: /vmextensions-configuration?/-
+  value:
+    name: pks-api-lb-security-groups
+    cloud_properties:
+      security_group: ((pks_api_network_security_group_name))
+      application_security_groups: ["((pks_api_application_security_group_name))"]
+- type: replace
+  path: /networks-configuration?/networks?/-
+  value:
+    name: pks
+    service_network: false
+    subnets:
+      - iaas_identifier: ((network_name))/((pks_subnet_name))
+        cidr: ((pks_subnet_cidr))
+        reserved_ip_ranges: ((pks_subnet_gateway))-((pks_subnet_range))
+        dns: 168.63.129.16
+        gateway: ((pks_subnet_gateway))

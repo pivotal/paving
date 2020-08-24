@@ -7,7 +7,7 @@ The templates support AWS, vSphere, Azure, and GCP.
 
 ## Requirements
 
-- [Terraform v0.12+](https://www.terraform.io/downloads.html)
+- [Terraform v0.13+](https://www.terraform.io/downloads.html)
 
 ## Usage
 
@@ -19,9 +19,20 @@ and modify with your configuration choices and credentials.
 1. `terraform init`
 1. `terraform plan -var-file terraform.tfvars`
 1. `terraform apply -var-file terraform.tfvars`
-1. `terraform output stable_config`
+1. `terraform output stable_config_output`
 1. `terraform destroy -var-file terraform.tfvars`
 
+### Removing unnecessary resources
+
+The terraform templates are namespaced for the resources that consume them.
+In each IAAS, the prefix `opsmanager-`, `pks-`, and `pas-` are on the file names.
+
+There are cases that some resources aren't required in a foundation.
+For example, just deploying PKS and not PAS.
+To remove PAS resources, just `rm pas-*.tf` the file from the directory.
+
+Please note that the `opsmanager-*.tf` files cannot be removed.
+Every foundation requires an Ops Manager.
 
 ## Decisions
 
@@ -40,7 +51,7 @@ to facilitate incorporating these templates into your own automation easily.
 ## Versioning
 
 The semantics of the versioning of paving's releases are based on the contents
-of `terraform output stable_config`. `stable_config` should always represent
+of `terraform output stable_config_(opsmanager|pas|pks)`. `stable_config` should always represent
 the minimum necessary to install Pivotal Platform. Any other output may be
 added or removed without a change in version. However, MAJOR.MINOR.PATCH should
 change according to the following:

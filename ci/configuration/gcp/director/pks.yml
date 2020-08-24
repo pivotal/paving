@@ -1,0 +1,14 @@
+- type: replace
+  path: /networks-configuration?/networks?/-
+  value:
+    name: pks
+    subnets:
+      - availability_zone_names:
+          - ((availability_zones.0))
+          - ((availability_zones.1))
+          - ((availability_zones.2))
+        cidr: ((pks_subnet_cidr))
+        dns: 168.63.129.16
+        gateway: ((pks_subnet_gateway))
+        iaas_identifier: ((network_name))/((pks_subnet_name))/((region))
+        reserved_ip_ranges: ((pks_subnet_reserved_ip_ranges))

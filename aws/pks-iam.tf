@@ -72,16 +72,6 @@ resource "aws_iam_policy" "pks-master" {
   policy = data.aws_iam_policy_document.pks-master-policy.json
 }
 
-resource "aws_iam_role" "pks-master" {
-  name = "${var.environment_name}-pks-master"
-
-  lifecycle {
-    create_before_destroy = true
-  }
-
-  assume_role_policy = data.aws_iam_policy_document.assume-role-policy.json
-}
-
 resource "aws_iam_role_policy_attachment" "pks-master" {
   role       = aws_iam_role.pks-master.name
   policy_arn = aws_iam_policy.pks-master.arn
@@ -123,27 +113,6 @@ data "aws_iam_policy_document" "pks-worker-policy" {
 resource "aws_iam_policy" "pks-worker" {
   name   = "${var.environment_name}-pks-worker-policy"
   policy = data.aws_iam_policy_document.pks-worker-policy.json
-}
-
-data "aws_iam_policy_document" "assume-role-policy" {
-  statement {
-    actions = ["sts:AssumeRole"]
-
-    principals {
-      type        = "Service"
-      identifiers = ["ec2.amazonaws.com"]
-    }
-  }
-}
-
-resource "aws_iam_role" "pks-worker" {
-  name = "${var.environment_name}-pks-worker"
-
-  lifecycle {
-    create_before_destroy = true
-  }
-
-  assume_role_policy = data.aws_iam_policy_document.assume-role-policy.json
 }
 
 resource "aws_iam_role_policy_attachment" "pks-worker" {

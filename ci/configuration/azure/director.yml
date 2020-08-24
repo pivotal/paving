@@ -17,22 +17,6 @@ networks-configuration:
       reserved_ip_ranges: ((management_subnet_gateway))-((management_subnet_range))
       dns: 168.63.129.16
       gateway: ((management_subnet_gateway))
-  - name: pas
-    service_network: false
-    subnets:
-    - iaas_identifier: ((network_name))/((pas_subnet_name))
-      cidr: ((pas_subnet_cidr))
-      reserved_ip_ranges: ((pas_subnet_gateway))-((pas_subnet_range))
-      dns: 168.63.129.16
-      gateway: ((pas_subnet_gateway))
-  - name: pks
-    service_network: false
-    subnets:
-    - iaas_identifier: ((network_name))/((pks_subnet_name))
-      cidr: ((pks_subnet_cidr))
-      reserved_ip_ranges: ((pks_subnet_gateway))-((pks_subnet_range))
-      dns: 168.63.129.16
-      gateway: ((pks_subnet_gateway))
   - name: services-1
     service_network: false
     subnets:
@@ -72,8 +56,3 @@ properties-configuration:
   security_configuration:
     trusted_certificates: ''
     generate_vm_passwords: true
-vmextensions-configuration:
-  - name: pks-api-lb-security-groups
-    cloud_properties:
-      security_group: ((pks_api_network_security_group_name))
-      application_security_groups: ["((pks_api_application_security_group_name))"]

@@ -1,0 +1,11 @@
+- type: replace
+  path: /networks-configuration?/networks?/-
+  value:
+    name: pas
+    service_network: false
+    subnets:
+      - iaas_identifier: ((network_name))/((pas_subnet_name))
+        cidr: ((pas_subnet_cidr))
+        reserved_ip_ranges: ((pas_subnet_gateway))-((pas_subnet_range))
+        dns: 168.63.129.16
+        gateway: ((pas_subnet_gateway))
