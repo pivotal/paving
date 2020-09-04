@@ -7,7 +7,7 @@ locals {
     pks_master_node_service_account_id = google_service_account.pks-master-node-service-account.email
     pks_worker_node_service_account_id = google_service_account.pks-worker-node-service-account.email
     pks_api_target_pool_name = google_compute_target_pool.pks-api-lb.name
-    pks_api_dns_domain = replace(replace(google_dns_record_set.pks-api.name, "/\\.$/", ""), "*.", "")
+    pks_api_dns_domain = replace(replace(google_dns_record_set.pks-api.name, "/\\.$/", ""), "*.", "api.")
   }
 }
 
