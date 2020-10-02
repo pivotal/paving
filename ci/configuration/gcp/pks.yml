@@ -19,7 +19,7 @@ product-properties:
       private_key_pem: |
         ((ssl_private_key))
   .properties.pks_api_hostname:
-    value: ((pks_api_dns_domain))
+    value: api.((pks_api_dns_domain))
   .properties.plan1_selector.active.master_az_placement:
     value:
     - ((availability_zones.0))
