@@ -13,6 +13,6 @@
     subnets:
       - iaas_identifier: ((network_name))/((pks_subnet_name))
         cidr: ((pks_subnet_cidr))
-        reserved_ip_ranges: ((pks_subnet_gateway))-((pks_subnet_range))
+        reserved_ip_ranges: ((pks_subnet_range))
         dns: 168.63.129.16
         gateway: ((pks_subnet_gateway))
