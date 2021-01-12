@@ -13,7 +13,8 @@ ops_manager_public_ip = "10.195.74.16"
 # Each PAS Org will draw an IP address from this pool; make sure you have enough
 # Your LB Virtual Servers, gateway, NAT gateway, OM should be in the CIDR but not in the available range
 external_ip_pool_cidr    = "10.195.74.0/24"
-external_ip_pool_ranges  = ["10.195.74.128-10.195.74.250"]
+external_ip_pool_ranges_start  = "10.195.74.128
+external_ip_pool_ranges_end  = "10.195.74.250"
 external_ip_pool_gateway = "10.195.74.1"
 
 # Load Balancers

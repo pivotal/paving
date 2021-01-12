@@ -168,18 +168,18 @@ resource "nsxt_logical_router_downlink_port" "deployment_dp" {
   }
 }
 
-resource "nsxt_nat_rule" "snat_vm" {
+resource "nsxt_policy_nat_rule" "snat_vm" {
   display_name = "${var.environment_name}-snat-vm"
   action       = "SNAT"
 
-  logical_router_id = data.nsxt_logical_tier0_router.t0_router.id
-  description       = "SNAT Rule for all VMs in deployment with exception of sockets coming in through LBs"
-  enabled           = true
-  logging           = false
-  nat_pass          = true
+  gateway_path   = data.nsxt_logical_tier0_router.t0_router.id
+  description    = "SNAT Rule for all VMs in deployment with exception of sockets coming in through LBs"
+  enabled        = true
+  logging        = false
+  firewall_match = "BYPASS"
 
-  match_source_network = "${var.subnet_prefix}.0.0/16"
-  translated_network   = var.nat_gateway_ip
+  source_networks     = ["${var.subnet_prefix}.0.0/16"]
+  translated_networks = [var.nat_gateway_ip]
 
   tag {
     scope = "terraform"
@@ -187,18 +187,18 @@ resource "nsxt_nat_rule" "snat_vm" {
   }
 }
 
-resource "nsxt_nat_rule" "snat_om" {
+resource "nsxt_policy_nat_rule" "snat_om" {
   display_name = "${var.environment_name}-snat-om"
   action       = "SNAT"
 
-  logical_router_id = data.nsxt_logical_tier0_router.t0_router.id
-  description       = "SNAT Rule for Operations Manager"
-  enabled           = true
-  logging           = false
-  nat_pass          = true
+  gateway_path   = data.nsxt_logical_tier0_router.t0_router.id
+  description    = "SNAT Rule for Operations Manager"
+  enabled        = true
+  logging        = false
+  firewall_match = "BYPASS"
 
-  match_source_network = "${var.subnet_prefix}.1.10"
-  translated_network   = var.ops_manager_public_ip
+  source_networks     = ["${var.subnet_prefix}.1.10"]
+  translated_networks = [var.ops_manager_public_ip]
 
   tag {
     scope = "terraform"
@@ -206,18 +206,18 @@ resource "nsxt_nat_rule" "snat_om" {
   }
 }
 
-resource "nsxt_nat_rule" "dnat_om" {
+resource "nsxt_policy_nat_rule" "dnat_om" {
   display_name = "${var.environment_name}-dnat-om"
   action       = "DNAT"
 
-  logical_router_id = data.nsxt_logical_tier0_router.t0_router.id
-  description       = "DNAT Rule for Operations Manager"
-  enabled           = true
-  logging           = false
-  nat_pass          = true
+  gateway_path   = data.nsxt_logical_tier0_router.t0_router.id
+  description    = "DNAT Rule for Operations Manager"
+  enabled        = true
+  logging        = false
+  firewall_match = "BYPASS"
 
-  match_destination_network = var.ops_manager_public_ip
-  translated_network        = "${var.subnet_prefix}.1.10"
+  destination_networks = [var.ops_manager_public_ip]
+  translated_networks  = ["${var.subnet_prefix}.1.10"]
 
   tag {
     scope = "terraform"
@@ -225,14 +225,17 @@ resource "nsxt_nat_rule" "dnat_om" {
   }
 }
 
-resource "nsxt_ip_pool" "external_ip_pool" {
+resource "nsxt_policy_ip_pool_static_subnet" "external_ip_pool" {
   description  = "IP Pool that provides IPs for each of the NSX-T container networks."
   display_name = "${var.environment_name}-external-ip-pool"
+  pool_path    = nsxt_policy_ip_pool.pool1.path
 
-  subnet {
-    allocation_ranges = var.external_ip_pool_ranges
-    cidr              = var.external_ip_pool_cidr
-    gateway_ip        = var.external_ip_pool_gateway
+  cidr       = var.external_ip_pool_cidr
+  gateway_ip = var.external_ip_pool_gateway
+
+  allocation_ranges {
+    start = var.external_ip_pool_ranges_start
+    end   = var.external_ip_pool_ranges_end
   }
 
   tag {
@@ -241,8 +244,10 @@ resource "nsxt_ip_pool" "external_ip_pool" {
   }
 }
 
-resource "nsxt_ip_block" "container_ip_block" {
+resource "nsxt_policy_segment" "container_ip_block" {
   description  = "Subnets are allocated from this pool to each newly-created Org"
   display_name = "${var.environment_name}-pas-container-ip-block"
-  cidr         = "10.12.0.0/14"
+  subnet {
+    cidr       = "10.12.0.0/14"
+  }
 }

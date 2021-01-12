@@ -1,7 +1,8 @@
 terraform {
   required_providers {
     nsxt = {
-      source = "terraform-providers/nsxt"
+      source = "vmware/nsxt"
+      version = "3.1.1"
     }
     tls = {
       source = "hashicorp/tls"
