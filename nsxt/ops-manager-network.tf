@@ -1,167 +1,66 @@
-resource "nsxt_logical_router_link_port_on_tier0" "t0_to_t1_infrastructure" {
-  display_name = "${var.environment_name}-T0-to-T1-Infrastructure"
-
-  description       = "Link Port on Logical Tier 0 Router for connecting to Tier 1 Infrastructure Router."
-  logical_router_id = data.nsxt_logical_tier0_router.t0_router.id
-
-  tag {
-    scope = "terraform"
-    tag   = var.environment_name
-  }
-}
-
-resource "nsxt_logical_tier1_router" "t1_infrastructure" {
-  display_name = "${var.environment_name}-T1-Router-PAS-Infrastructure"
-
-  description = "Infrastructure Tier 1 Router."
+resource "nsxt_policy_tier1_gateway" "t1_infrastructure" {
+  display_name = "${var.environment_name}-T1-Gateway-PAS-Infrastructure"
+  description = "Infrastructure Tier 1 Gateway."
+  tier0_path                = data.nsxt_policy_tier0_gateway.t0_gw.path
   failover_mode   = "PREEMPTIVE"
-  edge_cluster_id = data.nsxt_edge_cluster.edge_cluster.id
-
-  enable_router_advertisement = true
-  advertise_connected_routes  = true
-  advertise_lb_vip_routes     = true
-  advertise_lb_snat_ip_routes = true
-
+  edge_cluster_path = data.nsxt_policy_edge_cluster.edge_cluster.path
+  route_advertisement_types = [
+          "TIER1_IPSEC_LOCAL_ENDPOINT",
+          "TIER1_LB_VIP", "TIER1_NAT",
+          "TIER1_DNS_FORWARDER_IP",
+          "TIER1_STATIC_ROUTES",
+          "TIER1_LB_SNAT",
+          "TIER1_CONNECTED"
+        ]
   tag {
     scope = "terraform"
     tag   = var.environment_name
   }
 }
 
-resource "nsxt_logical_router_link_port_on_tier0" "t0_to_t1_deployment" {
-  display_name = "${var.environment_name}-T0-to-T1-Deployment"
-
-  description       = "Link Port on Logical Tier 0 Router for connecting to Tier 1 Deployment Router."
-  logical_router_id = data.nsxt_logical_tier0_router.t0_router.id
-
-  tag {
-    scope = "terraform"
-    tag   = var.environment_name
-  }
-}
-
-resource "nsxt_logical_router_link_port_on_tier1" "t1_infrastructure_to_t0" {
-  display_name = "${var.environment_name}-T1-Infrastructure-to-T0"
-
-  description                   = "Link Port on Infrastructure Tier 1 Router connecting to Logical Tier 0 Router. Provisioned by Terraform."
-  logical_router_id             = nsxt_logical_tier1_router.t1_infrastructure.id
-  linked_logical_router_port_id = nsxt_logical_router_link_port_on_tier0.t0_to_t1_infrastructure.id
-
-  tag {
-    scope = "terraform"
-    tag   = var.environment_name
-  }
-}
-
-resource "nsxt_logical_switch" "infrastructure_ls" {
+resource "nsxt_policy_segment" "infrastructure_sg" {
   display_name = "${var.environment_name}-PAS-Infrastructure"
+  description      = "Segment for the Infrastructure."
+  transport_zone_path = data.nsxt_policy_transport_zone.east-west-overlay.path
+  connectivity_path   = nsxt_policy_tier1_gateway.t1_infrastructure.path
 
-  transport_zone_id = data.nsxt_transport_zone.east-west-overlay.id
-  admin_state       = "UP"
-
-  description      = "Logical Switch for the T1 Infrastructure Router."
-  replication_mode = "MTEP"
-
+  subnet {
+    cidr = "${var.subnet_prefix}.1.1/24"
+  }
   tag {
     scope = "terraform"
     tag   = var.environment_name
   }
 }
 
-resource "nsxt_logical_port" "infrastructure_lp" {
-  display_name = "${var.environment_name}-PAS-Infrastructure-lp"
-
-  admin_state       = "UP"
-  description       = "Logical Port on the Logical Switch for the T1 Infrastructure Router."
-  logical_switch_id = nsxt_logical_switch.infrastructure_ls.id
-
-  tag {
-    scope = "terraform"
-    tag   = var.environment_name
-  }
-}
-
-resource "nsxt_logical_router_downlink_port" "infrastructure_dp" {
-  display_name = "${var.environment_name}-PAS-Infrastructure-dp"
-
-  description                   = "Downlink port connecting PAS-Infrastructure router to its Logical Switch"
-  logical_router_id             = nsxt_logical_tier1_router.t1_infrastructure.id
-  linked_logical_switch_port_id = nsxt_logical_port.infrastructure_lp.id
-  ip_address                    = "${var.subnet_prefix}.1.1/24"
-
-  tag {
-    scope = "terraform"
-    tag   = var.environment_name
-  }
-}
-
-resource "nsxt_logical_tier1_router" "t1_deployment" {
-  display_name = "${var.environment_name}-T1-Router-PAS-Deployment"
-
-  description     = "Deployment Tier 1 Router."
+resource "nsxt_policy_tier1_gateway" "t1_deployment" {
+  display_name = "${var.environment_name}-T1-Gateway-PAS-Deployment"
+  description     = "Deployment Tier 1 Gateway."
+  tier0_path   = data.nsxt_policy_tier0_gateway.t0_gw.path
   failover_mode   = "NON_PREEMPTIVE"
-  edge_cluster_id = data.nsxt_edge_cluster.edge_cluster.id
-
-  enable_router_advertisement = true
-  advertise_connected_routes  = true
-  advertise_lb_vip_routes     = true
-  advertise_lb_snat_ip_routes = true
-
+  edge_cluster_path = data.nsxt_policy_edge_cluster.edge_cluster.path
+  route_advertisement_types = [
+          "TIER1_IPSEC_LOCAL_ENDPOINT",
+          "TIER1_LB_VIP", "TIER1_NAT",
+          "TIER1_DNS_FORWARDER_IP",
+          "TIER1_STATIC_ROUTES",
+          "TIER1_LB_SNAT",
+          "TIER1_CONNECTED"
+        ]
   tag {
     scope = "terraform"
     tag   = var.environment_name
   }
 }
 
-resource "nsxt_logical_router_link_port_on_tier1" "t1_deployment_to_t0" {
-  display_name = "${var.environment_name}-T1-Deployment-to-T0"
-
-  description                   = "Link Port on Deployment Tier 1 Router connecting to Logical Tier 0 Router. Provisioned by Terraform."
-  logical_router_id             = nsxt_logical_tier1_router.t1_deployment.id
-  linked_logical_router_port_id = nsxt_logical_router_link_port_on_tier0.t0_to_t1_deployment.id
-
-  tag {
-    scope = "terraform"
-    tag   = var.environment_name
-  }
-}
-
-resource "nsxt_logical_switch" "deployment_ls" {
+resource "nsxt_policy_segment" "deployment_sg" {
   display_name = "${var.environment_name}-PAS-Deployment"
-
-  transport_zone_id = data.nsxt_transport_zone.east-west-overlay.id
-  admin_state       = "UP"
-
-  description      = "Logical Switch for the T1 Deployment Router."
-  replication_mode = "MTEP"
-
-  tag {
-    scope = "terraform"
-    tag   = var.environment_name
+  description      = "Segment for the Deployment."
+  transport_zone_path = data.nsxt_policy_transport_zone.east-west-overlay.path
+  connectivity_path   = nsxt_policy_tier1_gateway.t1_deployment.path
+  subnet {
+    cidr = "${var.subnet_prefix}.2.1/24"
   }
-}
-
-resource "nsxt_logical_port" "deployment_lp" {
-  display_name = "${var.environment_name}-PAS-Deployment-lp"
-
-  admin_state       = "UP"
-  description       = "Logical Port on the Logical Switch for the T1 Deployment Router."
-  logical_switch_id = nsxt_logical_switch.deployment_ls.id
-
-  tag {
-    scope = "terraform"
-    tag   = var.environment_name
-  }
-}
-
-resource "nsxt_logical_router_downlink_port" "deployment_dp" {
-  display_name = "${var.environment_name}-PAS-Deployment-dp"
-
-  description                   = "Downlink port connecting PAS-Deployment router to its Logical Switch"
-  logical_router_id             = nsxt_logical_tier1_router.t1_deployment.id
-  linked_logical_switch_port_id = nsxt_logical_port.deployment_lp.id
-  ip_address                    = "${var.subnet_prefix}.2.1/24"
-
   tag {
     scope = "terraform"
     tag   = var.environment_name
@@ -172,7 +71,7 @@ resource "nsxt_policy_nat_rule" "snat_vm" {
   display_name = "${var.environment_name}-snat-vm"
   action       = "SNAT"
 
-  gateway_path   = data.nsxt_logical_tier0_router.t0_router.id
+  gateway_path   = data.nsxt_policy_tier0_gateway.t0_gw.path
   description    = "SNAT Rule for all VMs in deployment with exception of sockets coming in through LBs"
   enabled        = true
   logging        = false
@@ -191,7 +90,7 @@ resource "nsxt_policy_nat_rule" "snat_om" {
   display_name = "${var.environment_name}-snat-om"
   action       = "SNAT"
 
-  gateway_path   = data.nsxt_logical_tier0_router.t0_router.id
+  gateway_path   = data.nsxt_policy_tier0_gateway.t0_gw.path
   description    = "SNAT Rule for Operations Manager"
   enabled        = true
   logging        = false
@@ -210,7 +109,7 @@ resource "nsxt_policy_nat_rule" "dnat_om" {
   display_name = "${var.environment_name}-dnat-om"
   action       = "DNAT"
 
-  gateway_path   = data.nsxt_logical_tier0_router.t0_router.id
+  gateway_path   = data.nsxt_policy_tier0_gateway.t0_gw.path
   description    = "DNAT Rule for Operations Manager"
   enabled        = true
   logging        = false
@@ -225,15 +124,23 @@ resource "nsxt_policy_nat_rule" "dnat_om" {
   }
 }
 
-resource "nsxt_policy_ip_pool_static_subnet" "external_ip_pool" {
+resource "nsxt_policy_ip_pool" "external_ip_pool" {
+  display_name = "pool1"
+  tag {
+    scope = "terraform"
+    tag   = var.environment_name
+  }
+}
+
+resource "nsxt_policy_ip_pool_static_subnet" "subnet1" {
   description  = "IP Pool that provides IPs for each of the NSX-T container networks."
   display_name = "${var.environment_name}-external-ip-pool"
-  pool_path    = nsxt_policy_ip_pool.pool1.path
+  pool_path    = nsxt_policy_ip_pool.external_ip_pool.path
 
   cidr       = var.external_ip_pool_cidr
-  gateway_ip = var.external_ip_pool_gateway
+  gateway = var.external_ip_pool_gateway
 
-  allocation_ranges {
+  allocation_range {
     start = var.external_ip_pool_ranges_start
     end   = var.external_ip_pool_ranges_end
   }
@@ -247,7 +154,8 @@ resource "nsxt_policy_ip_pool_static_subnet" "external_ip_pool" {
 resource "nsxt_policy_segment" "container_ip_block" {
   description  = "Subnets are allocated from this pool to each newly-created Org"
   display_name = "${var.environment_name}-pas-container-ip-block"
+  transport_zone_path = data.nsxt_policy_transport_zone.east-west-overlay.path
   subnet {
-    cidr       = "10.12.0.0/14"
+    cidr       = "10.12.0.1/14"
   }
 }

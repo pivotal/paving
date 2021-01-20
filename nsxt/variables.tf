@@ -38,9 +38,15 @@ variable "external_ip_pool_cidr" {
   type        = string
 }
 
-variable "external_ip_pool_ranges" {
-  description = "The IP Ranges for the External IP Pool. Each PAS Org will draw an IP address from this pool; make sure you have enough, e.g. `[\"10.195.74.128-10.195.74.250\"]`"
-  type        = list(string)
+
+variable "external_ip_pool_ranges_start" {
+  description = "The start IP for the External IP Pool, e.g. `192.168.17.128`"
+  type        = string
+}
+
+variable "external_ip_pool_ranges_end" {
+  description = "The end IP for the External IP Pool, e.g. `192.168.17.250`"
+  type        = string
 }
 
 variable "external_ip_pool_gateway" {
@@ -53,9 +59,9 @@ variable "nsxt_edge_cluster_name" {
   type        = string
 }
 
-variable "nsxt_t0_router_name" {
-  default     = "T0-Router"
-  description = "The name of the T0 router"
+variable "nsxt_t0_gateway_name" {
+  default     = "T0-Gateway"
+  description = "The name of the T0 gateway"
   type        = string
 }
 
