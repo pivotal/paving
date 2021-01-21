@@ -56,21 +56,9 @@ resource "nsxt_policy_lb_pool" "pas-ssh" {
   }
 }
 
-#resource "nsxt_lb_fast_tcp_application_profile" "pas_lb_tcp_application_profile" {
-#  display_name  = "${var.environment_name}-pas-lb-tcp-application-profile"
-#  close_timeout = "8"
-#  idle_timeout  = "1800"
-#
-#  tag {
-#    scope = "terraform"
-#    tag   = var.environment_name
-#  }
-#}
-#
-#data "nsxt_policy_lb_app_profile" "pas_lb_tcp_application_profile" {
-#  display_name  = "${var.environment_name}-pas-lb-tcp-application-profile"
-#}
-
+# for the policy API we just use the default profile that is installed with
+# NSXT as it appears to offer the same timeout values as the one we used to
+# create.
 data "nsxt_policy_lb_app_profile" "pas_lb_tcp_application_profile" {
   display_name  = "default-tcp-lb-app-profile"
 }
