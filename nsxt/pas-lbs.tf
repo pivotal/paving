@@ -1,52 +1,22 @@
-#resource "nsxt_policy_lb_monitor" "pas-web" {
-#  description           = "The Active Health Monitor (healthcheck) for Web (HTTP(S)) traffic."
-#  display_name          = "${var.environment_name}-pas-web-monitor"
-#  type = "HTTP"
-#  monitor_port          = 8080
-#  request_method        = "GET"
-#  request_url           = "/health"
-#  request_version       = "HTTP_VERSION_1_1"
-#  response_status_codes = [200]
-#
-#  tag {
-#    scope = "terraform"
-#    tag   = var.environment_name
-#  }
-#}
-#
-#resource "nsxt_policy_lb_monitor" "pas-tcp" {
-#  description     = "The Active Health Monitor (healthcheck) for TCP traffic."
-#  display_name    = "${var.environment_name}-pas-tcp-monitor"
-#  type = "HTTP"
-#  monitor_port    = 80
-#  request_method  = "GET"
-#  request_url     = "/health"
-#  request_version = "HTTP_VERSION_1_1"
-#
-#  tag {
-#    scope = "terraform"
-#    tag   = var.environment_name
-#  }
-#  response_status_codes = [200]
-#}
-#
-#resource "nsxt_lb_tcp_monitor" "pas-ssh" {
-#  description  = "The Active Health Monitor (healthcheck) for SSH traffic."
-#  display_name = "${var.environment_name}-pas-ssh-monitor"
-#  monitor_port = 2222
-#
-#  tag {
-#    scope = "terraform"
-#    tag   = var.environment_name
-#  }
-#}
+data "nsxt_policy_lb_monitor" "pas-web" {
+  type = "HTTP"
+  display_name          = "${var.environment_name}-pas-web-monitor"
+}
+data "nsxt_policy_lb_monitor" "pas-tcp" {
+  type = "HTTP"
+  display_name          = "${var.environment_name}-pas-tcp-monitor"
+}
+data "nsxt_policy_lb_monitor" "pas-ssh" {
+  type = "TCP"
+  display_name          = "${var.environment_name}-pas-ssh-monitor"
+}
 
 resource "nsxt_policy_lb_pool" "pas-web" {
   description              = "The Server Pool of Web (HTTP(S)) traffic handling VMs"
   display_name             = "${var.environment_name}-pas-web-pool"
   algorithm                = "ROUND_ROBIN"
   tcp_multiplexing_enabled = false
-#  active_monitor_path        = nsxt_lb_http_monitor.pas-web.path
+  active_monitor_path      = data.nsxt_policy_lb_monitor.pas-web.path
   snat {
     type = "AUTOMAP"
   }
@@ -61,7 +31,7 @@ resource "nsxt_policy_lb_pool" "pas-tcp" {
   display_name             = "${var.environment_name}-pas-tcp-pool"
   algorithm                = "ROUND_ROBIN"
   tcp_multiplexing_enabled = false
-#  active_monitor_id        = nsxt_lb_http_monitor.pas-tcp.id
+  active_monitor_path      = data.nsxt_policy_lb_monitor.pas-tcp.path
   snat {
     type = "DISABLED"
   }
@@ -76,7 +46,7 @@ resource "nsxt_policy_lb_pool" "pas-ssh" {
   display_name             = "${var.environment_name}-pas-ssh-pool"
   algorithm                = "ROUND_ROBIN"
   tcp_multiplexing_enabled = false
-#  active_monitor_id        = nsxt_lb_tcp_monitor.pas-ssh.id
+  active_monitor_path      = data.nsxt_policy_lb_monitor.pas-ssh.path
   snat {
     type = "DISABLED"
   }
