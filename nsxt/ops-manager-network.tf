@@ -154,7 +154,7 @@ resource "nsxt_policy_ip_pool_static_subnet" "subnet1" {
 resource "nsxt_policy_ip_block" "container_ip_block" {
   description  = "Subnets are allocated from this pool to each newly-created Org"
   display_name = "${var.environment_name}-pas-container-ip-block"
-  cidr       = "10.12.0.1/14"
+  cidr       = "10.12.0.0/14"
   tag {
     scope = "terraform"
     tag   = var.environment_name
