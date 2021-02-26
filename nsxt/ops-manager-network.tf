@@ -125,7 +125,7 @@ resource "nsxt_policy_nat_rule" "dnat_om" {
 }
 
 resource "nsxt_policy_ip_pool" "external_ip_pool" {
-  display_name = "pool1"
+  display_name = "${var.environment_name}-external-ip-pool"
   tag {
     scope = "terraform"
     tag   = var.environment_name
