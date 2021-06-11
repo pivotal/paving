@@ -12,7 +12,7 @@ availability_zones = ["YOUR-GCP-ZONE-1", "YOUR-GCP-ZONE-2", "YOUR-GCP-ZONE-3"]
 hosted_zone = "foo"
 
 ssl_certificate = <<SSL_CERTIFICATE
-"YOUR-LB-SSL-PRIVATE-KEY"
+"YOUR-LB-SSL-CERTIFICATE"
 SSL_CERTIFICATE
 
 ssl_private_key = <<SSL_PRIVATE_KEY
