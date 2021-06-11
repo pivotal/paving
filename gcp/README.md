@@ -7,6 +7,7 @@ to create the service account that is needed to run the terraform templates.
 ### Prerequisites
 - a pre-created zone in GCP (see the [google docs](https://cloud.google.com/dns/docs/zones#creating_managed_zones) for details)
     - the `Zone name` maps to `hosted_zone` in `terraform.tfvars`
+    - The Fully Qualified Domain Name (FQDN) for the environment will be `environment_name.hosted-zone`
 
 ### Roles & Permissions
 
