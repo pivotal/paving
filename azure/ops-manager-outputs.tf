@@ -15,13 +15,13 @@ locals {
     management_subnet_id      = azurerm_subnet.management.id
     management_subnet_cidr    = azurerm_subnet.management.address_prefix
     management_subnet_gateway = cidrhost(azurerm_subnet.management.address_prefix, 1)
-    management_subnet_range   = cidrhost(azurerm_subnet.management.address_prefix, 10)
+    management_subnet_range   = "${cidrhost(azurerm_subnet.management.address_prefix, 1)}-${cidrhost(azurerm_subnet.management.address_prefix, 10)}"
 
     bosh_storage_account_name = azurerm_storage_account.bosh.name
 
     ops_manager_security_group_name  = azurerm_network_security_group.ops-manager.name
-    ops_manager_ssh_private_key          = tls_private_key.ops_manager.private_key_pem
-    ops_manager_ssh_public_key           = tls_private_key.ops_manager.public_key_openssh
+    ops_manager_ssh_private_key      = tls_private_key.ops_manager.private_key_pem
+    ops_manager_ssh_public_key       = tls_private_key.ops_manager.public_key_openssh
     ops_manager_private_ip           = cidrhost(azurerm_subnet.management.address_prefix, 5)
     ops_manager_public_ip            = azurerm_public_ip.ops-manager.ip_address
     ops_manager_container_name       = azurerm_storage_container.ops-manager.name
@@ -36,7 +36,7 @@ locals {
     services_subnet_id      = azurerm_subnet.services.id
     services_subnet_cidr    = azurerm_subnet.services.address_prefix
     services_subnet_gateway = cidrhost(azurerm_subnet.services.address_prefix, 1)
-    services_subnet_range   = cidrhost(azurerm_subnet.services.address_prefix, 10)
+    services_subnet_range   = "${cidrhost(azurerm_subnet.services.address_prefix, 1)}-${cidrhost(azurerm_subnet.services.address_prefix, 10)}"
 
     ssl_certificate = var.ssl_certificate
     ssl_private_key = var.ssl_private_key
