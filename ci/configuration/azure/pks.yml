@@ -5,7 +5,7 @@ network-properties:
   other_availability_zones:
   - name: Availability Sets
   service_network:
-    name: services-1
+    name: services
   singleton_availability_zone:
     name: Availability Sets
 product-properties:

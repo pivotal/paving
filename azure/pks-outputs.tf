@@ -2,7 +2,7 @@ locals {
   stable_config_pks = {
     pks_as_name = azurerm_availability_set.pks_as.name
     pks_lb_name = azurerm_lb.pks.name
-    pks_dns = "${azurerm_dns_a_record.pks.name}.${azurerm_dns_a_record.pks.zone_name}"
+    pks_dns = replace(replace("${azurerm_dns_a_record.pks.name}.${azurerm_dns_a_record.pks.zone_name}", "/\\.$/", ""), "*.", "api.")
     pks_subnet_name = azurerm_subnet.pks.name
     pks_subnet_id = azurerm_subnet.pks.id
     pks_subnet_cidr = azurerm_subnet.pks.address_prefix
