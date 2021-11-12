@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.1.0
+
+### Features
+- [47539b2](https://github.com/pivotal/paving/47539b2) - Add an override to use http2 in gcp load balancer
+- [0e5e31c](https://github.com/pivotal/paving/0e5e31c) - Add note about the environment FQDN
+- [c8d8eb4](https://github.com/pivotal/paving/c8d8eb4) - Update example.tfvars for GCP to be more clear
+- [5cb3ce3](https://github.com/pivotal/paving/5cb3ce3) - Add a prerequisite to paving GCP
+- [fc36573](https://github.com/pivotal/paving/fc36573) - Generate list of backends dynamically in the PAS lb
+- [1691aea](https://github.com/pivotal/paving/1691aea) - adding api prefix to the configuration value
+- [ff21c1c](https://github.com/pivotal/paving/ff21c1c) - Create ssl certificate before destroying it so certs can be rotated
+
+### Bug Fixes
+- [8bd00d7](https://github.com/pivotal/paving/8bd00d7) - Restrict Google Platform Provider to v3.90 patch releases, this fixes a breaking change present on `v4.00` of the `gcp` provider.
+
 ## 2.0.0
 
 ### Features
