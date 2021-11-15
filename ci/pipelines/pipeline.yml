@@ -44,14 +44,28 @@ jobs:
     - get: paving
       trigger: true
     - get: deployments
-  - task: gcp-cleanup
-    attempts: 2
-    file: docs-platform-automation/ci/tasks/delete-infrastructure/task.yml
+  - task: leftovers
+    file: docs-platform-automation/ci/tasks/leftovers.yml
     params:
-      IAAS: gcp
-      DEPLOYMENT_NAME: ci-paving-gcp
-      OM_PASSWORD: ((opsman-login.password))
-      OM_USERNAME: ((opsman-login.username))
+      BBL_IAAS: gcp
+      BBL_AWS_ACCESS_KEY_ID: ((s3.access_key_id))
+      BBL_AWS_SECRET_ACCESS_KEY: ((s3.secret_access_key))
+      BBL_AWS_REGION: ((s3.region_name))
+      BBL_AZURE_CLIENT_ID: ((azure.client_id))
+      BBL_AZURE_CLIENT_SECRET: ((azure.client_secret))
+      BBL_AZURE_TENANT_ID: ((azure.tenant_id))
+      BBL_AZURE_SUBSCRIPTION_ID: ((azure.subscription_id))
+      BBL_GCP_SERVICE_ACCOUNT_KEY: ((gcp.service_account))
+      BBL_NSXT_PASSWORD: ((nsx.password))
+      BBL_NSXT_USERNAME: ((nsx.username))
+      BBL_NSXT_MANAGER_HOST: ((nsx.url))
+      FILTER: ci-paving-gcp
+      DRY_RUN: false
+      NO_CONFIRM: true
+  - task: remove-state-files-gcp
+    file: docs-platform-automation/ci/tasks/delete-state-file.yml
+    params:
+      DEPLOYMENT: ci-paving-gcp
       PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
     ensure:
       put: deployments
@@ -93,14 +107,28 @@ jobs:
     - get: paving
       trigger: true
     - get: deployments
-  - task: aws-cleanup
-    attempts: 2
-    file: docs-platform-automation/ci/tasks/delete-infrastructure/task.yml
+  - task: leftovers
+    file: docs-platform-automation/ci/tasks/leftovers.yml
     params:
-      IAAS: aws
-      DEPLOYMENT_NAME: ci-paving-aws
-      OM_PASSWORD: ((opsman-login.password))
-      OM_USERNAME: ((opsman-login.username))
+      BBL_IAAS: aws
+      BBL_AWS_ACCESS_KEY_ID: ((s3.access_key_id))
+      BBL_AWS_SECRET_ACCESS_KEY: ((s3.secret_access_key))
+      BBL_AWS_REGION: ((s3.region_name))
+      BBL_AZURE_CLIENT_ID: ((azure.client_id))
+      BBL_AZURE_CLIENT_SECRET: ((azure.client_secret))
+      BBL_AZURE_TENANT_ID: ((azure.tenant_id))
+      BBL_AZURE_SUBSCRIPTION_ID: ((azure.subscription_id))
+      BBL_GCP_SERVICE_ACCOUNT_KEY: ((gcp.service_account))
+      BBL_NSXT_PASSWORD: ((nsx.password))
+      BBL_NSXT_USERNAME: ((nsx.username))
+      BBL_NSXT_MANAGER_HOST: ((nsx.url))
+      FILTER: ci-paving-aws
+      DRY_RUN: false
+      NO_CONFIRM: true
+  - task: remove-state-files-aws
+    file: docs-platform-automation/ci/tasks/delete-state-file.yml
+    params:
+      DEPLOYMENT: ci-paving-aws
       PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
     ensure:
       put: deployments
@@ -142,14 +170,28 @@ jobs:
     - get: paving
       trigger: true
     - get: deployments
-  - task: azure-cleanup
-    attempts: 2
-    file: docs-platform-automation/ci/tasks/delete-infrastructure/task.yml
+  - task: leftovers
+    file: docs-platform-automation/ci/tasks/leftovers.yml
     params:
-      IAAS: azure
-      DEPLOYMENT_NAME: ci-paving-azure
-      OM_PASSWORD: ((opsman-login.password))
-      OM_USERNAME: ((opsman-login.username))
+      BBL_IAAS: azure
+      BBL_AWS_ACCESS_KEY_ID: ((s3.access_key_id))
+      BBL_AWS_SECRET_ACCESS_KEY: ((s3.secret_access_key))
+      BBL_AWS_REGION: ((s3.region_name))
+      BBL_AZURE_CLIENT_ID: ((azure.client_id))
+      BBL_AZURE_CLIENT_SECRET: ((azure.client_secret))
+      BBL_AZURE_TENANT_ID: ((azure.tenant_id))
+      BBL_AZURE_SUBSCRIPTION_ID: ((azure.subscription_id))
+      BBL_GCP_SERVICE_ACCOUNT_KEY: ((gcp.service_account))
+      BBL_NSXT_PASSWORD: ((nsx.password))
+      BBL_NSXT_USERNAME: ((nsx.username))
+      BBL_NSXT_MANAGER_HOST: ((nsx.url))
+      FILTER: ci-paving-azure
+      DRY_RUN: false
+      NO_CONFIRM: true
+  - task: remove-state-files-azure
+    file: docs-platform-automation/ci/tasks/delete-state-file.yml
+    params:
+      DEPLOYMENT: ci-paving-azure
       PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
     ensure:
       put: deployments
