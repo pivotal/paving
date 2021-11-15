@@ -1,0 +1,186 @@
+groups:
+- name: ci
+  jobs:
+  - paving-gcp
+  - paving-aws
+  - paving-azure
+resources:
+- name: docs-platform-automation
+  type: git
+  source:
+    branch: terraform-upgrade
+    private_key: ((platform_automation_docs.private_key))
+    uri: git@github.com:pivotal/docs-platform-automation
+    ignore_paths:
+      - docs
+- name: deployments
+  type: git
+  source:
+    branch: main
+    private_key: ((platform_automation_deployments.private_key))
+    uri: git@github.com:pivotal/platform-automation-deployments
+- name: paving
+  type: git
+  source:
+    uri: https://github.com/pivotal/paving
+    branch: terraform-upgrade
+resource_types:
+- name: pivnet
+  type: registry-image
+  source:
+    repository: pivotalcf/pivnet-resource
+    tag: latest-final
+- name: slack-notification
+  type: registry-image
+  source:
+    repository: cfcommunity/slack-notification-resource
+    tag: latest
+
+jobs:
+- name: paving-gcp
+  plan:
+  - in_parallel:
+    - get: docs-platform-automation
+    - get: paving
+      trigger: true
+    - get: deployments
+  - task: gcp-cleanup
+    attempts: 2
+    file: docs-platform-automation/ci/tasks/delete-infrastructure/task.yml
+    params:
+      IAAS: gcp
+      DEPLOYMENT_NAME: ci-paving-gcp
+      OM_PASSWORD: ((opsman-login.password))
+      OM_USERNAME: ((opsman-login.username))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+    ensure:
+      put: deployments
+      params:
+        rebase: true
+        repository: deployments
+  - task: terraform-gcp
+    attempts: 2
+    file: docs-platform-automation/ci/tasks/create-infrastructure/task.yml
+    params:
+      IAAS: gcp
+      DEPLOYMENT_NAME: ci-paving-gcp
+      OM_PASSWORD: ((opsman-login.password))
+      OM_USERNAME: ((opsman-login.username))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+    ensure:
+      put: deployments
+      params:
+        rebase: true
+        repository: deployments
+  - task: destroy-gcp
+    attempts: 2
+    file: docs-platform-automation/ci/tasks/delete-infrastructure/task.yml
+    params:
+      IAAS: gcp
+      DEPLOYMENT_NAME: ci-paving-gcp
+      OM_PASSWORD: ((opsman-login.password))
+      OM_USERNAME: ((opsman-login.username))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+    ensure:
+      put: deployments
+      params:
+        rebase: true
+        repository: deployments
+- name: paving-aws
+  plan:
+  - in_parallel:
+    - get: docs-platform-automation
+    - get: paving
+      trigger: true
+    - get: deployments
+  - task: aws-cleanup
+    attempts: 2
+    file: docs-platform-automation/ci/tasks/delete-infrastructure/task.yml
+    params:
+      IAAS: aws
+      DEPLOYMENT_NAME: ci-paving-aws
+      OM_PASSWORD: ((opsman-login.password))
+      OM_USERNAME: ((opsman-login.username))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+    ensure:
+      put: deployments
+      params:
+        rebase: true
+        repository: deployments
+  - task: terraform-aws
+    attempts: 2
+    file: docs-platform-automation/ci/tasks/create-infrastructure/task.yml
+    params:
+      IAAS: aws
+      DEPLOYMENT_NAME: ci-paving-aws
+      OM_PASSWORD: ((opsman-login.password))
+      OM_USERNAME: ((opsman-login.username))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+    ensure:
+      put: deployments
+      params:
+        rebase: true
+        repository: deployments
+  - task: destroy-aws
+    attempts: 2
+    file: docs-platform-automation/ci/tasks/delete-infrastructure/task.yml
+    params:
+      IAAS: aws
+      DEPLOYMENT_NAME: ci-paving-aws
+      OM_PASSWORD: ((opsman-login.password))
+      OM_USERNAME: ((opsman-login.username))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+    ensure:
+      put: deployments
+      params:
+        rebase: true
+        repository: deployments
+- name: paving-azure
+  plan:
+  - in_parallel:
+    - get: docs-platform-automation
+    - get: paving
+      trigger: true
+    - get: deployments
+  - task: azure-cleanup
+    attempts: 2
+    file: docs-platform-automation/ci/tasks/delete-infrastructure/task.yml
+    params:
+      IAAS: azure
+      DEPLOYMENT_NAME: ci-paving-azure
+      OM_PASSWORD: ((opsman-login.password))
+      OM_USERNAME: ((opsman-login.username))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+    ensure:
+      put: deployments
+      params:
+        rebase: true
+        repository: deployments
+  - task: terraform-azure
+    attempts: 2
+    file: docs-platform-automation/ci/tasks/create-infrastructure/task.yml
+    params:
+      IAAS: azure
+      DEPLOYMENT_NAME: ci-paving-azure
+      OM_PASSWORD: ((opsman-login.password))
+      OM_USERNAME: ((opsman-login.username))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+    ensure:
+      put: deployments
+      params:
+        rebase: true
+        repository: deployments
+  - task: destroy-azure
+    attempts: 2
+    file: docs-platform-automation/ci/tasks/delete-infrastructure/task.yml
+    params:
+      IAAS: azure
+      DEPLOYMENT_NAME: ci-paving-azure
+      OM_PASSWORD: ((opsman-login.password))
+      OM_USERNAME: ((opsman-login.username))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+    ensure:
+      put: deployments
+      params:
+        rebase: true
+        repository: deployments
