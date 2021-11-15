@@ -30,3 +30,7 @@ variable "ssl_certificate" {
 variable "ssl_private_key" {
   description = "The contents of an SSL private key to be used by the LB."
 }
+
+variable "location" {
+  description = "The location to store the bucket data"
+}
