@@ -4,6 +4,6 @@ resource "azurerm_resource_group" "platform" {
 
   tags = merge(
     var.tags,
-    { name = "${var.environment_name}" },
+    { name = var.environment_name },
   )
 }
