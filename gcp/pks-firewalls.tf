@@ -9,7 +9,7 @@ resource "google_compute_firewall" "pks-api-lb" {
     ports    = ["8443", "9021"]
   }
 
-  source_ranges = [ "0.0.0.0/0" ]
+  source_ranges = var.ingress_source_ranges
 
   target_tags = ["${var.environment_name}-pks-api-lb"]
 }

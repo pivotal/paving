@@ -25,7 +25,7 @@ resource "google_compute_firewall" "tcp-lb" {
     ports    = ["1024-65535"]
   }
 
-  source_ranges = ["0.0.0.0/0"]
+  source_ranges = var.ingress_source_ranges
 
   target_tags = ["${var.environment_name}-tcp-lb"]
 }
@@ -57,7 +57,7 @@ resource "google_compute_firewall" "websocket-lb" {
     ports    = ["80", "443"]
   }
 
-  source_ranges = ["0.0.0.0/0"]
+  source_ranges = var.ingress_source_ranges
 
   target_tags = ["${var.environment_name}-websocket-lb"]
 }
@@ -73,7 +73,7 @@ resource "google_compute_firewall" "http-lb" {
     ports    = ["80", "443"]
   }
 
-  source_ranges = ["0.0.0.0/0"]
+  source_ranges = var.ingress_source_ranges
 
   target_tags = ["${var.environment_name}-http-lb"]
 }

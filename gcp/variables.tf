@@ -34,3 +34,9 @@ variable "ssl_private_key" {
 variable "location" {
   description = "The location to store the bucket data"
 }
+
+variable "ingress_source_ranges" {
+  default = ["0.0.0.0/0"]
+  type = list(string)
+  description = "IP Source ranges for ingress firewall rule"
+}

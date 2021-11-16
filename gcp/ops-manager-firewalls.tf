@@ -13,7 +13,7 @@ resource "google_compute_firewall" "ops-manager" {
     ports    = ["22", "80", "443"]
   }
 
-  source_ranges = [ "0.0.0.0/0" ]
+  source_ranges = var.ingress_source_ranges
 
   target_tags = ["${var.environment_name}-ops-manager"]
 }
