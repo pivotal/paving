@@ -13,8 +13,6 @@ resource "azurerm_storage_account" "pas" {
   account_replication_type  = "LRS"
   enable_https_traffic_only = true
 
-  enable_advanced_threat_protection = false
-
   tags = merge(
   var.tags,
   {
@@ -22,6 +20,15 @@ resource "azurerm_storage_account" "pas" {
     name        = random_string.pas.result
   },
   )
+}
+
+resource "azurerm_advanced_threat_protection" "pas" {
+  target_resource_id = azurerm_storage_account.pas.id
+  enabled            = false
+
+  depends_on = [
+    azurerm_storage_account.pas
+  ]
 }
 
 resource "azurerm_storage_container" "pas-buildpacks" {

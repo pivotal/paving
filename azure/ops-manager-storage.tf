@@ -13,8 +13,6 @@ resource "azurerm_storage_account" "ops-manager" {
   account_replication_type  = "LRS"
   enable_https_traffic_only = true
 
-  enable_advanced_threat_protection = false
-
   tags = merge(
     var.tags,
     {
@@ -23,6 +21,16 @@ resource "azurerm_storage_account" "ops-manager" {
     },
   )
 }
+
+resource "azurerm_advanced_threat_protection" "ops-manager" {
+  target_resource_id = azurerm_storage_account.ops-manager.id
+  enabled            = false
+
+  depends_on = [
+    azurerm_storage_account.ops-manager
+  ]
+}
+
 
 resource "azurerm_storage_container" "ops-manager" {
   name                  = "opsmanagerimage"
@@ -45,8 +53,6 @@ resource "azurerm_storage_account" "bosh" {
   resource_group_name       = azurerm_resource_group.platform.name
   enable_https_traffic_only = true
 
-  enable_advanced_threat_protection = false
-
   tags = merge(
     var.tags,
     {
@@ -62,6 +68,33 @@ resource "azurerm_storage_account" "bosh" {
       tags
     ]
   }
+}
+
+/*
+# storage_account network rules
+resource "azurerm_storage_account_network_rules" "stemcell" {
+  resource_group_name  = azurerm_resource_group.platform.name
+  storage_account_name = azurerm_storage_account.bosh.name
+
+  default_action = "Deny"
+  bypass = [
+    "Metrics",
+    "Logging",
+    "AzureServices"
+  ]
+
+  depends_on = [
+    azurerm_storage_container.bosh,
+  ]
+}
+*/
+
+resource "azurerm_advanced_threat_protection" "bosh" {
+  target_resource_id = azurerm_storage_account.bosh.id
+  enabled            = false
+  depends_on = [
+    azurerm_storage_account.bosh
+  ]
 }
 
 resource "azurerm_storage_container" "bosh" {

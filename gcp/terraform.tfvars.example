@@ -10,7 +10,8 @@ SERVICE_ACCOUNT_KEY
 
 region = "YOUR-GCP-REGION"
 availability_zones = ["YOUR-GCP-ZONE-1", "YOUR-GCP-ZONE-2", "YOUR-GCP-ZONE-3"]
-
+location = "US"
+ingress_source_ranges = ["0.0.0.0/0"]
 hosted_zone = "foo"
 
 ssl_certificate = <<SSL_CERTIFICATE

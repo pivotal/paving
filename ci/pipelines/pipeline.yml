@@ -42,7 +42,6 @@ jobs:
   - in_parallel:
     - get: docs-platform-automation
     - get: paving
-      trigger: true
     - get: deployments
   - task: leftovers
     file: docs-platform-automation/ci/tasks/leftovers.yml
@@ -50,7 +49,7 @@ jobs:
       BBL_IAAS: gcp
       BBL_AWS_ACCESS_KEY_ID: ((s3.access_key_id))
       BBL_AWS_SECRET_ACCESS_KEY: ((s3.secret_access_key))
-      BBL_AWS_REGION: ((s3.region_name))
+      BBL_AWS_REGION: "us-east-2"
       BBL_AZURE_CLIENT_ID: ((azure.client_id))
       BBL_AZURE_CLIENT_SECRET: ((azure.client_secret))
       BBL_AZURE_TENANT_ID: ((azure.tenant_id))
@@ -105,7 +104,6 @@ jobs:
   - in_parallel:
     - get: docs-platform-automation
     - get: paving
-      trigger: true
     - get: deployments
   - task: leftovers
     file: docs-platform-automation/ci/tasks/leftovers.yml
@@ -168,8 +166,21 @@ jobs:
   - in_parallel:
     - get: docs-platform-automation
     - get: paving
-      trigger: true
     - get: deployments
+  - task: destroy-azure
+    attempts: 2
+    file: docs-platform-automation/ci/tasks/delete-infrastructure/task.yml
+    params:
+      IAAS: azure
+      DEPLOYMENT_NAME: ci-paving-azure
+      OM_PASSWORD: ((opsman-login.password))
+      OM_USERNAME: ((opsman-login.username))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+    ensure:
+      put: deployments
+      params:
+        rebase: true
+        repository: deployments
   - task: leftovers
     file: docs-platform-automation/ci/tasks/leftovers.yml
     params:
