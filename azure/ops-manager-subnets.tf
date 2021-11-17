@@ -3,7 +3,7 @@ resource "azurerm_subnet" "management" {
 
   resource_group_name  = azurerm_resource_group.platform.name
   virtual_network_name = azurerm_virtual_network.platform.name
-  address_prefix     = var.management_subnet_cidr
+  address_prefixes     = [ var.management_subnet_cidr ]
 
 }
 
@@ -22,7 +22,7 @@ resource "azurerm_subnet" "services" {
 
   resource_group_name  = azurerm_resource_group.platform.name
   virtual_network_name = azurerm_virtual_network.platform.name
-  address_prefix     = var.services_subnet_cidr
+  address_prefixes     = [ var.services_subnet_cidr ]
 
 }
 
