@@ -50,7 +50,7 @@ resource "azurerm_user_assigned_identity" "pks-master" {
 
 resource "azurerm_role_assignment" "pks-master" {
   scope              = "/subscriptions/${var.subscription_id}/resourceGroups/${var.environment_name}"
-  role_definition_id = azurerm_role_definition.pks-master.id
+  role_definition_id = azurerm_role_definition.pks-master.role_definition_resource_id
   principal_id       = azurerm_user_assigned_identity.pks-master.principal_id
 }
 
@@ -67,6 +67,6 @@ resource "azurerm_user_assigned_identity" "pks-worker" {
 
 resource "azurerm_role_assignment" "pks-worker" {
   scope              = "/subscriptions/${var.subscription_id}/resourceGroups/${var.environment_name}"
-  role_definition_id = azurerm_role_definition.pks-worker.id
+  role_definition_id = azurerm_role_definition.pks-worker.role_definition_resource_id
   principal_id       = azurerm_user_assigned_identity.pks-worker.principal_id
 }
