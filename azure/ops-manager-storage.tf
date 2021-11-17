@@ -38,7 +38,7 @@ resource "azurerm_storage_container" "ops-manager" {
   container_access_type = "private"
 }
 
-resource random_string "bosh" {
+resource "random_string" "bosh" {
   length  = 20
   special = false
   upper   = false
@@ -52,6 +52,7 @@ resource "azurerm_storage_account" "bosh" {
   account_kind              = "StorageV2"
   resource_group_name       = azurerm_resource_group.platform.name
   enable_https_traffic_only = true
+  allow_blob_public_access  = true
 
   tags = merge(
     var.tags,
@@ -69,25 +70,6 @@ resource "azurerm_storage_account" "bosh" {
     ]
   }
 }
-
-/*
-# storage_account network rules
-resource "azurerm_storage_account_network_rules" "stemcell" {
-  resource_group_name  = azurerm_resource_group.platform.name
-  storage_account_name = azurerm_storage_account.bosh.name
-
-  default_action = "Deny"
-  bypass = [
-    "Metrics",
-    "Logging",
-    "AzureServices"
-  ]
-
-  depends_on = [
-    azurerm_storage_container.bosh,
-  ]
-}
-*/
 
 resource "azurerm_advanced_threat_protection" "bosh" {
   target_resource_id = azurerm_storage_account.bosh.id
