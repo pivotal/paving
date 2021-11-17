@@ -3,7 +3,3 @@ provider "google" {
   region      = var.region
   credentials = var.service_account_key
 }
-
-terraform {
-  required_version = ">= 0.14.0"
-}
