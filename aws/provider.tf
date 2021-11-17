@@ -4,7 +4,3 @@ provider "aws" {
   secret_key = var.secret_key
 }
 
-terraform {
-  required_version = "~> 0.14"
-}
-

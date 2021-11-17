@@ -6,12 +6,12 @@ resource "google_compute_backend_service" "http-lb" {
   timeout_sec = 900
   enable_cdn  = false
 
-  backend {
-    group = google_compute_instance_group.http-lb[0].self_link
-  }
-
-  backend {
-    group = google_compute_instance_group.http-lb[1].self_link
+  dynamic "backend" {
+    for_each = { for group in google_compute_instance_group.http-lb.* : group.self_link => group }
+    iterator = instance_group
+    content {
+      group = instance_group.value.self_link
+    }
   }
 
   health_checks = [google_compute_http_health_check.http-lb.self_link]
