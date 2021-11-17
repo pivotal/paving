@@ -31,9 +31,8 @@ resource "azurerm_lb" "web" {
 }
 
 resource "azurerm_lb_backend_address_pool" "web" {
-  name                = "${var.environment_name}-web-lb-backend-pool"
-  resource_group_name = azurerm_resource_group.platform.name
-  loadbalancer_id     = azurerm_lb.web.id
+  name            = "${var.environment_name}-web-lb-backend-pool"
+  loadbalancer_id = azurerm_lb.web.id
 }
 
 resource "azurerm_lb_probe" "web-https" {
@@ -55,8 +54,8 @@ resource "azurerm_lb_rule" "web-https" {
   backend_port                   = 443
   idle_timeout_in_minutes        = 30
 
-  backend_address_pool_id = azurerm_lb_backend_address_pool.web.id
-  probe_id                = azurerm_lb_probe.web-https.id
+  backend_address_pool_ids = [azurerm_lb_backend_address_pool.web.id]
+  probe_id                 = azurerm_lb_probe.web-https.id
 }
 
 resource "azurerm_lb_probe" "web-http" {
@@ -78,8 +77,8 @@ resource "azurerm_lb_rule" "web-http" {
   backend_port                   = 80
   idle_timeout_in_minutes        = 30
 
-  backend_address_pool_id = azurerm_lb_backend_address_pool.web.id
-  probe_id                = azurerm_lb_probe.web-http.id
+  backend_address_pool_ids = [azurerm_lb_backend_address_pool.web.id]
+  probe_id                 = azurerm_lb_probe.web-http.id
 }
 
 resource "azurerm_lb_rule" "web-ntp" {
@@ -92,7 +91,7 @@ resource "azurerm_lb_rule" "web-ntp" {
   frontend_port                  = "123"
   backend_port                   = "123"
 
-  backend_address_pool_id = azurerm_lb_backend_address_pool.web.id
+  backend_address_pool_ids = [azurerm_lb_backend_address_pool.web.id]
 }
 
 # TCP
@@ -128,7 +127,6 @@ resource "azurerm_lb" "tcp" {
 
 resource "azurerm_lb_backend_address_pool" "tcp" {
   name                = "${var.environment_name}-tcp-backend-pool"
-  resource_group_name = azurerm_resource_group.platform.name
   loadbalancer_id     = azurerm_lb.tcp.id
 }
 
@@ -151,8 +149,8 @@ resource "azurerm_lb_rule" "tcp-rule" {
   frontend_port                  = count.index + 1024
   backend_port                   = count.index + 1024
 
-  backend_address_pool_id = azurerm_lb_backend_address_pool.tcp.id
-  probe_id                = azurerm_lb_probe.tcp.id
+  backend_address_pool_ids = [azurerm_lb_backend_address_pool.tcp.id]
+  probe_id                 = azurerm_lb_probe.tcp.id
 }
 
 resource "azurerm_lb_rule" "tcp-ntp" {
@@ -165,7 +163,7 @@ resource "azurerm_lb_rule" "tcp-ntp" {
   frontend_port                  = "123"
   backend_port                   = "123"
 
-  backend_address_pool_id = azurerm_lb_backend_address_pool.tcp.id
+  backend_address_pool_ids = [azurerm_lb_backend_address_pool.tcp.id]
 }
 
 # MySQL
@@ -188,7 +186,6 @@ resource "azurerm_lb" "mysql" {
 
 resource "azurerm_lb_backend_address_pool" "mysql" {
   name                = "${var.environment_name}-mysql-backend-pool"
-  resource_group_name = azurerm_resource_group.platform.name
   loadbalancer_id     = azurerm_lb.mysql.id
 }
 
@@ -210,8 +207,8 @@ resource "azurerm_lb_rule" "mysql" {
   frontend_port                  = 3306
   backend_port                   = 3306
 
-  backend_address_pool_id = azurerm_lb_backend_address_pool.mysql.id
-  probe_id                = azurerm_lb_probe.mysql.id
+  backend_address_pool_ids = [azurerm_lb_backend_address_pool.mysql.id]
+  probe_id                 = azurerm_lb_probe.mysql.id
 }
 
 resource "azurerm_lb_rule" "mysql-ntp" {
@@ -224,7 +221,7 @@ resource "azurerm_lb_rule" "mysql-ntp" {
   frontend_port                  = "123"
   backend_port                   = "123"
 
-  backend_address_pool_id = azurerm_lb_backend_address_pool.mysql.id
+  backend_address_pool_ids = [azurerm_lb_backend_address_pool.mysql.id]
 }
 
 # SSH
@@ -260,7 +257,6 @@ resource "azurerm_lb" "diego-ssh" {
 
 resource "azurerm_lb_backend_address_pool" "diego-ssh" {
   name                = "${var.environment_name}-diego-ssh-backend-pool"
-  resource_group_name = azurerm_resource_group.platform.name
   loadbalancer_id     = azurerm_lb.diego-ssh.id
 }
 
@@ -282,8 +278,8 @@ resource "azurerm_lb_rule" "diego-ssh" {
   frontend_port                  = 2222
   backend_port                   = 2222
 
-  backend_address_pool_id = azurerm_lb_backend_address_pool.diego-ssh.id
-  probe_id                = azurerm_lb_probe.diego-ssh.id
+  backend_address_pool_ids = [azurerm_lb_backend_address_pool.diego-ssh.id]
+  probe_id                 = azurerm_lb_probe.diego-ssh.id
 }
 
 resource "azurerm_lb_rule" "diego-ssh-ntp" {
@@ -296,5 +292,5 @@ resource "azurerm_lb_rule" "diego-ssh-ntp" {
   frontend_port                  = "123"
   backend_port                   = "123"
 
-  backend_address_pool_id = azurerm_lb_backend_address_pool.diego-ssh.id
+  backend_address_pool_ids = [azurerm_lb_backend_address_pool.diego-ssh.id]
 }
