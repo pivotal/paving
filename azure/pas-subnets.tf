@@ -3,7 +3,7 @@ resource "azurerm_subnet" "pas" {
 
   resource_group_name  = azurerm_resource_group.platform.name
   virtual_network_name = azurerm_virtual_network.platform.name
-  address_prefix    = var.pas_subnet_cidr
+  address_prefixes    = [ var.pas_subnet_cidr ]
 
 }
 
