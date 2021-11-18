@@ -1,7 +1,7 @@
 # Paving
 
 This repository contains Terraform templates for paving the necessary
-infrastructure to deploy Pivotal Platform (PKS and PAS) to a single foundation.
+infrastructure to deploy Tanzu application Platform (PKS and TAS) to a single foundation.
 The templates support AWS, vSphere, Azure, and GCP.
 
 
@@ -36,17 +36,15 @@ Every foundation requires an Ops Manager.
 
 ## Decisions
 
-- These templates support deploying Pivotal Application Service (PAS)
+- These templates support deploying Tanzu Application Service (TAS)
 and Pivotal Container Service (PKS) to the same foundation.
 
 - The templates **do not** create an Ops Manager VM but **do**
 create the necessary infrastructure for the VM (security groups, keys, etc).
 
-- These templates demonstrate a modest production deployment in three (3) AZs on
-each IaaS.
+- These templates demonstrate a modest production deployment in three (3) AZs on each IaaS.
 
-- These templates contain extremely minimal interdependence or cleverness,
-to facilitate incorporating these templates into your own automation easily.
+- These templates contain extremely minimal interdependence or cleverness, to facilitate incorporating these templates into your own automation easily.
 
 ## Versioning
 
@@ -55,7 +53,7 @@ of `terraform output stable_config_(opsmanager|pas|pks)`. `stable_config` should
 the minimum necessary to install Pivotal Platform. Any other output may be
 added or removed without a change in version. However, MAJOR.MINOR.PATCH should
 change according to the following:
-- If an output is removed, the MAJOR version should be incremented
+- If an output is removed or a major breaking change is introduced, the MAJOR version should be incremented
 - If an output is added, the MINOR version should be incremented
 - Otherwise, the patch version should be incremented
 
