@@ -1,5 +1,38 @@
 # Changelog
 
+## 3.0.0
+
+### Breaking changes
+
+- `GCP`: Added a new variable `location` on the variables which sets the location of the bucket `ops-manager`.
+
+- Updated the templates to use `terraform` version `1.0.11`.
+- Terraform providers updated and templates adjusted to remove deprecation warnings and errors.
+
+    |Provider| version|
+    |-|-|
+    | GCP | 4.1.0 |
+    | AWS | 3.65.0 |
+    | Azure | 2.85.0 |
+
+### Features
+- #70 : `GCP` Add NAT router configuration also for Ops Manager.
+- #64 : `Azure` fix subnet reserved ranges.
+- #63 : `All Providers` Inconsistent DNS A record entries for PKS API endpoints.
+- `All Providers` : All the version constraints for the providers were moved to the `version.tf` files.
+- `Azure`: Updated the `azurerm_subnet` resources to use the new `address_prefixes` property.
+- `Azure`: Fixed an interpolation warning on `azure/ops-manager-resource-groups.tf`.
+- `Azure` : Removed the property `enable_advanced_thread_protection` from the `azurerm_storage_account` resource, which was removed on the latest version of the provider.
+- `Azure` : Added resourcce `azurerm_advanced_thread_protection` which substitutes the use of the property `enable_advanced_thread_protection` on the `azurerm_storage_account` resources.
+- `Azure` : Added the property `allow_blob_public_access` with value `true` on the `azurerm_storage_account.bosh` resource, this should mimic previous behavior which was throwing errors after the provider upgrade.
+- `Azure` : Changed the value of the `role_definition_id` of the `azurerm_role_assignment` resources to use the `azurerm_role_definition.resource_name.resource` property instead of `azurerm_role_definition.pks-worker.id`, this fixes a problem introduced after upgrading the provider, caused by a change on the format on the property `id` for the `azurerm_role_definition`.
+- `Azure` : Removed the use of the propert `resource_group_name` on the `azurerm_lb_backend_address_pool` resources.
+- `Azure` : Updated the `azurerm_lb_probe` resources to use the property `backend_address_pool_ids` instead of the property `backend_address_pool_id`, this removes a deprecation warning.
+- `GCP`: Added propert `source_ranges` to firewall rules which didn't had it, this setting can be change using the `ingress_source_ranges` variable on the `terraform.tfvars` file.
+
+### Bug Fixes
+- Fixed an issue introduced by [fc36573](https://github.com/pivotal/paving/fc36573) which caused the terraform to fail on certain circumstances.
+
 ## 2.1.0
 
 ### Features

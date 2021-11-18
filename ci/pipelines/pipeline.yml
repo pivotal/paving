@@ -4,6 +4,9 @@ groups:
   - paving-gcp
   - paving-aws
   - paving-azure
+- name: gcp-opsman
+  jobs:
+  - pave-gcp-opsman
 resources:
 - name: docs-platform-automation
   type: git
@@ -24,6 +27,29 @@ resources:
   source:
     uri: https://github.com/pivotal/paving
     branch: terraform-upgrade
+- name: rc-tasks-s3
+  type: s3
+  source:
+    access_key_id: ((s3.access_key_id))
+    bucket: ((s3.buckets.release_candidate))
+    regexp: platform-automation-tasks-(.*).zip
+    region_name: ((s3.region_name))
+    secret_access_key: ((s3.secret_access_key))
+- name: rc-image-s3
+  type: s3
+  source:
+    access_key_id: ((s3.access_key_id))
+    bucket: ((s3.buckets.release_candidate))
+    regexp: platform-automation-image-(.*).tgz
+    region_name: ((s3.region_name))
+    secret_access_key: ((s3.secret_access_key))
+- name: opsman-image
+  type: pivnet
+  source:
+    api_token: ((pivnet_token))
+    product_slug: ops-manager
+    product_version: 2\.[0-9]+\.[0-9]+$
+    sort_by: semver
 resource_types:
 - name: pivnet
   type: registry-image
@@ -35,7 +61,6 @@ resource_types:
   source:
     repository: cfcommunity/slack-notification-resource
     tag: latest
-
 jobs:
 - name: paving-gcp
   plan:
@@ -229,6 +254,154 @@ jobs:
     params:
       IAAS: azure
       DEPLOYMENT_NAME: ci-paving-azure
+      OM_PASSWORD: ((opsman-login.password))
+      OM_USERNAME: ((opsman-login.username))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+    ensure:
+      put: deployments
+      params:
+        rebase: true
+        repository: deployments
+- name: pave-gcp-opsman
+  plan:
+  - in_parallel:
+    - get: docs-platform-automation
+    - get: paving
+    - get: deployments
+    - get: platform-automation-tasks
+      resource: rc-tasks-s3
+      params:
+        unpack: true
+    - get: platform-automation-image
+      resource: rc-image-s3
+      params:
+        unpack: true
+    - get: opsman-image
+      trigger: true
+      params:
+        globs:
+        - '*gcp*.yml'
+  - task: leftovers
+    file: docs-platform-automation/ci/tasks/leftovers.yml
+    params:
+      BBL_IAAS: gcp
+      BBL_AWS_ACCESS_KEY_ID: ((s3.access_key_id))
+      BBL_AWS_SECRET_ACCESS_KEY: ((s3.secret_access_key))
+      BBL_AWS_REGION: "us-east-2"
+      BBL_AZURE_CLIENT_ID: ((azure.client_id))
+      BBL_AZURE_CLIENT_SECRET: ((azure.client_secret))
+      BBL_AZURE_TENANT_ID: ((azure.tenant_id))
+      BBL_AZURE_SUBSCRIPTION_ID: ((azure.subscription_id))
+      BBL_GCP_SERVICE_ACCOUNT_KEY: ((gcp.service_account))
+      BBL_NSXT_PASSWORD: ((nsx.password))
+      BBL_NSXT_USERNAME: ((nsx.username))
+      BBL_NSXT_MANAGER_HOST: ((nsx.url))
+      FILTER: ci-paving-gcp-om
+      DRY_RUN: false
+      NO_CONFIRM: true
+  - task: remove-state-files-gcp
+    file: docs-platform-automation/ci/tasks/delete-state-file.yml
+    params:
+      DEPLOYMENT: ci-paving-gcp-om
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+    ensure:
+      put: deployments
+      params:
+        rebase: true
+        repository: deployments
+  - task: terraform-gcp
+    attempts: 2
+    file: docs-platform-automation/ci/tasks/create-infrastructure/task.yml
+    params:
+      IAAS: gcp
+      DEPLOYMENT_NAME: ci-paving-gcp-om
+      OM_PASSWORD: ((opsman-login.password))
+      OM_USERNAME: ((opsman-login.username))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+    ensure:
+      put: deployments
+      params:
+        rebase: true
+        repository: deployments
+  - task: prepare-tasks-with-secrets
+    file: docs-platform-automation/tasks/prepare-tasks-with-secrets.yml
+    image: platform-automation-image
+    input_mapping:
+      config: paving
+      tasks: platform-automation-tasks
+      vars: deployments
+    output_mapping:
+      tasks: platform-automation-tasks
+    params:
+      CONFIG_PATHS: config/ci/configuration/gcp/director.yml config/ci/configuration/auth.yml
+      VARS_PATHS: vars/ci-paving-gcp-om/terraform-vars.yml
+  - task: create-vm
+    file: platform-automation-tasks/tasks/create-vm.yml
+    input_mapping:
+      image: opsman-image
+      state: deployments
+      config: paving
+      vars: deployments
+    params:
+      STATE_FILE: ci-paving-gcp-om/state.yml
+      OPSMAN_CONFIG_FILE: ci/configuration/gcp/ops-manager.yml
+      VARS_FILES: vars/ci-paving-gcp-om/terraform-vars.yml
+    image: platform-automation-image
+    ensure:
+      do:
+      - task: state-file
+        file: platform-automation-tasks/tasks/make-git-commit.yml
+        params:
+          GIT_AUTHOR_NAME: platform-automation-bot
+          GIT_AUTHOR_EMAIL: ((platform-automation-email))
+          COMMIT_MESSAGE: "create-vm update state file for ci-paving-gcp-om"
+          FILE_SOURCE_PATH: state.yml
+          FILE_DESTINATION_PATH: ci-paving-gcp-om/state.yml
+        input_mapping:
+          repository: deployments
+          file-source: generated-state
+        image: platform-automation-image
+      - put: deployments
+        params:
+          rebase: true
+          repository: repository-commit
+  - task: configure-authentication
+    file: platform-automation-tasks/tasks/configure-authentication.yml
+    image: platform-automation-image
+    attempts: 20
+    input_mapping:
+      env: deployments
+      config: paving
+    params:
+      ENV_FILE: ci-paving-gcp-om/env.yml
+      AUTH_CONFIG_FILE: ci/configuration/auth.yml
+      VARS_FILES: env/ci-paving-gcp-om/terraform-vars.yml
+
+  - task: configure-director
+    file: platform-automation-tasks/tasks/configure-director.yml
+    image: platform-automation-image
+    input_mapping:
+      env: deployments
+      config: paving
+    params:
+      ENV_FILE: ci-paving-gcp-om/env.yml
+      VARS_FILES: env/ci-paving-gcp-om/terraform-vars.yml
+      DIRECTOR_CONFIG_FILE: ci/configuration/gcp/director.yml
+
+  - task: apply-director-changes
+    file: platform-automation-tasks/tasks/apply-director-changes.yml
+    image: platform-automation-image
+    input_mapping:
+      env: deployments
+    params:
+      ENV_FILE: ci-paving-gcp-om/env.yml
+
+  - task: destroy-gcp
+    attempts: 2
+    file: docs-platform-automation/ci/tasks/delete-infrastructure/task.yml
+    params:
+      IAAS: gcp
+      DEPLOYMENT_NAME: ci-paving-gcp
       OM_PASSWORD: ((opsman-login.password))
       OM_USERNAME: ((opsman-login.username))
       PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))

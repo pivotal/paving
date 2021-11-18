@@ -7,7 +7,7 @@ The templates support AWS, vSphere, Azure, and GCP.
 
 ## Requirements
 
-- [Terraform v0.13+](https://www.terraform.io/downloads.html)
+- [Terraform v1.0.22](https://www.terraform.io/downloads.html)
 
 ## Usage
 
