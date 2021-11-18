@@ -32,6 +32,7 @@ variable "ssl_private_key" {
 }
 
 variable "location" {
+  default = "US"
   description = "The location to store the bucket data"
 }
 
