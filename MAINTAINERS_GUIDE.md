@@ -1,6 +1,6 @@
 # Maintainer/Contributor Guidelines for this repository
 
-This guide is intended for maintaners,
+This guide is intended for maintainers.
 
 ## CI
 

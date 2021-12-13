@@ -11,7 +11,7 @@ resources:
 - name: docs-platform-automation
   type: git
   source:
-    branch: terraform-upgrade
+    branch: develop
     private_key: ((platform_automation_docs.private_key))
     uri: git@github.com:pivotal/docs-platform-automation
     ignore_paths:
@@ -26,7 +26,7 @@ resources:
   type: git
   source:
     uri: https://github.com/pivotal/paving
-    branch: terraform-upgrade
+    branch: master
 - name: rc-tasks-s3
   type: s3
   source:
@@ -67,6 +67,7 @@ jobs:
   - in_parallel:
     - get: docs-platform-automation
     - get: paving
+      trigger: true
     - get: deployments
   - task: leftovers
     file: docs-platform-automation/ci/tasks/leftovers.yml
@@ -129,6 +130,7 @@ jobs:
   - in_parallel:
     - get: docs-platform-automation
     - get: paving
+      trigger: true
     - get: deployments
   - task: leftovers
     file: docs-platform-automation/ci/tasks/leftovers.yml
@@ -191,6 +193,7 @@ jobs:
   - in_parallel:
     - get: docs-platform-automation
     - get: paving
+      trigger: true
     - get: deployments
   - task: destroy-azure
     attempts: 2
