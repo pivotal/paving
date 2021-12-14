@@ -6,8 +6,15 @@ The templates support AWS, vSphere, Azure, and GCP.
 
 
 ## Requirements
+As of `v3.0.0` of this repository the following are the supported versions of the `Terraform CLI` and providers:
 
-- [Terraform v1.0.22](https://www.terraform.io/downloads.html)
+- Terraform CLI `v1.0.11`
+- Provider versions
+    |Provider| version|
+    |-|-|
+    | GCP | 4.1.0 |
+    | AWS | 3.65.0 |
+    | Azure | 2.85.0 |
 
 ## Usage
 
