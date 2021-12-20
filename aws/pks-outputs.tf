@@ -2,7 +2,7 @@ locals {
   stable_config_pks = {
     pks_master_iam_instance_profile_name = aws_iam_instance_profile.pks-master.name
     pks_worker_iam_instance_profile_name = aws_iam_instance_profile.pks-worker.name
-    pks_api_dns = aws_route53_record.pks-api.name
+    pks_api_dns = replace(replace(aws_route53_record.pks-api.name, "/\\.$/", ""), "*.", "api.")
     pks_subnet_ids = aws_subnet.pks-subnet[*].id
     pks_subnet_cidrs = aws_subnet.pks-subnet[*].cidr_block
     pks_subnet_gateways = [
