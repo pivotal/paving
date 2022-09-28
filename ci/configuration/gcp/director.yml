@@ -46,4 +46,4 @@ properties-configuration:
 resource-configuration:
   compilation:
     instance_type:
-      id: xlarge.disk
+      id: automatic
