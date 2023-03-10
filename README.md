@@ -65,7 +65,7 @@ every foundation requires an Ops Manager.
 
 ## Versioning
 This repo applies Semantic Versioning;
-the follwing is an attempt to declare the versioned API.
+the following is an attempt to declare the versioned API.
 
 The semantics of the versioning of paving's releases are based on the contents
 of `terraform output stable_config_(opsmanager|pas|pks)`. `stable_config` should always represent
