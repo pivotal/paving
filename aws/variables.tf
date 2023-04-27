@@ -6,6 +6,14 @@ variable "secret_key" {
   type = string
 }
 
+variable "role_arn" {
+  type = string
+}
+
+variable "svc_role_name" {
+  type = string
+}
+
 variable "environment_name" {
   type = string
 }

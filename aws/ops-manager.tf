@@ -17,10 +17,6 @@ resource "tls_private_key" "ops-manager" {
   rsa_bits  = "4096"
 }
 
-resource "aws_iam_access_key" "ops-manager" {
-  user = aws_iam_user.ops-manager.name
-}
-
 resource "aws_iam_policy" "ops-manager-role" {
   name   = "${var.environment_name}-ops-manager-role"
   policy = data.aws_iam_policy_document.ops-manager.json
@@ -68,15 +64,14 @@ resource "aws_iam_instance_profile" "ops-manager" {
   }
 }
 
-resource "aws_iam_user" "ops-manager" {
-  force_destroy = true
-  name          = "${var.environment_name}-ops-manager"
+resource "aws_iam_policy" "ops-manager" {
+  name   = "${var.environment_name}-ops-manager-policy"
+  policy = data.aws_iam_policy_document.ops-manager.json
 }
 
-resource "aws_iam_user_policy" "ops-manager" {
-  name   = "${var.environment_name}-ops-manager-policy"
-  user   = aws_iam_user.ops-manager.name
-  policy = data.aws_iam_policy_document.ops-manager.json
+resource "aws_iam_role_policy_attachment" "ops-manager-attach-policy" {
+  role       = "${var.svc_role_name}"
+  policy_arn = aws_iam_policy.ops-manager.arn
 }
 
 data "aws_iam_policy_document" "ops-manager" {
