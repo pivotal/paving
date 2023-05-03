@@ -12,3 +12,4 @@ opsman-configuration:
     security_group_ids: [((ops_manager_security_group_id))]
     vm_name: ((environment_name))-ops-manager-vm
     vpc_subnet_id: ((ops_manager_subnet_id))
+    role_arn: ((role_arn))
