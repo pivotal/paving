@@ -27,6 +27,7 @@ locals {
     ops_manager_dns                       = aws_route53_record.ops-manager.name
     ops_manager_iam_user_access_key       = var.access_key
     ops_manager_iam_user_secret_key       = var.secret_key
+    ops_manager_role_arn                  = var.role_arn
     ops_manager_iam_instance_profile_name = aws_iam_instance_profile.ops-manager.name
     ops_manager_key_pair_name             = aws_key_pair.ops-manager.key_name
     ops_manager_ssh_public_key            = tls_private_key.ops-manager.public_key_openssh
