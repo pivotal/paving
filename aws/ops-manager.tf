@@ -64,16 +64,6 @@ resource "aws_iam_instance_profile" "ops-manager" {
   }
 }
 
-resource "aws_iam_policy" "ops-manager" {
-  name   = "${var.environment_name}-ops-manager-policy"
-  policy = data.aws_iam_policy_document.ops-manager.json
-}
-
-resource "aws_iam_role_policy_attachment" "ops-manager-attach-policy" {
-  role       = "${var.svc_role_name}"
-  policy_arn = aws_iam_policy.ops-manager.arn
-}
-
 data "aws_iam_policy_document" "ops-manager" {
   statement {
     sid       = "OpsMgrInfoAboutCurrentInstanceProfile"
