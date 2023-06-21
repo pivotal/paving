@@ -18,7 +18,7 @@ data "aws_iam_policy_document" "pas-blobstore-policy" {
 
 resource "aws_iam_instance_profile" "pas-blobstore" {
   name = "${var.environment_name}-pas-blobstore"
-  role = "cloudgate-aws-paving-pas-blobstore"
+  role = "cloudgate-paving-aws-pas-blobstore"
 
   lifecycle {
     ignore_changes = [name]
