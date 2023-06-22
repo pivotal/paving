@@ -14,6 +14,10 @@ variable "svc_role_name" {
   type = string
 }
 
+variable "cloudgate_opsman_role_name" {
+  type = string
+}
+
 variable "environment_name" {
   type = string
 }

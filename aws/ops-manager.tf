@@ -19,7 +19,7 @@ resource "tls_private_key" "ops-manager" {
 
 resource "aws_iam_instance_profile" "ops-manager" {
   name = "${var.environment_name}-ops-manager"
-  role = "cloudgate-paving-aws-ops-manager-role"
+  role = var.cloudgate_opsman_role_name
 
   lifecycle {
     ignore_changes = [name]

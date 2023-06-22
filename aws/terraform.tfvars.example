@@ -5,6 +5,7 @@ secret_key = "YOUR-AWS-SECRET-KEY"
 
 role_arn = "YOUR-AWS-ROLE-ARN"
 svc_role_name = "YOUR-AWS-SERVICE-ACCOUNT-ROLE-NAME"
+cloudgate_opsman_role_name = "YOUR-AWS-OPSMAN-ROLE-NAME"
 
 region = "YOUR-AWS-REGION"
 availability_zones = ["YOUR-AWS-ZONE-1", "YOUR-AWS-ZONE-2", "YOUR-AWS-ZONE-3"]
