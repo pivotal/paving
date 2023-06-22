@@ -67,19 +67,9 @@ data "aws_iam_policy_document" "pks-master-policy" {
   }
 }
 
-resource "aws_iam_policy" "pks-master" {
-  name   = "${var.environment_name}-pks-master-policy"
-  policy = data.aws_iam_policy_document.pks-master-policy.json
-}
-
-resource "aws_iam_role_policy_attachment" "pks-master" {
-  role       = aws_iam_role.pks-master.name
-  policy_arn = aws_iam_policy.pks-master.arn
-}
-
 resource "aws_iam_instance_profile" "pks-master" {
   name = "${var.environment_name}-pks-master"
-  role = aws_iam_role.pks-master.name
+  role = "cloudgate-paving-aws-pks-master"
 
   lifecycle {
     ignore_changes = [name]
@@ -110,19 +100,9 @@ data "aws_iam_policy_document" "pks-worker-policy" {
   }
 }
 
-resource "aws_iam_policy" "pks-worker" {
-  name   = "${var.environment_name}-pks-worker-policy"
-  policy = data.aws_iam_policy_document.pks-worker-policy.json
-}
-
-resource "aws_iam_role_policy_attachment" "pks-worker" {
-  role       = aws_iam_role.pks-worker.name
-  policy_arn = aws_iam_policy.pks-worker.arn
-}
-
 resource "aws_iam_instance_profile" "pks-worker" {
   name = "${var.environment_name}-pks-worker"
-  role = aws_iam_role.pks-worker.name
+  role = "cloudgate-paving-aws-pks-worker"
 
   lifecycle {
     ignore_changes = [name]
