@@ -136,9 +136,10 @@ jobs:
     file: docs-platform-automation/ci/tasks/leftovers.yml
     params:
       BBL_IAAS: aws
-      BBL_AWS_ACCESS_KEY_ID: ((s3.access_key_id))
-      BBL_AWS_SECRET_ACCESS_KEY: ((s3.secret_access_key))
-      BBL_AWS_REGION: "us-east-2"
+      BBL_AWS_ACCESS_KEY_ID: ((paving-aws.access_key_id))
+      BBL_AWS_SECRET_ACCESS_KEY: ((paving-aws.secret_access_key))
+      BBL_AWS_ASSUME_ROLE: ((paving-aws.role_arn))
+      BBL_AWS_REGION: ((paving-aws.region_name))
       BBL_AZURE_CLIENT_ID: ((azure.client_id))
       BBL_AZURE_CLIENT_SECRET: ((azure.client_secret))
       BBL_AZURE_TENANT_ID: ((azure.tenant_id))
