@@ -26,7 +26,7 @@ resources:
   type: git
   source:
     uri: https://github.com/pivotal/paving
-    branch: release
+    branch: low-privilege
 - name: rc-tasks-s3
   type: s3
   source:
