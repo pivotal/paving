@@ -18,6 +18,12 @@ variable "cloudgate_opsman_role_name" {
   type = string
 }
 
+variable "authentication_type" {
+  description = "The type of authentication to use for AWS. Allowed values are access-key, instance-profile or assume-role"
+  default     = "access-key"
+  type        = string
+}
+
 variable "environment_name" {
   type = string
 }
