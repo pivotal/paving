@@ -2,7 +2,7 @@
 opsman-configuration:
   aws:
     access_key_id: ((access_key))
-    assume_role: ((ops_manager_role_arn))
+    assume_role: ((role_arn))
     authentication_type: ((authentication_type))
     boot_disk_size: 100
     iam_instance_profile_name: ((ops_manager_iam_instance_profile_name))
