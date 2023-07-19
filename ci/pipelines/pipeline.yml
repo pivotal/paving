@@ -28,21 +28,23 @@ resources:
     uri: https://github.com/pivotal/paving
     branch: low-privilege
 - name: rc-tasks-s3
-  type: s3
+  type: s3-with-arn
   source:
-    access_key_id: ((s3.access_key_id))
+    access_key_id: ((s3_with_role.access_key_id))
+    secret_access_key: ((s3_with_role.secret_access_key))
+    aws_role_arn: ((s3_with_role.role_arn))
     bucket: ((s3.buckets.release_candidate))
     regexp: platform-automation-tasks-(.*).zip
     region_name: ((s3.region_name))
-    secret_access_key: ((s3.secret_access_key))
 - name: rc-image-s3
-  type: s3
+  type: s3-with-arn
   source:
-    access_key_id: ((s3.access_key_id))
+    access_key_id: ((s3_with_role.access_key_id))
+    secret_access_key: ((s3_with_role.secret_access_key))
+    aws_role_arn: ((s3_with_role.role_arn))
     bucket: ((s3.buckets.release_candidate))
     regexp: platform-automation-image-(.*).tgz
     region_name: ((s3.region_name))
-    secret_access_key: ((s3.secret_access_key))
 - name: opsman-image
   type: pivnet
   source:
@@ -61,6 +63,11 @@ resource_types:
   source:
     repository: cfcommunity/slack-notification-resource
     tag: latest
+- name: s3-with-arn
+  type: docker-image
+  source:
+    repository: concourse/s3-resource
+    tag: 1.2.1-ubuntu
 jobs:
 - name: paving-gcp
   plan:
