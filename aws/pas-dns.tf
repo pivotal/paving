@@ -1,4 +1,6 @@
 resource "aws_route53_record" "wildcard-sys" {
+  provider = aws.public-dns
+
   name = "*.sys.${var.environment_name}.${data.aws_route53_zone.hosted.name}"
 
   zone_id = data.aws_route53_zone.hosted.zone_id
@@ -12,6 +14,8 @@ resource "aws_route53_record" "wildcard-sys" {
 }
 
 resource "aws_route53_record" "wildcard-apps" {
+  provider = aws.public-dns
+
   name = "*.apps.${var.environment_name}.${data.aws_route53_zone.hosted.name}"
 
   zone_id = data.aws_route53_zone.hosted.zone_id
@@ -25,6 +29,8 @@ resource "aws_route53_record" "wildcard-apps" {
 }
 
 resource "aws_route53_record" "ssh" {
+  provider = aws.public-dns
+
   name = "ssh.sys.${var.environment_name}.${data.aws_route53_zone.hosted.name}"
 
   zone_id = data.aws_route53_zone.hosted.zone_id
@@ -38,6 +44,8 @@ resource "aws_route53_record" "ssh" {
 }
 
 resource "aws_route53_record" "tcp" {
+  provider = aws.public-dns
+
   name = "tcp.${var.environment_name}.${data.aws_route53_zone.hosted.name}"
 
   zone_id = data.aws_route53_zone.hosted.zone_id
