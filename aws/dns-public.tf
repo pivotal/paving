@@ -1,17 +1,10 @@
 /*
-  This is a stepping stone to reuse existing knowledge on paving AWS
-  and applying it to GovCloud with as few changes as possible.
+  This is a stepping stone to allow configuring AWS with a private-public
+  DNS architecture: https://docs.aws.amazon.com/managedservices/latest/userguide/set-dns.html
   This is an opt-in change and fully backward compatible out-of-the-box.
 
-  Given the strict requirements associated to any AWS GovCloud, it is
-  unfeasible for us to provide any kind of support for GovCloud.
-
-  DISCLAIMER:
-
-  This opt-in functionality is provided AS-IS. We make no warranties,
-  express or implied, and hereby disclaims all implied warranties,
-  including any warranty of merchantability and warranty of fitness
-  for a particular purpose.
+  This adds an additional layer of security, and also allows you to fail over from a primary resource
+  to a secondary one (often called a "flip") by mapping the DNS name to a different IP address.
 */
 
 variable "public_dns_access_key" {
