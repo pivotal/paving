@@ -1,5 +1,5 @@
 resource "aws_route53_record" "pks-api" {
-  name = "api.pks.${var.environment_name}.${data.aws_route53_zone.hosted.name}"
+  name = "*.pks.${var.environment_name}.${data.aws_route53_zone.hosted.name}"
 
   zone_id = data.aws_route53_zone.hosted.zone_id
   type    = "A"

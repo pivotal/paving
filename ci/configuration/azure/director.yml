@@ -17,7 +17,7 @@ networks-configuration:
       reserved_ip_ranges: ((management_subnet_gateway))-((management_subnet_range))
       dns: 168.63.129.16
       gateway: ((management_subnet_gateway))
-  - name: services-1
+  - name: services
     service_network: false
     subnets:
     - iaas_identifier: ((network_name))/((services_subnet_name))
