@@ -12,7 +12,7 @@ resources:
   type: git
   source:
     branch: develop
-    private_key: ((platform_automation_docs.private_key))
+    private_key: ((platform-automation/main/platform_automation_docs.private_key))
     uri: git@github.com:pivotal/docs-platform-automation
     ignore_paths:
       - docs
@@ -20,7 +20,7 @@ resources:
   type: git
   source:
     branch: main
-    private_key: ((platform_automation_deployments.private_key))
+    private_key: ((platform-automation/main/platform_automation_deployments.private_key))
     uri: git@github.com:pivotal/platform-automation-deployments
 - name: paving
   type: git
@@ -30,25 +30,25 @@ resources:
 - name: rc-tasks-s3
   type: s3-with-arn
   source:
-    access_key_id: ((s3_with_role.access_key_id))
-    secret_access_key: ((s3_with_role.secret_access_key))
-    aws_role_arn: ((s3_with_role.role_arn))
-    bucket: ((s3_with_role.buckets.release_candidate))
+    access_key_id: ((platform-automation/main/s3_with_role.access_key_id))
+    secret_access_key: ((platform-automation/main/s3_with_role.secret_access_key))
+    aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
+    bucket: ((platform-automation/main/s3_with_role.buckets.release_candidate))
     regexp: platform-automation-tasks-(.*).zip
-    region_name: ((s3_with_role.region_name))
+    region_name: ((platform-automation/main/s3_with_role.region_name))
 - name: rc-image-s3
   type: s3-with-arn
   source:
-    access_key_id: ((s3_with_role.access_key_id))
-    secret_access_key: ((s3_with_role.secret_access_key))
-    aws_role_arn: ((s3_with_role.role_arn))
-    bucket: ((s3_with_role.buckets.release_candidate))
+    access_key_id: ((platform-automation/main/s3_with_role.access_key_id))
+    secret_access_key: ((platform-automation/main/s3_with_role.secret_access_key))
+    aws_role_arn: ((platform-automation/main/s3_with_role.role_arn))
+    bucket: ((platform-automation/main/s3_with_role.buckets.release_candidate))
     regexp: platform-automation-image-(.*).tgz
-    region_name: ((s3_with_role.region_name))
+    region_name: ((platform-automation/main/s3_with_role.region_name))
 - name: opsman-image
   type: pivnet
   source:
-    api_token: ((pivnet_token))
+    api_token: ((platform-automation/main.pivnet_token))
     product_slug: ops-manager
     product_version: 2\.[0-9]+\.[0-9]+$
     sort_by: semver
@@ -80,18 +80,18 @@ jobs:
     file: docs-platform-automation/ci/tasks/leftovers.yml
     params:
       BBL_IAAS: gcp
-      BBL_AWS_ACCESS_KEY_ID: ((s3_with_role.access_key_id))
-      BBL_AWS_SECRET_ACCESS_KEY: ((s3_with_role.secret_access_key))
-      BBL_AWS_ASSUME_ROLE: ((s3_with_role.role_arn))
-      BBL_AWS_REGION: ((s3_with_role.region_name))
-      BBL_AZURE_CLIENT_ID: ((azure.client_id))
-      BBL_AZURE_CLIENT_SECRET: ((azure.client_secret))
-      BBL_AZURE_TENANT_ID: ((azure.tenant_id))
-      BBL_AZURE_SUBSCRIPTION_ID: ((azure.subscription_id))
-      BBL_GCP_SERVICE_ACCOUNT_KEY: ((gcp.service_account))
-      BBL_NSXT_PASSWORD: ((nsx.password))
-      BBL_NSXT_USERNAME: ((nsx.username))
-      BBL_NSXT_MANAGER_HOST: ((nsx.url))
+      BBL_AWS_ACCESS_KEY_ID: ((platform-automation/main/s3_with_role.access_key_id))
+      BBL_AWS_SECRET_ACCESS_KEY: ((platform-automation/main/s3_with_role.secret_access_key))
+      BBL_AWS_ASSUME_ROLE: ((platform-automation/main/s3_with_role.role_arn))
+      BBL_AWS_REGION: ((platform-automation/main/s3_with_role.region_name))
+      BBL_AZURE_CLIENT_ID: ((platform-automation/main/azure.client_id))
+      BBL_AZURE_CLIENT_SECRET: ((platform-automation/main/azure.client_secret))
+      BBL_AZURE_TENANT_ID: ((platform-automation/main/azure.tenant_id))
+      BBL_AZURE_SUBSCRIPTION_ID: ((platform-automation/main/azure.subscription_id))
+      BBL_GCP_SERVICE_ACCOUNT_KEY: ((platform-automation/main/gcp.service_account))
+      BBL_NSXT_PASSWORD: ((platform-automation/main/nsx.password))
+      BBL_NSXT_USERNAME: ((platform-automation/main/nsx.username))
+      BBL_NSXT_MANAGER_HOST: ((platform-automation/main/nsx.url))
       FILTER: ci-paving-gcp
       DRY_RUN: false
       NO_CONFIRM: true
@@ -99,7 +99,7 @@ jobs:
     file: docs-platform-automation/ci/tasks/delete-state-file.yml
     params:
       DEPLOYMENT: ci-paving-gcp
-      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation/main.platform-automation-email))
     ensure:
       put: deployments
       params:
@@ -111,9 +111,9 @@ jobs:
     params:
       IAAS: gcp
       DEPLOYMENT_NAME: ci-paving-gcp
-      OM_PASSWORD: ((opsman-login.password))
-      OM_USERNAME: ((opsman-login.username))
-      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+      OM_PASSWORD: ((platform-automation/main/opsman-login.password))
+      OM_USERNAME: ((platform-automation/main/opsman-login.username))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation/main.platform-automation-email))
     ensure:
       put: deployments
       params:
@@ -125,9 +125,9 @@ jobs:
     params:
       IAAS: gcp
       DEPLOYMENT_NAME: ci-paving-gcp
-      OM_PASSWORD: ((opsman-login.password))
-      OM_USERNAME: ((opsman-login.username))
-      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+      OM_PASSWORD: ((platform-automation/main/opsman-login.password))
+      OM_USERNAME: ((platform-automation/main/opsman-login.username))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation/main.platform-automation-email))
     ensure:
       put: deployments
       params:
@@ -144,18 +144,18 @@ jobs:
     file: docs-platform-automation/ci/tasks/leftovers.yml
     params:
       BBL_IAAS: aws
-      BBL_AWS_ACCESS_KEY_ID: ((s3_with_role.access_key_id))
-      BBL_AWS_SECRET_ACCESS_KEY: ((s3_with_role.secret_access_key))
-      BBL_AWS_ASSUME_ROLE: ((s3_with_role.role_arn))
-      BBL_AWS_REGION: ((s3_with_role.region_name))
-      BBL_AZURE_CLIENT_ID: ((azure.client_id))
-      BBL_AZURE_CLIENT_SECRET: ((azure.client_secret))
-      BBL_AZURE_TENANT_ID: ((azure.tenant_id))
-      BBL_AZURE_SUBSCRIPTION_ID: ((azure.subscription_id))
-      BBL_GCP_SERVICE_ACCOUNT_KEY: ((gcp.service_account))
-      BBL_NSXT_PASSWORD: ((nsx.password))
-      BBL_NSXT_USERNAME: ((nsx.username))
-      BBL_NSXT_MANAGER_HOST: ((nsx.url))
+      BBL_AWS_ACCESS_KEY_ID: ((platform-automation/main/s3_with_role.access_key_id))
+      BBL_AWS_SECRET_ACCESS_KEY: ((platform-automation/main/s3_with_role.secret_access_key))
+      BBL_AWS_ASSUME_ROLE: ((platform-automation/main/s3_with_role.role_arn))
+      BBL_AWS_REGION: ((platform-automation/main/s3_with_role.region_name))
+      BBL_AZURE_CLIENT_ID: ((platform-automation/main/azure.client_id))
+      BBL_AZURE_CLIENT_SECRET: ((platform-automation/main/azure.client_secret))
+      BBL_AZURE_TENANT_ID: ((platform-automation/main/azure.tenant_id))
+      BBL_AZURE_SUBSCRIPTION_ID: ((platform-automation/main/azure.subscription_id))
+      BBL_GCP_SERVICE_ACCOUNT_KEY: ((platform-automation/main/gcp.service_account))
+      BBL_NSXT_PASSWORD: ((platform-automation/main/nsx.password))
+      BBL_NSXT_USERNAME: ((platform-automation/main/nsx.username))
+      BBL_NSXT_MANAGER_HOST: ((platform-automation/main/nsx.url))
       FILTER: ci-paving-aws
       DRY_RUN: false
       NO_CONFIRM: true
@@ -163,7 +163,7 @@ jobs:
     file: docs-platform-automation/ci/tasks/delete-state-file.yml
     params:
       DEPLOYMENT: ci-paving-aws
-      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation/main.platform-automation-email))
     ensure:
       put: deployments
       params:
@@ -175,9 +175,9 @@ jobs:
     params:
       IAAS: aws
       DEPLOYMENT_NAME: ci-paving-aws
-      OM_PASSWORD: ((opsman-login.password))
-      OM_USERNAME: ((opsman-login.username))
-      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+      OM_PASSWORD: ((platform-automation/main/opsman-login.password))
+      OM_USERNAME: ((platform-automation/main/opsman-login.username))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation/main.platform-automation-email))
     ensure:
       put: deployments
       params:
@@ -189,9 +189,9 @@ jobs:
     params:
       IAAS: aws
       DEPLOYMENT_NAME: ci-paving-aws
-      OM_PASSWORD: ((opsman-login.password))
-      OM_USERNAME: ((opsman-login.username))
-      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+      OM_PASSWORD: ((platform-automation/main/opsman-login.password))
+      OM_USERNAME: ((platform-automation/main/opsman-login.username))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation/main.platform-automation-email))
     ensure:
       put: deployments
       params:
@@ -210,9 +210,9 @@ jobs:
     params:
       IAAS: azure
       DEPLOYMENT_NAME: ci-paving-azure
-      OM_PASSWORD: ((opsman-login.password))
-      OM_USERNAME: ((opsman-login.username))
-      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+      OM_PASSWORD: ((platform-automation/main/opsman-login.password))
+      OM_USERNAME: ((platform-automation/main/opsman-login.username))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation/main.platform-automation-email))
     ensure:
       put: deployments
       params:
@@ -222,18 +222,18 @@ jobs:
     file: docs-platform-automation/ci/tasks/leftovers.yml
     params:
       BBL_IAAS: azure
-      BBL_AWS_ACCESS_KEY_ID: ((s3_with_role.access_key_id))
-      BBL_AWS_SECRET_ACCESS_KEY: ((s3_with_role.secret_access_key))
-      BBL_AWS_ASSUME_ROLE: ((s3_with_role.role_arn))
-      BBL_AWS_REGION: ((s3_with_role.region_name))
-      BBL_AZURE_CLIENT_ID: ((azure.client_id))
-      BBL_AZURE_CLIENT_SECRET: ((azure.client_secret))
-      BBL_AZURE_TENANT_ID: ((azure.tenant_id))
-      BBL_AZURE_SUBSCRIPTION_ID: ((azure.subscription_id))
-      BBL_GCP_SERVICE_ACCOUNT_KEY: ((gcp.service_account))
-      BBL_NSXT_PASSWORD: ((nsx.password))
-      BBL_NSXT_USERNAME: ((nsx.username))
-      BBL_NSXT_MANAGER_HOST: ((nsx.url))
+      BBL_AWS_ACCESS_KEY_ID: ((platform-automation/main/s3_with_role.access_key_id))
+      BBL_AWS_SECRET_ACCESS_KEY: ((platform-automation/main/s3_with_role.secret_access_key))
+      BBL_AWS_ASSUME_ROLE: ((platform-automation/main/s3_with_role.role_arn))
+      BBL_AWS_REGION: ((platform-automation/main/s3_with_role.region_name))
+      BBL_AZURE_CLIENT_ID: ((platform-automation/main/azure.client_id))
+      BBL_AZURE_CLIENT_SECRET: ((platform-automation/main/azure.client_secret))
+      BBL_AZURE_TENANT_ID: ((platform-automation/main/azure.tenant_id))
+      BBL_AZURE_SUBSCRIPTION_ID: ((platform-automation/main/azure.subscription_id))
+      BBL_GCP_SERVICE_ACCOUNT_KEY: ((platform-automation/main/gcp.service_account))
+      BBL_NSXT_PASSWORD: ((platform-automation/main/nsx.password))
+      BBL_NSXT_USERNAME: ((platform-automation/main/nsx.username))
+      BBL_NSXT_MANAGER_HOST: ((platform-automation/main/nsx.url))
       FILTER: ci-paving-azure
       DRY_RUN: false
       NO_CONFIRM: true
@@ -241,7 +241,7 @@ jobs:
     file: docs-platform-automation/ci/tasks/delete-state-file.yml
     params:
       DEPLOYMENT: ci-paving-azure
-      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation/main.platform-automation-email))
     ensure:
       put: deployments
       params:
@@ -253,9 +253,9 @@ jobs:
     params:
       IAAS: azure
       DEPLOYMENT_NAME: ci-paving-azure
-      OM_PASSWORD: ((opsman-login.password))
-      OM_USERNAME: ((opsman-login.username))
-      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+      OM_PASSWORD: ((platform-automation/main/opsman-login.password))
+      OM_USERNAME: ((platform-automation/main/opsman-login.username))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation/main.platform-automation-email))
     ensure:
       put: deployments
       params:
@@ -267,9 +267,9 @@ jobs:
     params:
       IAAS: azure
       DEPLOYMENT_NAME: ci-paving-azure
-      OM_PASSWORD: ((opsman-login.password))
-      OM_USERNAME: ((opsman-login.username))
-      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+      OM_PASSWORD: ((platform-automation/main/opsman-login.password))
+      OM_USERNAME: ((platform-automation/main/opsman-login.username))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation/main.platform-automation-email))
     ensure:
       put: deployments
       params:
@@ -298,18 +298,18 @@ jobs:
     file: docs-platform-automation/ci/tasks/leftovers.yml
     params:
       BBL_IAAS: gcp
-      BBL_AWS_ACCESS_KEY_ID: ((s3_with_role.access_key_id))
-      BBL_AWS_SECRET_ACCESS_KEY: ((s3_with_role.secret_access_key))
-      BBL_AWS_ASSUME_ROLE: ((s3_with_role.role_arn))
-      BBL_AWS_REGION: ((s3_with_role.region_name))
-      BBL_AZURE_CLIENT_ID: ((azure.client_id))
-      BBL_AZURE_CLIENT_SECRET: ((azure.client_secret))
-      BBL_AZURE_TENANT_ID: ((azure.tenant_id))
-      BBL_AZURE_SUBSCRIPTION_ID: ((azure.subscription_id))
-      BBL_GCP_SERVICE_ACCOUNT_KEY: ((gcp.service_account))
-      BBL_NSXT_PASSWORD: ((nsx.password))
-      BBL_NSXT_USERNAME: ((nsx.username))
-      BBL_NSXT_MANAGER_HOST: ((nsx.url))
+      BBL_AWS_ACCESS_KEY_ID: ((platform-automation/main/s3_with_role.access_key_id))
+      BBL_AWS_SECRET_ACCESS_KEY: ((platform-automation/main/s3_with_role.secret_access_key))
+      BBL_AWS_ASSUME_ROLE: ((platform-automation/main/s3_with_role.role_arn))
+      BBL_AWS_REGION: ((platform-automation/main/s3_with_role.region_name))
+      BBL_AZURE_CLIENT_ID: ((platform-automation/main/azure.client_id))
+      BBL_AZURE_CLIENT_SECRET: ((platform-automation/main/azure.client_secret))
+      BBL_AZURE_TENANT_ID: ((platform-automation/main/azure.tenant_id))
+      BBL_AZURE_SUBSCRIPTION_ID: ((platform-automation/main/azure.subscription_id))
+      BBL_GCP_SERVICE_ACCOUNT_KEY: ((platform-automation/main/gcp.service_account))
+      BBL_NSXT_PASSWORD: ((platform-automation/main/nsx.password))
+      BBL_NSXT_USERNAME: ((platform-automation/main/nsx.username))
+      BBL_NSXT_MANAGER_HOST: ((platform-automation/main/nsx.url))
       FILTER: ci-paving-gcp-om
       DRY_RUN: false
       NO_CONFIRM: true
@@ -317,7 +317,7 @@ jobs:
     file: docs-platform-automation/ci/tasks/delete-state-file.yml
     params:
       DEPLOYMENT: ci-paving-gcp-om
-      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation/main.platform-automation-email))
     ensure:
       put: deployments
       params:
@@ -329,9 +329,9 @@ jobs:
     params:
       IAAS: gcp
       DEPLOYMENT_NAME: ci-paving-gcp-om
-      OM_PASSWORD: ((opsman-login.password))
-      OM_USERNAME: ((opsman-login.username))
-      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+      OM_PASSWORD: ((platform-automation/main/opsman-login.password))
+      OM_USERNAME: ((platform-automation/main/opsman-login.username))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation/main.platform-automation-email))
     ensure:
       put: deployments
       params:
@@ -367,7 +367,7 @@ jobs:
         file: platform-automation-tasks/tasks/make-git-commit.yml
         params:
           GIT_AUTHOR_NAME: platform-automation-bot
-          GIT_AUTHOR_EMAIL: ((platform-automation-email))
+          GIT_AUTHOR_EMAIL: ((platform-automation/main.platform-automation-email))
           COMMIT_MESSAGE: "create-vm update state file for ci-paving-gcp-om"
           FILE_SOURCE_PATH: state.yml
           FILE_DESTINATION_PATH: ci-paving-gcp-om/state.yml
@@ -416,9 +416,9 @@ jobs:
     params:
       IAAS: gcp
       DEPLOYMENT_NAME: ci-paving-gcp
-      OM_PASSWORD: ((opsman-login.password))
-      OM_USERNAME: ((opsman-login.username))
-      PLATFORM_AUTOMATION_EMAIL: ((platform-automation-email))
+      OM_PASSWORD: ((platform-automation/main/opsman-login.password))
+      OM_USERNAME: ((platform-automation/main/opsman-login.username))
+      PLATFORM_AUTOMATION_EMAIL: ((platform-automation/main.platform-automation-email))
     ensure:
       put: deployments
       params:
