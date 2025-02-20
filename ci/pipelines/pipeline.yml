@@ -20,8 +20,8 @@ resources:
   type: git
   source:
     branch: main
-    private_key: ((platform-automation/main/platform_automation_deployments.private_key))
-    uri: git@github.com:pivotal/platform-automation-deployments
+    private_key: ((platform-automation/main/platform_automation_deployments_ghe_deploy_key.private_key))
+    uri: ((platform-automation/main.platform_automation_deployments_ghe_uri))
 - name: paving
   type: git
   source:
