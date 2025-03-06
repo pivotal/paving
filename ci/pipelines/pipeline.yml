@@ -66,8 +66,11 @@ resource_types:
 - name: s3-with-arn
   type: docker-image
   source:
-    repository: concourse/s3-resource
+    repository: ((concourse-team/dev_image_registry.url))/concourse/s3-resource
     tag: 1.2.1-ubuntu
+    username: ((concourse-team/dev_image_registry.username))
+    password: ((concourse-team/dev_image_registry.password))
+
 jobs:
 - name: paving-gcp
   plan:
