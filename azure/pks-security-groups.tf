@@ -16,8 +16,8 @@ resource "azurerm_network_security_group" "pks-master" {
   }
 
   tags = merge(
-  var.tags,
-  { name = "${var.environment_name}-pks-master-network-sg" },
+    var.tags,
+    { name = "${var.environment_name}-pks-master-network-sg" },
   )
 }
 
@@ -39,8 +39,8 @@ resource "azurerm_network_security_group" "pks-api" {
   }
 
   tags = merge(
-  var.tags,
-  { name = "${var.environment_name}-pks-api-network-sg" },
+    var.tags,
+    { name = "${var.environment_name}-pks-api-network-sg" },
   )
 }
 
@@ -62,8 +62,8 @@ resource "azurerm_network_security_group" "pks-internal" {
   }
 
   tags = merge(
-  var.tags,
-  { name = "${var.environment_name}-pks-internal-network-sg" },
+    var.tags,
+    { name = "${var.environment_name}-pks-internal-network-sg" },
   )
 }
 
@@ -73,8 +73,8 @@ resource "azurerm_application_security_group" "pks-master" {
   resource_group_name = azurerm_resource_group.platform.name
 
   tags = merge(
-  var.tags,
-  { name = "${var.environment_name}-pks-master-app-sg" },
+    var.tags,
+    { name = "${var.environment_name}-pks-master-app-sg" },
   )
 }
 
@@ -84,7 +84,7 @@ resource "azurerm_application_security_group" "pks-api" {
   resource_group_name = azurerm_resource_group.platform.name
 
   tags = merge(
-  var.tags,
-  { name = "${var.environment_name}-pks-api-app-sg" },
+    var.tags,
+    { name = "${var.environment_name}-pks-api-app-sg" },
   )
 }

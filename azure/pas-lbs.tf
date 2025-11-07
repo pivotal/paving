@@ -36,20 +36,18 @@ resource "azurerm_lb_backend_address_pool" "web" {
 }
 
 resource "azurerm_lb_probe" "web-https" {
-  name                = "${var.environment_name}-web-lb-https-probe"
-  resource_group_name = azurerm_resource_group.platform.name
-  loadbalancer_id     = azurerm_lb.web.id
-  protocol            = "TCP"
-  port                = 443
+  name            = "${var.environment_name}-web-lb-https-probe"
+  loadbalancer_id = azurerm_lb.web.id
+  protocol        = "Tcp"
+  port            = 443
 }
 
 resource "azurerm_lb_rule" "web-https" {
-  name                = "${var.environment_name}-web-https-rule"
-  resource_group_name = azurerm_resource_group.platform.name
-  loadbalancer_id     = azurerm_lb.web.id
+  name            = "${var.environment_name}-web-https-rule"
+  loadbalancer_id = azurerm_lb.web.id
 
   frontend_ip_configuration_name = "frontendip"
-  protocol                       = "TCP"
+  protocol                       = "Tcp"
   frontend_port                  = 443
   backend_port                   = 443
   idle_timeout_in_minutes        = 30
@@ -59,20 +57,18 @@ resource "azurerm_lb_rule" "web-https" {
 }
 
 resource "azurerm_lb_probe" "web-http" {
-  name                = "${var.environment_name}-web-http-probe"
-  resource_group_name = azurerm_resource_group.platform.name
-  loadbalancer_id     = azurerm_lb.web.id
-  protocol            = "TCP"
-  port                = 80
+  name            = "${var.environment_name}-web-http-probe"
+  loadbalancer_id = azurerm_lb.web.id
+  protocol        = "Tcp"
+  port            = 80
 }
 
 resource "azurerm_lb_rule" "web-http" {
-  name                = "${var.environment_name}-web-http-rule"
-  resource_group_name = azurerm_resource_group.platform.name
-  loadbalancer_id     = azurerm_lb.web.id
+  name            = "${var.environment_name}-web-http-rule"
+  loadbalancer_id = azurerm_lb.web.id
 
   frontend_ip_configuration_name = "frontendip"
-  protocol                       = "TCP"
+  protocol                       = "Tcp"
   frontend_port                  = 80
   backend_port                   = 80
   idle_timeout_in_minutes        = 30
@@ -82,12 +78,11 @@ resource "azurerm_lb_rule" "web-http" {
 }
 
 resource "azurerm_lb_rule" "web-ntp" {
-  name                = "${var.environment_name}-web-ntp-rule"
-  resource_group_name = azurerm_resource_group.platform.name
-  loadbalancer_id     = azurerm_lb.web.id
+  name            = "${var.environment_name}-web-ntp-rule"
+  loadbalancer_id = azurerm_lb.web.id
 
   frontend_ip_configuration_name = "frontendip"
-  protocol                       = "UDP"
+  protocol                       = "Udp"
   frontend_port                  = "123"
   backend_port                   = "123"
 
@@ -126,26 +121,24 @@ resource "azurerm_lb" "tcp" {
 }
 
 resource "azurerm_lb_backend_address_pool" "tcp" {
-  name                = "${var.environment_name}-tcp-backend-pool"
-  loadbalancer_id     = azurerm_lb.tcp.id
+  name            = "${var.environment_name}-tcp-backend-pool"
+  loadbalancer_id = azurerm_lb.tcp.id
 }
 
 resource "azurerm_lb_probe" "tcp" {
-  name                = "${var.environment_name}-tcp-probe"
-  resource_group_name = azurerm_resource_group.platform.name
-  loadbalancer_id     = azurerm_lb.tcp.id
-  protocol            = "TCP"
-  port                = 80
+  name            = "${var.environment_name}-tcp-probe"
+  loadbalancer_id = azurerm_lb.tcp.id
+  protocol        = "Tcp"
+  port            = 80
 }
 
 resource "azurerm_lb_rule" "tcp-rule" {
-  count               = 5
-  name                = "${var.environment_name}-tcp-rule-${count.index + 1024}"
-  resource_group_name = azurerm_resource_group.platform.name
-  loadbalancer_id     = azurerm_lb.tcp.id
+  count           = 5
+  name            = "${var.environment_name}-tcp-rule-${count.index + 1024}"
+  loadbalancer_id = azurerm_lb.tcp.id
 
   frontend_ip_configuration_name = "frontendip"
-  protocol                       = "TCP"
+  protocol                       = "Tcp"
   frontend_port                  = count.index + 1024
   backend_port                   = count.index + 1024
 
@@ -154,12 +147,11 @@ resource "azurerm_lb_rule" "tcp-rule" {
 }
 
 resource "azurerm_lb_rule" "tcp-ntp" {
-  name                = "${var.environment_name}-tcp-ntp-rule"
-  resource_group_name = azurerm_resource_group.platform.name
-  loadbalancer_id     = azurerm_lb.tcp.id
+  name            = "${var.environment_name}-tcp-ntp-rule"
+  loadbalancer_id = azurerm_lb.tcp.id
 
   frontend_ip_configuration_name = "frontendip"
-  protocol                       = "UDP"
+  protocol                       = "Udp"
   frontend_port                  = "123"
   backend_port                   = "123"
 
@@ -185,25 +177,23 @@ resource "azurerm_lb" "mysql" {
 }
 
 resource "azurerm_lb_backend_address_pool" "mysql" {
-  name                = "${var.environment_name}-mysql-backend-pool"
-  loadbalancer_id     = azurerm_lb.mysql.id
+  name            = "${var.environment_name}-mysql-backend-pool"
+  loadbalancer_id = azurerm_lb.mysql.id
 }
 
 resource "azurerm_lb_probe" "mysql" {
-  name                = "${var.environment_name}-mysql-probe"
-  resource_group_name = azurerm_resource_group.platform.name
-  loadbalancer_id     = azurerm_lb.mysql.id
-  protocol            = "TCP"
-  port                = 1936
+  name            = "${var.environment_name}-mysql-probe"
+  loadbalancer_id = azurerm_lb.mysql.id
+  protocol        = "Tcp"
+  port            = 1936
 }
 
 resource "azurerm_lb_rule" "mysql" {
-  name                = "${var.environment_name}-mysql-rule"
-  resource_group_name = azurerm_resource_group.platform.name
-  loadbalancer_id     = azurerm_lb.mysql.id
+  name            = "${var.environment_name}-mysql-rule"
+  loadbalancer_id = azurerm_lb.mysql.id
 
   frontend_ip_configuration_name = "frontendip"
-  protocol                       = "TCP"
+  protocol                       = "Tcp"
   frontend_port                  = 3306
   backend_port                   = 3306
 
@@ -212,12 +202,11 @@ resource "azurerm_lb_rule" "mysql" {
 }
 
 resource "azurerm_lb_rule" "mysql-ntp" {
-  name                = "${var.environment_name}-mysql-ntp-rule"
-  resource_group_name = azurerm_resource_group.platform.name
-  loadbalancer_id     = azurerm_lb.mysql.id
+  name            = "${var.environment_name}-mysql-ntp-rule"
+  loadbalancer_id = azurerm_lb.mysql.id
 
   frontend_ip_configuration_name = "frontendip"
-  protocol                       = "UDP"
+  protocol                       = "Udp"
   frontend_port                  = "123"
   backend_port                   = "123"
 
@@ -256,25 +245,23 @@ resource "azurerm_lb" "diego-ssh" {
 }
 
 resource "azurerm_lb_backend_address_pool" "diego-ssh" {
-  name                = "${var.environment_name}-diego-ssh-backend-pool"
-  loadbalancer_id     = azurerm_lb.diego-ssh.id
+  name            = "${var.environment_name}-diego-ssh-backend-pool"
+  loadbalancer_id = azurerm_lb.diego-ssh.id
 }
 
 resource "azurerm_lb_probe" "diego-ssh" {
-  name                = "${var.environment_name}-diego-ssh-probe"
-  resource_group_name = azurerm_resource_group.platform.name
-  loadbalancer_id     = azurerm_lb.diego-ssh.id
-  protocol            = "TCP"
-  port                = 2222
+  name            = "${var.environment_name}-diego-ssh-probe"
+  loadbalancer_id = azurerm_lb.diego-ssh.id
+  protocol        = "Tcp"
+  port            = 2222
 }
 
 resource "azurerm_lb_rule" "diego-ssh" {
-  name                = "${var.environment_name}-diego-ssh-rule"
-  resource_group_name = azurerm_resource_group.platform.name
-  loadbalancer_id     = azurerm_lb.diego-ssh.id
+  name            = "${var.environment_name}-diego-ssh-rule"
+  loadbalancer_id = azurerm_lb.diego-ssh.id
 
   frontend_ip_configuration_name = "frontendip"
-  protocol                       = "TCP"
+  protocol                       = "Tcp"
   frontend_port                  = 2222
   backend_port                   = 2222
 
@@ -283,12 +270,11 @@ resource "azurerm_lb_rule" "diego-ssh" {
 }
 
 resource "azurerm_lb_rule" "diego-ssh-ntp" {
-  name                = "${var.environment_name}-diego-ssh-ntp-rule"
-  resource_group_name = azurerm_resource_group.platform.name
-  loadbalancer_id     = azurerm_lb.diego-ssh.id
+  name            = "${var.environment_name}-diego-ssh-ntp-rule"
+  loadbalancer_id = azurerm_lb.diego-ssh.id
 
   frontend_ip_configuration_name = "frontendip"
-  protocol                       = "UDP"
+  protocol                       = "Udp"
   frontend_port                  = "123"
   backend_port                   = "123"
 
