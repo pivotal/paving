@@ -6,7 +6,7 @@ resource "azurerm_dns_a_record" "pks" {
   records             = [azurerm_public_ip.pks-lb.ip_address]
 
   tags = merge(
-  var.tags,
-  { name = "pks.${var.environment_name}" },
+    var.tags,
+    { name = "pks.${var.environment_name}" },
   )
 }
