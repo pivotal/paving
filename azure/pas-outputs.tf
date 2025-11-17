@@ -2,9 +2,9 @@ locals {
   stable_config_pas = {
     pas_subnet_name = azurerm_subnet.pas.name
     pas_subnet_id = azurerm_subnet.pas.id
-    pas_subnet_cidr = azurerm_subnet.pas.address_prefix
-    pas_subnet_gateway = cidrhost(azurerm_subnet.pas.address_prefix, 1)
-    pas_subnet_range = cidrhost(azurerm_subnet.pas.address_prefix, 10)
+    pas_subnet_cidr = azurerm_subnet.pas.address_prefixes[0]
+    pas_subnet_gateway = cidrhost(azurerm_subnet.pas.address_prefixes[0], 1)
+    pas_subnet_range = cidrhost(azurerm_subnet.pas.address_prefixes[0], 10)
     pas_buildpacks_container_name = azurerm_storage_container.pas-buildpacks.name
     pas_packages_container_name = azurerm_storage_container.pas-packages.name
     pas_droplets_container_name = azurerm_storage_container.pas-droplets.name

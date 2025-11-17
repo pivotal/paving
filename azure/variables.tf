@@ -7,7 +7,9 @@ variable "client_id" {
 }
 
 variable "client_secret" {
-  type = string
+  type        = string
+  default     = ""
+  description = "Azure Service Principal client secret. Leave empty if using certificate authentication."
 }
 
 variable "tenant_id" {

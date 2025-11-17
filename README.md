@@ -14,7 +14,7 @@ As of `v3.0.0` of this repository the following are the supported versions of th
     |-|-|
     | GCP | 4.1.0 |
     | AWS | 3.65.0 |
-    | Azure | 2.85.0 |
+    | Azure | 3.117.1 |
 
 ## Usage
 

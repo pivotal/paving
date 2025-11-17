@@ -36,7 +36,6 @@ resource "azurerm_lb_backend_address_pool" "pks-lb" {
 
 resource "azurerm_lb_probe" "pks-lb-uaa" {
   name                = "${var.environment_name}-pks-lb-uaa-health-probe"
-  resource_group_name = azurerm_resource_group.platform.name
   loadbalancer_id     = azurerm_lb.pks.id
   protocol            = "Tcp"
   interval_in_seconds = 5
@@ -46,7 +45,6 @@ resource "azurerm_lb_probe" "pks-lb-uaa" {
 
 resource "azurerm_lb_rule" "pks-lb-uaa" {
   name                           = "${var.environment_name}-pks-lb-uaa-rule"
-  resource_group_name            = azurerm_resource_group.platform.name
   loadbalancer_id                = azurerm_lb.pks.id
   protocol                       = "Tcp"
   frontend_port                  = 8443
@@ -58,7 +56,6 @@ resource "azurerm_lb_rule" "pks-lb-uaa" {
 
 resource "azurerm_lb_probe" "pks-lb-api" {
   name                = "${var.environment_name}-pks-lb-api-health-probe"
-  resource_group_name = azurerm_resource_group.platform.name
   loadbalancer_id     = azurerm_lb.pks.id
   protocol            = "Tcp"
   interval_in_seconds = 5
@@ -68,7 +65,6 @@ resource "azurerm_lb_probe" "pks-lb-api" {
 
 resource "azurerm_lb_rule" "pks-lb-api-rule" {
   name                           = "${var.environment_name}-pks-lb-api-rule"
-  resource_group_name            = azurerm_resource_group.platform.name
   loadbalancer_id                = azurerm_lb.pks.id
   protocol                       = "Tcp"
   frontend_port                  = 9021
