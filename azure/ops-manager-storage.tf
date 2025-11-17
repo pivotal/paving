@@ -5,13 +5,13 @@ resource "random_string" "ops-manager" {
 }
 
 resource "azurerm_storage_account" "ops-manager" {
-  name                      = random_string.ops-manager.result
-  resource_group_name       = azurerm_resource_group.platform.name
-  location                  = var.location
-  account_tier              = "Standard"
-  account_kind              = "StorageV2"
-  account_replication_type  = "LRS"
-  enable_https_traffic_only = true
+  name                       = random_string.ops-manager.result
+  resource_group_name        = azurerm_resource_group.platform.name
+  location                   = var.location
+  account_tier               = "Standard"
+  account_kind               = "StorageV2"
+  account_replication_type   = "LRS"
+  https_traffic_only_enabled = true
 
   tags = merge(
     var.tags,
@@ -45,14 +45,14 @@ resource "random_string" "bosh" {
 }
 
 resource "azurerm_storage_account" "bosh" {
-  name                      = random_string.bosh.result
-  location                  = var.location
-  account_tier              = "Standard"
-  account_replication_type  = "LRS"
-  account_kind              = "StorageV2"
-  resource_group_name       = azurerm_resource_group.platform.name
-  enable_https_traffic_only = true
-  allow_blob_public_access  = true
+  name                     = random_string.bosh.result
+  location                 = var.location
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+  account_kind             = "StorageV2"
+  resource_group_name      = azurerm_resource_group.platform.name
+  https_traffic_only_enabled    = true
+  allow_nested_items_to_be_public = true
 
   tags = merge(
     var.tags,
