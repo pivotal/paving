@@ -13,7 +13,7 @@ locals {
     management_subnet_name               = google_compute_subnetwork.management.name
     management_subnet_cidr               = google_compute_subnetwork.management.ip_cidr_range
     management_subnet_gateway            = google_compute_subnetwork.management.gateway_address
-    management_subnet_reserved_ip_ranges = "${cidrhost(google_compute_subnetwork.management.ip_cidr_range, 1)}-${cidrhost(google_compute_subnetwork.management.ip_cidr_range, 9)}"
+    management_subnet_reserved_ip_ranges = "${cidrhost(google_compute_subnetwork.management.ip_cidr_range, 1)}-${cidrhost(google_compute_subnetwork.management.ip_cidr_range, 14)}"
 
     ops_manager_bucket              = google_storage_bucket.ops-manager.name
     ops_manager_dns                 = replace(google_dns_record_set.ops-manager.name, "/\\.$/", "")
