@@ -109,7 +109,7 @@ resource "aws_lb_listener" "tcp" {
 }
 
 resource "aws_lb_target_group" "tcp" {
-  name     = "${var.environment_name}-tcp-tg-${1024 + count.index}"
+  name     = "${substr(var.environment_name, 0, 19)}-tcp-${1024 + count.index}"
   port     = 1024 + count.index
   protocol = "TCP"
   vpc_id   = aws_vpc.vpc.id
